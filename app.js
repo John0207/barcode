@@ -23,10 +23,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
     res.render('home')
 })
-app.get('/makeitem', async(req, res) => {
-    const item = new Item({title: 'apple', price: 20});
-    await item.save();
-    res.send(item)
+
+app.get('/items', async (req, res) => {
+    const items = await Item.find({});
+    res.render('items/index', { items })
+
 })
 
 app.listen(3000, () => {
