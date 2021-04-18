@@ -30,6 +30,12 @@ app.get('/items', async (req, res) => {
 
 })
 
+app.get('/items/:id', async (req, res) => { 
+    const item = await Item.findById(req.params.id);   
+    res.render('items/show', { item });
+
+})
+
 app.listen(3000, () => {
     console.log('Serving on port 3000')
 })
