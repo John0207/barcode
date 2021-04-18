@@ -20,6 +20,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -30,11 +32,27 @@ app.get('/items', async (req, res) => {
 
 })
 
+app.get('/items/new', (req, res) => {
+    res.render('items/new');
+})
+
+app.post('/items', async (req, res) => {
+    const item = new Item(req.body.item);
+    await item.save();
+    res.redirect(`/items/${item._id}`);
+})
+
+app.get('/items/add-by-upc', async (req, res) => {
+    res.render('items/add-by-upc');
+})
+
 app.get('/items/:id', async (req, res) => { 
     const item = await Item.findById(req.params.id);   
     res.render('items/show', { item });
 
 })
+
+
 
 app.listen(3000, () => {
     console.log('Serving on port 3000')
