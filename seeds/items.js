@@ -1,6 +1,6 @@
 module.exports = [
     {
-        title: 'item 1', 
+        title: 'item 1 test test', 
         upc: 681131247634,
         quantity: 1,
         price: 20,        
@@ -25,7 +25,7 @@ module.exports = [
     },        
     {
         title: 'item 5', 
-        upc: 681131247634,
+        upc: 681131247669,
         quantity: 7,
         price: 2,        
     },        
