@@ -44,8 +44,17 @@ app.post('/items', async (req, res) => {
     res.redirect(`/items/${item._id}`);
 })
 
+
+
 app.get('/items/add-by-upc', async (req, res) => {
     res.render('items/add-by-upc');
+})
+
+app.post('/items/add-by-upc', async (req, res) => {
+    const  upc1  = req.body.upc;
+    const item = await Item.findOne({upc: upc1});
+    console.log(item);
+    res.send("Items name is: " + item.title);
 })
 
 app.get('/items/:id', async (req, res) => { 
