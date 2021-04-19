@@ -53,7 +53,8 @@ app.get('/items/add-by-upc', async (req, res) => {
 app.post('/items/add-by-upc', async (req, res) => {
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
-    console.log(item);
+    await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + 1});
+    console.log(item.title);
     res.send("Items name is: " + item.title);
 })
 
