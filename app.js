@@ -46,7 +46,7 @@ app.post('/items', async (req, res) => {
 
 
 
-app.get('/items/add-by-upc', async (req, res) => {
+app.get('/items/add-by-upc', (req, res) => {
     res.render('items/add-by-upc');
 })
 
@@ -55,8 +55,8 @@ app.post('/items/add-by-upc', async (req, res) => {
     const item = await Item.findOne({upc: upc1});
     if (item) {
         await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + 1});
-        console.log(item.title);
-        res.send("Items name is: " + item.title);
+        console.log(item.title + " Successfully incremented");
+        res.redirect("/items/add-by-upc");
     } else {
         res.send('sorry item doesnt exist yet')
 
@@ -72,6 +72,23 @@ app.post('/items/add-by-upc', async (req, res) => {
         // find all items that have any undefined fields, set them
     }
 })
+
+app.get('/items/delete-by-upc', (req, res) => {
+    res.render('items/delete-by-upc');
+})
+
+app.post('/items/delete-by-upc', async(req, res) => {
+    const  upc1  = req.body.upc;
+    const item = await Item.findOne({upc: upc1});
+    if (item) {
+        await Item.findOneAndDelete({upc: upc1});
+        console.log(item.title + " Successfully removed");
+        res.redirect("/items/delete-by-upc");
+    } else {
+        res.send('sorry item doesnt exist yet');
+    }
+})   
+
 
 app.get('/items/:id', async (req, res) => { 
     const item = await Item.findById(req.params.id);   
@@ -90,11 +107,13 @@ app.put('/items/:id', async (req, res) => {
     res.redirect(`/items/${item._id}`)
 });
 
+
+
 app.delete('/items/:id', async (req, res) => {
     const { id } = req.params;
     await Item.findByIdAndDelete(id);
     res.redirect('/items');
-})
+});
 
 
 
