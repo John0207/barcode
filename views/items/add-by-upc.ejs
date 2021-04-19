@@ -6,14 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add by upc</title>
+
 </head>
 
 <body>
     <h1>ADD BY UPC</h1>
-    <form action="/items/add-by-upc" method="POST">
+    <form id="upc-form" action="/items/add-by-upc" method="POST">
         <div>
             <label for="upc">UPC</label>
-            <input type="number" id='upc' name='upc'>
+            <input autofocus="autofocus" type="number" id='upc' name='upc'>
         </div>
         <button>Scan</button>
     </form>
