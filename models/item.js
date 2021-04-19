@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // should add location
 const ItemSchema = new Schema ({
-    title: String, 
+    title: String,
+    location: String, 
     upc: Number,
     quantity: Number,
     price: Number,

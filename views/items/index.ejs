@@ -10,6 +10,12 @@
 
 <body>
     <h1>All Items</h1>
+    <div>
+        <a href="/items/new">Add Item Manually</a>
+    </div>
+    <div>
+        <a href="/items/add-by-upc">Add Item by Scanning</a>
+    </div>
     <ul>
         <% for ( let item of items) { %>
             <li>
@@ -26,6 +32,9 @@
                 </li>
                 <li>
                     quantity: <%= item.quantity %>
+                </li>
+                <li>
+                    location: <%= item.location %>
                 </li>
             </ul>
 
