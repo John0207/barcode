@@ -15,6 +15,17 @@
     <h2>
         <%= item.upc %>
     </h2>
+    <ul>
+        <li>
+            price: <%= item.price %>
+        </li>
+        <li>
+            quantity: <%= item.quantity %>
+        </li>
+        <li>
+            location: <%= item.location %>
+        </li>
+    </ul>
     <p> <a href="/items/<%=item._id%>/edit">Edit</a>
     </p>
     <p>
