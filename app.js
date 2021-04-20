@@ -30,7 +30,11 @@ app.get('/', (req, res) => {
 
 app.get('/items', async (req, res) => {
     const items = await Item.find({});
-    res.render('items/index', { items })
+    // https://stackoverflow.com/questions/18969916/mongodb-sum-query
+    const allPrices = await Item.aggregate([{ $group: { _id : null,  sum : { $sum: "$price" }}}]);
+    const total = allPrices[0].sum;   
+    console.log(total);
+    res.render('items/index', { items, total });
 
 })
 
@@ -51,7 +55,7 @@ app.post('/items/decrement-by-upc', async(req, res) => {
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
     if (item) {
-        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - 1});
+        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - item.caseQty});
         console.log(item.title + " Successfully decremented");
         res.redirect("/items/decrement-by-upc");
     } else {
@@ -75,7 +79,7 @@ app.post('/items/add-by-upc', async (req, res) => {
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
     if (item) {
-        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + 1});
+        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + item.caseQty });
         console.log(item.title + " Successfully incremented");
         res.redirect("/items/add-by-upc");
     } else {

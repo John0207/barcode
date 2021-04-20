@@ -8,6 +8,7 @@ const ItemSchema = new Schema ({
     upc: Number,
     quantity: Number,
     price: Number,
+    caseQty: Number
 
 })
 module.exports = mongoose.model('Item', ItemSchema);

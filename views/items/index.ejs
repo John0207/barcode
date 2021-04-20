@@ -22,6 +22,10 @@
     <div>
         <a href="/items/delete-by-upc">Delete Item by Scanning</a>
     </div>
+    <h2>
+        Total cost of all items: $<%=total%>
+    </h2>
+
     <ul>
         <% for ( let item of items) { %>
             <li>
@@ -41,6 +45,9 @@
                 </li>
                 <li>
                     location: <%= item.location %>
+                </li>
+                <li>
+                    case quantity: <%= item.caseQty %>
                 </li>
             </ul>
 
