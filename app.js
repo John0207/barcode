@@ -42,6 +42,23 @@ app.get('/items/new-upc', (req, res) => {
     res.render('items/new');
 })
 
+
+app.get('/items/decrement-by-upc', (req, res) => {
+    res.render('items/decrement-by-upc');
+})
+
+app.post('/items/decrement-by-upc', async(req, res) => {
+    const  upc1  = req.body.upc;
+    const item = await Item.findOne({upc: upc1});
+    if (item) {
+        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - 1});
+        console.log(item.title + " Successfully decremented");
+        res.redirect("/items/decrement-by-upc");
+    } else {
+        res.render('items/new-upc', { upc1 });
+    }
+}) 
+
 app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
     await item.save();
