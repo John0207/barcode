@@ -38,6 +38,10 @@ app.get('/items/new', (req, res) => {
     res.render('items/new');
 })
 
+app.get('/items/new-upc', (req, res) => {
+    res.render('items/new');
+})
+
 app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
     await item.save();
@@ -58,7 +62,7 @@ app.post('/items/add-by-upc', async (req, res) => {
         console.log(item.title + " Successfully incremented");
         res.redirect("/items/add-by-upc");
     } else {
-        res.send('sorry item doesnt exist yet')
+        res.render('items/new-upc', { upc1 });
 
         // FIX ERROR WHEN PAGE REFRESHES IT EXECUTES
 
