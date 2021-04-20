@@ -30,12 +30,10 @@ app.get('/', (req, res) => {
 
 app.get('/items', async (req, res) => {
     const items = await Item.find({});
-    // https://stackoverflow.com/questions/18969916/mongodb-sum-query
-    const allPrices = await Item.aggregate([{ $group: { _id : null,  sum : { $sum: "$price" }}}]);
-    const total = allPrices[0].sum;   
+    const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
+    const total = allPrices[0].prices;   
     console.log(total);
     res.render('items/index', { items, total });
-
 })
 
 app.get('/items/new', (req, res) => {
