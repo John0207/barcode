@@ -54,9 +54,10 @@ app.get('/items/decrement-by-upc', (req, res) => {
 app.post('/items/decrement-by-upc', async(req, res) => {
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
+    const multi = req.body.multi;
     if (item) {
-        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - item.caseQty});
-        console.log(item.title + " Successfully decremented");
+        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - (item.caseQty * multi)});
+        console.log(item.title + " Successfully decrementedusing multiplier: " + multi);
         res.redirect("/items/decrement-by-upc");
     } else {
         res.render('items/new-upc', { upc1 });
@@ -77,24 +78,17 @@ app.get('/items/add-by-upc', (req, res) => {
 
 app.post('/items/add-by-upc', async (req, res) => {
     const  upc1  = req.body.upc;
+    const multi = req.body.multi;
     const item = await Item.findOne({upc: upc1});
     if (item) {
-        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + item.caseQty });
-        console.log(item.title + " Successfully incremented");
+        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + (item.caseQty * multi) });
+        console.log(item.title + " Successfully incremented using multiplier: " + multi);
         res.redirect("/items/add-by-upc");
     } else {
         res.render('items/new-upc', { upc1 });
 
         // FIX ERROR WHEN PAGE REFRESHES IT EXECUTES
 
-        // add in flash alert and redirect to make a new item page
-
-        // should prompt for all fields but only require title
-        // should add location to item model
-        // could also add date entered, good for expirations
-
-        // could have page for unfinshed entries, could alert on home page, user could fix at their pace
-        // find all items that have any undefined fields, set them
     }
 })
 
