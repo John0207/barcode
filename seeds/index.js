@@ -24,6 +24,8 @@ const seedDB = async () => {
             price: `${items[i].price}`,   
             location: `${items[i].location}`,   
             caseQty: `${items[i].caseQty}`,   
+            date: `${items[i].date}`,
+            date_purchased_ISO: `${items[i].date}` 
             
         })
         await item.save();

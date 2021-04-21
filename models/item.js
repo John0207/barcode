@@ -9,7 +9,8 @@ const ItemSchema = new Schema ({
     quantity: Number,
     price: Number,
     caseQty: Number,
-    
-
+    date: String,
+    date_purchased_ISO: Date,
+    expiration_date: Date, 
 })
 module.exports = mongoose.model('Item', ItemSchema);
