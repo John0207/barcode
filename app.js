@@ -32,8 +32,10 @@ app.get('/items', async (req, res) => {
     const items = await Item.find({});
     const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
     const total = allPrices[0].prices;   
+    const average = total / items.length;   
     console.log(total);
-    res.render('items/index', { items, total });
+    console.log(average)
+    res.render('items/index', { items, total, average });
 })
 
 app.get('/items/new', (req, res) => {
