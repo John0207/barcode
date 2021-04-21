@@ -8,20 +8,20 @@ module.exports = [
         caseQty: 1        
     },        
     {
-        title: 'item 2', 
-        upc: 681131087483,
-        quantity: 12,
-        price: 15,
-        location: 'desk',
+        title: 'can of coke', 
+        upc: 111,
+        quantity: 0,
+        price: 1,
+        location: 'fridge',
         caseQty: 1         
     },        
     {
-        title: 'item 3', 
-        upc: 681131158121,
-        quantity: 13,
+        title: 'case of coke', 
+        upc: 123,
+        quantity: 1,
         price: 8,
-        location: 'desk',
-        caseQty: 1         
+        location: 'fridge',
+        caseQty: 24,         
     },        
     {
         title: 'item 4', 

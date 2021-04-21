@@ -30,6 +30,10 @@
             <label for="price">Price</label>
             <input type="number" id="price" name="item[price]" value="<%=item.price %>">
         </div>
+        <div>
+            <label for="caseQty">case quantity</label>
+            <input type="number" id="caseQty" name="item[caseQty]" value="<%=item.caseQty %>">
+        </div>
         <button>Update Item</button>
     </form>
     <a href="/items/<%= item._id%>">Back To Item</a>
