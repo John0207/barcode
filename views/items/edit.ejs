@@ -38,6 +38,10 @@
             <label for="date">Date purchased</label>
             <input type="text" id="date" name="item[date]" value="<%=item.date%>">
         </div>
+        <div>
+            <label for="shelfLife">Shelf Life in Days</label>
+            <input type="number" id="shelfLife" name="item[shelfLife]" value="<%=item.shelfLife%>" min=1>
+        </div>
         <button>Update Item</button>
     </form>
     <a href="/items/<%= item._id%>">Back To Item</a>

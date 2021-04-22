@@ -57,7 +57,7 @@ app.post('/items/decrement-by-upc', async(req, res) => {
     const multi = req.body.multi;
     if (item) {
         await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - (item.caseQty * multi)});
-        console.log(item.title + " Successfully decrementedusing multiplier: " + multi);
+        console.log(item.title + " Successfully decremented using multiplier: " + multi);
         res.redirect("/items/decrement-by-upc");
     } else {
         res.render('items/new-upc', { upc1 });
@@ -66,6 +66,9 @@ app.post('/items/decrement-by-upc', async(req, res) => {
 
 app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
+    // if (item.date) {
+
+    // }
     await item.save();
     res.redirect(`/items/${item._id}`);
 })

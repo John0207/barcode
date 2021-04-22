@@ -17,19 +17,22 @@
     </h2>
     <ul>
         <li>
-            price: <%= item.price %>
+            price: <%=item.price%>
         </li>
         <li>
-            quantity: <%= item.quantity %>
+            quantity: <%=item.quantity%>
         </li>
         <li>
-            location: <%= item.location %>
+            location: <%=item.location%>
         </li>
         <li>
-            case quantity: <%= item.caseQty %>
+            case quantity: <%=item.caseQty%>
         </li>
         <li>
-            Date purchased: <%= item.date %>
+            Date purchased: <%=item.date%>
+        </li>
+        <li>
+            Shelf Life in Days: <%=item.shelfLife%>
         </li>
     </ul>
     <p> <a href="/items/<%=item._id%>/edit">Edit</a>

@@ -10,6 +10,7 @@ const ItemSchema = new Schema ({
     price: Number,
     caseQty: Number,
     date: String,
+    shelfLife: Number,
     date_purchased_ISO: Date,
     expiration_date: Date, 
 })

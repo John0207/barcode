@@ -25,6 +25,7 @@ const seedDB = async () => {
             location: `${items[i].location}`,   
             caseQty: `${items[i].caseQty}`,   
             date: `${items[i].date}`,
+            shelfLife: `${items[i].shelfLife}`,
             date_purchased_ISO: `${items[i].date}` 
             
         })
