@@ -33,8 +33,8 @@ app.get('/items', async (req, res) => {
     const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
     const total = allPrices[0].prices;   
     const average = total / items.length;   
-    console.log(total);
-    console.log(average)
+    // console.log(total);
+    // console.log(average)
     res.render('items/index', { items, total, average });
 })
 
@@ -66,10 +66,16 @@ app.post('/items/decrement-by-upc', async(req, res) => {
 
 app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
-    // if (item.date) {
-
-    // }
     await item.save();
+    if (item.date) {        
+        await Item.findOneAndUpdate({title: item.title}, { date_purchased_ISO: item.date});
+        date = new Date(item.date);
+        exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
+        await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
+        console.log(item.title + " is the title for this item");                
+        // console.log(item.date);
+        // console.log(exDate);
+    }    
     res.redirect(`/items/${item._id}`);
 })
 
