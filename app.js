@@ -66,10 +66,10 @@ app.get('/items', async (req, res) => {
     const throw_outs = await Item.find({ expiration_date: { $gte: today, $lte: todayPlusSeven } });
     const total = allPrices[0].prices;   
     const average = total / items.length;   
-    console.log(today);
-    console.log(todayPlusSeven);
-    console.log({throw_outs});
-    res.render('items/index', { items, total, average });
+    // console.log(today);
+    // console.log(todayPlusSeven);
+    // console.log(throw_outs);
+    res.render('items/index', { items, total, average, throw_outs });
 })
 
 app.get('/items/new', (req, res) => {

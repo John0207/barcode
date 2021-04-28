@@ -28,35 +28,43 @@
     <h3>
         average cost per item: $<%=average%>
     </h3>
+    <h4>upcoming expirations: </h4>
+    <ul>
+        <% for ( let item of throw_outs) { %>
+            <li>
+                <%=item.title%>
+            </li>
+            <% } %>
+    </ul>
 
     <ul>
         <% for ( let item of items) { %>
             <li>
-                <a href="/items/<%= item._id %>">
-                    <%= item.title %>
+                <a href="/items/<%=item._id%>">
+                    <%=item.title%>
                 </a>
             </li>
             <ul>
                 <li>
-                    upc: <%= item.upc %>
+                    upc: <%=item.upc%>
                 </li>
                 <li>
-                    price: <%= item.price %>
+                    price: <%=item.price%>
                 </li>
                 <li>
-                    quantity: <%= item.quantity %>
+                    quantity: <%=item.quantity%>
                 </li>
                 <li>
-                    location: <%= item.location %>
+                    location: <%=item.location%>
                 </li>
                 <li>
-                    case quantity: <%= item.caseQty %>
+                    case quantity: <%=item.caseQty%>
                 </li>
                 <li>
-                    Date of purchase: <%= item.date %>
+                    Date of purchase: <%=item.date%>
                 </li>
                 <li>
-                    Shelf Life in Days: <%= item.shelfLife %>
+                    Shelf Life in Days: <%=item.shelfLife%>
                 </li>
             </ul>
 
