@@ -6,8 +6,10 @@ module.exports = [
         price: 20,
         location: 'desk',
         caseQty: 1,
-        date: '1995-02-07',
-        shelfLife: 3,        
+        date: '2021-04-28',
+        shelfLife: 2,
+        expiration_date: "2021-04-30",
+                
     },        
     {
         title: 'can of coke', 
@@ -16,8 +18,10 @@ module.exports = [
         price: 1,
         location: 'fridge',
         caseQty: 1,
-        date: '1995-02-07',
-        shelfLife: 3,           
+        date: '2021-04-28',
+        shelfLife: 2,
+        expiration_date: "2021-04-30",
+                    
     },        
     {
         title: 'case of coke', 
@@ -26,8 +30,9 @@ module.exports = [
         price: 8,
         location: 'fridge',
         caseQty: 24,
-        date: '1995-02-07',
-        shelfLife: 3,          
+        date: '2021-04-28',
+        shelfLife: 2,
+        expiration_date: "2021-04-30",           
     },        
     {
         title: 'item 4', 
@@ -36,8 +41,9 @@ module.exports = [
         price: 5,
         location: 'desk',
         caseQty: 1,
-        date: '1995-02-07',
-        shelfLife: 3,          
+        date: '2021-04-28',
+        shelfLife: 2,
+        expiration_date: "2021-04-30",           
     },        
     {
         title: 'item 5', 
@@ -46,7 +52,8 @@ module.exports = [
         price: 2,
         location: 'desk',
         caseQty: 5,
-        date: '1995-02-07',
-        shelfLife: 3,          
+        date: '2021-04-28',
+        shelfLife: 2,
+        expiration_date: "2021-04-30",           
     },        
 ];

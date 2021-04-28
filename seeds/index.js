@@ -16,7 +16,8 @@ db.once("open", () => {
 
 const seedDB = async () => {
     await Item.deleteMany({});
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {      
+        
         const item = new Item({
             title: `${items[i].title}`,
             upc: `${items[i].upc}`,    
@@ -26,10 +27,21 @@ const seedDB = async () => {
             caseQty: `${items[i].caseQty}`,   
             date: `${items[i].date}`,
             shelfLife: `${items[i].shelfLife}`,
-            date_purchased_ISO: `${items[i].date}` 
-            
-        })
+            date_purchased_ISO: `${items[i].date}`,
+            expiration_date: `${items[i].expiration_date}`            
+        });
+
         await item.save();
+
+        // await Item.findOneAndUpdate({title: `${items[i].title}`}, { date_purchased_ISO: `${items[i].date}`});
+        // let date = new Date(`${items[i].date}`);
+        // let exDate = new Date(date.setDate(date.getDate() + `${items[i].shelfLife}`));
+        // await Item.findOneAndUpdate({title: `${items[i].title}`}, { expiration_date: exDate });
+        // console.log(`${items[i].title}` + " is the title for this item");                
+        // console.log(`${items[i].date}`);
+        // console.log(exDate);
+        
+        
     }
 }
 

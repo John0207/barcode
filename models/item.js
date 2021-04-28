@@ -14,4 +14,18 @@ const ItemSchema = new Schema ({
     date_purchased_ISO: Date,
     expiration_date: Date, 
 })
+
+// ItemSchema.pre('find', function (next) {
+//     console.log('middleware test');
+//     next();
+// })
+
+// ItemSchema.pre('findOneAndUpdate', function (next) {
+//     console.log('middleware test');
+//     next();
+// })
+// ItemSchema.pre('findOneAndUpdate', function (next) {
+//     console.log('middleware test');
+//     next();
+// })
 module.exports = mongoose.model('Item', ItemSchema);

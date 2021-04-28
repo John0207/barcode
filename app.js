@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Item = require('./models/item');
 const methodOverride = require('method-override');
+const item = require('./models/item');
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -23,18 +24,51 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+// const createExpiration = async (req, res, next) => {
+//     const items = await Item.find({});
+//     for (let i=0; i < items.length; i++) {        
+//         console.log(items[i].title);
+//         if (!item[i].date){
+//             // dateNow = new Date();
+//             // dateNowString = dateNow.toISOString().slice(0,10).replace(/-/g,"");
+//             // await Item.findOneAndUpdate({title: item[i].title}, { date: dateNowString});
+//             console.log(item[i].title + " was given the current date " + dateNowString);
+//         }
+//     //     if (!item[i].date_purchased_ISO && item[i].date){
+//     //         await Item.findOneAndUpdate({title: item[i].title}, { date_purchased_ISO: item[i].date});
+//     //         console.log(item[i].title + " had it's iso date set because it had none")
+//     //     }
+//     //     if (!items[i].expiration_date && items[i].date_purchased_ISO && items[i].shelfLife){            
+//     //         dateMiddleware = new Date(items[i].date);
+//     //         exDateMiddleware = new Date(dateMiddleware.setDate(dateMiddleware.getDate() + items[i].shelfLife));
+//     //         await Item.findOneAndUpdate({title: items[i].title}, {expiration_date: exDateMiddleware});
+//     //         console.log(items[i].title + " expiration date was reset and is now " + items[i].expiration_date);
+//     //     }
+//     // }
+//         console.log(items.length);
+//         console.log('middleware test for all routes!');
+//         next();
+//     }
+// };
+
+// app.use(createExpiration);
 
 app.get('/', (req, res) => {
     res.render('home')
 })
 
 app.get('/items', async (req, res) => {
+    const today = new Date();
+    const todayPlusSeven = new Date();
+    todayPlusSeven.setDate(today.getDate() + 7 );
     const items = await Item.find({});
     const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
+    const throw_outs = await Item.find({ expiration_date: { $gte: today, $lte: todayPlusSeven } });
     const total = allPrices[0].prices;   
     const average = total / items.length;   
-    // console.log(total);
-    // console.log(average)
+    console.log(today);
+    console.log(todayPlusSeven);
+    console.log({throw_outs});
     res.render('items/index', { items, total, average });
 })
 
@@ -72,7 +106,7 @@ app.post('/items', async (req, res) => {
         date = new Date(item.date);
         exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
         await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
-        console.log(item.title + " is the title for this item");                
+        // console.log(item.title + " is the title for this item");                
         // console.log(item.date);
         // console.log(exDate);
     }    
