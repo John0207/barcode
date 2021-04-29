@@ -29,10 +29,13 @@
             case quantity: <%=item.caseQty%>
         </li>
         <li>
-            Date purchased: <%=item.date%>
+            Date purchased: <%=formatDate(item.date)%>
         </li>
         <li>
             Shelf Life in Days: <%=item.shelfLife%>
+        </li>
+        <li>
+            Expiration Date: <%=formatDate(item.expiration_date)%>
         </li>
     </ul>
     <p> <a href="/items/<%=item._id%>/edit">Edit</a>

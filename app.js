@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Item = require('./models/item');
 const methodOverride = require('method-override');
 const item = require('./models/item');
+const helpers = require('./utils/helpers')
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -24,6 +25,28 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
+app.locals.formatDate = (date) => {
+
+    let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+    
+    
+}
+
+
+// https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd#:~:text=The%20simplest%20way%20to%20convert,getTimezoneOffset()%20*%2060000%20))%20.
+
+
 // const createExpiration = async (req, res, next) => {
 //     const items = await Item.find({});
 //     for (let i=0; i < items.length; i++) {        
@@ -102,13 +125,13 @@ app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
     await item.save();
     if (item.date) {        
-        await Item.findOneAndUpdate({title: item.title}, { date_purchased_ISO: item.date});
-        date = new Date(item.date);
+        // await Item.findOneAndUpdate({title: item.title}, { date_purchased_ISO: item.date});
+        date = item.date;
         exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
         await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
-        // console.log(item.title + " is the title for this item");                
-        // console.log(item.date);
-        // console.log(exDate);
+        console.log(item.title + " is the title for this item");                
+        console.log(item.date);
+        console.log(exDate);
     }    
     res.redirect(`/items/${item._id}`);
 })

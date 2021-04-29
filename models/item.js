@@ -9,9 +9,8 @@ const ItemSchema = new Schema ({
     quantity: Number,
     price: Number,
     caseQty: Number,
-    date: String,
+    date: Date,
     shelfLife: Number,
-    date_purchased_ISO: Date,
     expiration_date: Date, 
 })
 
