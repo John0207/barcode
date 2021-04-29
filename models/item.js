@@ -14,9 +14,16 @@ const ItemSchema = new Schema ({
     expiration_date: Date, 
 })
 
-// ItemSchema.pre('find', function (next) {
-//     console.log('middleware test');
-//     next();
+// ItemSchema.post('find', async function() {
+//     const today = new Date();
+//     const expired = await Item.find({ expiration_date: { $lte: today } });
+//     // for (let item in expired){
+//     //     const expired_item = new ExpiredItem(item);
+//     //     await expired_item.save();
+//     //     console.log(item);
+//     // }
+//     console.log(today);
+//     // next();
 // })
 
 // ItemSchema.pre('findOneAndUpdate', function (next) {

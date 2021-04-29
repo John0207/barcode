@@ -28,6 +28,14 @@
     <h3>
         average cost per item: $<%=average%>
     </h3>
+    <h4>Already Expired: </h4>
+    <ul>
+        <% for ( let item of expired) { %>
+            <li>
+                <%=item.title%>
+            </li>
+            <% } %>
+    </ul>
     <h4>upcoming expirations: </h4>
     <ul>
         <% for ( let item of throw_outs) { %>

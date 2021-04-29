@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const Item = require('./models/item');
+const Expired_Item = require('./models/expired_item');
 const methodOverride = require('method-override');
 const item = require('./models/item');
 const helpers = require('./utils/helpers')
@@ -26,6 +27,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+
+// https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd#:~:text=The%20simplest%20way%20to%20convert,getTimezoneOffset()%20*%2060000%20))%20.
 app.locals.formatDate = (date) => {
 
     let d = new Date(date),
@@ -87,12 +90,19 @@ app.get('/items', async (req, res) => {
     const items = await Item.find({});
     const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
     const throw_outs = await Item.find({ expiration_date: { $gte: today, $lte: todayPlusSeven } });
+    const expired = await Item.find({ expiration_date: { $lte: today } });
+    await Expired_Item.insertMany(expired);
     const total = allPrices[0].prices;   
     const average = total / items.length;   
-    // console.log(today);
+    // console.log(expired);
     // console.log(todayPlusSeven);
     // console.log(throw_outs);
-    res.render('items/index', { items, total, average, throw_outs });
+    res.render('items/index', { items, total, average, throw_outs, expired });
+})
+
+app.get('/items/expiration_history', async (req, res) => {
+    const expired = await Expired_Item.find({});
+    res.render('items/expiration_history', { expired });
 })
 
 app.get('/items/new', (req, res) => {
