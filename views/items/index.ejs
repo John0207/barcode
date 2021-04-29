@@ -28,11 +28,11 @@
     <h3>
         average cost per item: $<%=average%>
     </h3>
-    <h4>Already Expired: </h4>
+    <h4>Expired in location: </h4>
     <ul>
         <% for ( let item of expired) { %>
             <li>
-                <%=item.title%>
+                <%=item.title%> at <%=item.location%>
             </li>
             <% } %>
     </ul>
@@ -40,7 +40,7 @@
     <ul>
         <% for ( let item of throw_outs) { %>
             <li>
-                <%=item.title%>
+                <%=item.title%> at <%=item.location%>
             </li>
             <% } %>
     </ul>
