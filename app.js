@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const Item = require('./models/item');
 const methodOverride = require('method-override');
 const item = require('./models/item');
-const helpers = require('./utils/helpers')
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -29,7 +28,7 @@ app.use(methodOverride('_method'));
 
 // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd#:~:text=The%20simplest%20way%20to%20convert,getTimezoneOffset()%20*%2060000%20))%20.
 app.locals.formatDate = (date) => {
-
+    
     let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -41,6 +40,15 @@ app.locals.formatDate = (date) => {
         day = '0' + day;
 
     return [year, month, day].join('-');
+    
+    
+}
+
+app.locals.todaysDate = () => {
+
+    const d = app.locals.formatDate(new Date());
+
+    return d;
     
     
 }

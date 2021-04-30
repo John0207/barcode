@@ -24,7 +24,7 @@
         </div>
         <div>
             <label for="quantity">quantity</label>
-            <input type="number" id='quantity' name='item[quantity]' min=1>
+            <input type="number" id='quantity' name='item[quantity]' min=1 value=1>
         </div>
         <div>
             <label for="quantity">quantity type</label>
@@ -40,7 +40,7 @@
         </div>
         <div>
             <label for="date">Date of Purchase</label>
-            <input type="date" id='date' name='item[date]'>
+            <input type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
         </div>
         <div>
             <label for="shelfLife">Shelf Life in Days</label>
