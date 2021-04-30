@@ -44,7 +44,7 @@
             </li>
             <% } %>
     </ul>
-
+    <h1>Items</h1>
     <ul>
         <% for ( let item of items) { %>
             <li>
@@ -61,6 +61,7 @@
                 </li>
                 <li>
                     quantity: <%=item.quantity%>
+                        <%=item.quantityType%>
                 </li>
                 <li>
                     location: <%=item.location%>

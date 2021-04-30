@@ -7,6 +7,7 @@ const ItemSchema = new Schema ({
     location: String, 
     upc: Number,
     quantity: Number,
+    quantityType: String,
     price: Number,
     caseQty: Number,
     date: Date,
