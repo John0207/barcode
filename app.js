@@ -131,7 +131,7 @@ app.post('/items/decrement-by-upc', async(req, res) => {
 app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
     await item.save();
-    if (item.date) {        
+    if (!item.expiration_date && item.date && item.shelfLife) {        
         // await Item.findOneAndUpdate({title: item.title}, { date_purchased_ISO: item.date});
         date = item.date;
         exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
