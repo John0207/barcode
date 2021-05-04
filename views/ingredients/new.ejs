@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New ingredient</title>
+</head>
+
+<body>
+    <form action="/ingredients/<%=id%>/new" method="POST">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id='name' name='ingredient[name]'>
+        </div>
+        <div>
+            <label for="description">description</label>
+            <input type="text" id='upc' name='ingredient[description]'>
+        </div>
+        <div>
+            <label for="quantity">quantity</label>
+            <input type="number" id='quantity' name='ingredient[quantity]' min=1 value=1>
+        </div>
+        <div>
+            <label for="quantityType">quantity type</label>
+            <input type="text" id='quantityType' name='ingredient[quantityType]'>
+        </div>
+        <button>Add ingredient</button>
+    </form>
+    <footer>
+        <a href="/items">All Items</a>
+    </footer>
+</body>
+
+</html>

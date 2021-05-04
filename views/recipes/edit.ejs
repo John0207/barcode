@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe</title>
+</head>
+
+<body>
+    <h1>Edit Recipe</h1>
+    <form action="/recipes/<%=recipe._id%>?_method=PUT" method="POST">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="recipe[name]" value="<%=recipe.name%>">
+        </div>
+        <div>
+            <label for="recipe">Recipe:</label>
+            <input type="text" id="recipe" name="recipe[recipe]" value="<%=recipe.recipe%>">
+        </div>
+        <div>
+            <label for="minTime">min time to make</label>
+            <input type="number" id="minTime" name="recipe[minTime]" value="<%=recipe.minTime%>" min=1>
+        </div>
+        <div>
+            <label for="maxTime">max time to make</label>
+            <input type="number" id="maxTime" name="recipe[maxTime]" value="<%=recipe.maxTime%>" min=1>
+        </div>
+        <div>
+            <label for="createdDate">date made</label>
+            <input type="date" id="createdDate" name="item[createdDate]" value="<%=formatDate(recipe.createdDate)%>">
+        </div>
+        <button>Update Item</button>
+    </form>
+    <a href="/recipes/<%= recipe._id%>">Back To recipe</a>
+
+</body>
+
+</html>

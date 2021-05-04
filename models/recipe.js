@@ -1,14 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const Item = require('./item');
 
 const RecipeSchema = new Schema ({
     name: String,
     recipe: String,
-    createdDate: { type: Date, default: Date.now }, 
+    minTime: Number,
+    maxTime: Number,
+    createdDate: { type: Date, default: Date.now },
     ingredients: [{
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Ingredient'
+    }], 
+    item_ingredients: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Item'
     }],     
 });
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+</head>
+
+<body>
+    <h1>All Recipes</h1>
+    <ul>
+        <% for ( let recipe of recipes) { %>
+            <li>
+                <a href="/recipes/<%=recipe._id%>">
+                    <%=recipe.name%>
+                </a>
+            </li>
+            <ul>
+                <li>
+                    recipe: <%=recipe.recipe%>
+                </li>
+                <li>
+                    minTime: <%=recipe.minTime%>
+                </li>
+                <li>
+                    maxTime: <%=recipe.maxTime%>
+                </li>
+                <li>
+                    created on: <%=formatDate(recipe.createdDate)%>
+                </li>
+                <li>
+                    ingredients: <%=recipe.ingredients%>
+                </li>
+
+            </ul>
+
+            <% } %>
+
+</body>
+
+</html>

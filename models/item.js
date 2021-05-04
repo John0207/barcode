@@ -12,7 +12,15 @@ const ItemSchema = new Schema ({
     caseQty: Number,
     date: Date,
     shelfLife: Number,
-    expiration_date: Date, 
+    expiration_date: Date,
+    ingredients: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ingredient'
+    }],
+    recipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe'
+    }],  
 })
 
 // ItemSchema.post('find', async function() {

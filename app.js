@@ -1,9 +1,13 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const Item = require('./models/item');
 const methodOverride = require('method-override');
-const item = require('./models/item');
+
+const Item = require('./models/item');
+const Recipe = require('./models/recipe');
+const Ingredient = require('./models/ingredient');
+const ingredients = require('./seeds/ingredients');
+const ingredient = require('./models/ingredient');
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -105,10 +109,6 @@ app.get('/items', async (req, res) => {
     res.render('items/index', { items, total, average, throw_outs, expired });
 })
 
-app.get('/items/expiration_history', async (req, res) => {
-    const expired = await Expired_Item.find({});
-    res.render('items/expiration_history', { expired });
-})
 
 app.get('/items/new', (req, res) => {
     res.render('items/new');
@@ -215,7 +215,76 @@ app.delete('/items/:id', async (req, res) => {
     res.redirect('/items');
 });
 
+// !!!!!---------------------------------------------------------------!!!!!!!!!!!!!!!!
+//                             recipe routes
+app.get('/recipes', async (req, res) => {
+    const recipes = await Recipe.find({});
+    res.render('recipes/index', { recipes });
+})
 
+app.get('/recipes/new', (req, res) => {
+    res.render('recipes/new');
+})
+
+app.post('/recipes/new', async (req, res) => {
+    const recipe = new Recipe(req.body.recipe);
+    await recipe.save();
+    console.log("it worked" + recipe.name);
+})
+
+app.get('/recipes/:id', async (req, res) => { 
+    const recipe = await Recipe.findById(req.params.id);   
+    res.render('recipes/show', { recipe });
+
+})
+
+app.get('/recipes/:id/edit', async (req, res) => {
+    const recipe = await Recipe.findById(req.params.id)
+    res.render('recipes/edit', { recipe });
+})
+
+app.put('/recipes/:id', async (req, res) => {
+    const { id } = req.params;
+    const recipe = await Item.findByIdAndUpdate(id, { ...req.body.recipe });
+    res.redirect(`/recipes/${recipe._id}`)
+});
+
+app.get('/recipes/:id/ingredients/new', (req, res) => {
+    const { id } = req.params;
+    res.render('ingredients/new', { id });
+})
+
+app.post('/ingredients/:id/new', async (req, res) => {
+    const { id } = req.params;
+    const recipe = await Recipe.findById(id);
+    const {name, description, quantity, quantityType} = req.body.ingredient;
+    const ingredient = new Ingredient({name, description, quantity, quantityType});
+    recipe.ingredients.push(ingredient);
+    ingredient.recipes.push(recipe);
+    await recipe.save();
+    await ingredient.save();
+    res.send(recipe);
+    // await ingredient.save();
+    // res.send(ingredient1);
+})
+
+// !!!!!---------------------------------------------------------------!!!!!!!!!!!!!!!!
+//                             Ingriedient routes
+
+
+app.get('/ingredients', async (req, res) => {
+    const ingredients = await Ingredient.find({});
+    res.render('ingredients/index', { ingredients });
+})
+app.get('/ingredients/new', (req, res) => {
+    res.render('ingredients/new');
+})
+
+app.post('/ingredients/new', async (req, res) => {
+    const ingredient = new Ingredient(req.body.ingredient);
+    await ingredient.save();
+    console.log("it worked" + ingredient.name);
+})
 
 
 app.listen(3000, () => {

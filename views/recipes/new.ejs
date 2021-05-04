@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Recipe</title>
+</head>
+
+<body>
+    <form action="/recipes/new" method="POST">
+        <div>
+            <label for="name">name</label>
+            <input type="text" id='name' name='recipe[name]'>
+        </div>
+        <div>
+            <label for="recipe">recipe</label>
+            <input type="text" id='recipe' name='recipe[recipe]'>
+        </div>
+        <div>
+            <label for="minTime">min amount of minutes to make</label>
+            <input type="number" id='minTime' name='recipe[minTime]'>
+        </div>
+        <div>
+            <label for="maxTime">max amount of minutes to make</label>
+            <input type="number" id='maxTime' name='recipe[maxTime]'>
+        </div>
+        <div>
+            <label for="ingredients">max amount of minutes to make</label>
+            <input type="text" id='ingredients' name='recipe[ingredients]'>
+        </div>
+        
+        <button>Add Item</button>
+    </form>
+    <footer>
+        <a href="/items">All Items</a>
+    </footer>
+</body>
+
+</html>

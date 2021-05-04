@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const Item = require('../models/item');
+const Ingredient = require('../models/ingredient');
+const Recipe = require('../models/recipe');
+const ingredients = require('./ingredients');
 const items = require('./items');
+const recipes = require('./recipes');
+
+
+
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -16,6 +23,8 @@ db.once("open", () => {
 
 const seedDB = async () => {
     await Item.deleteMany({});
+    await Ingredient.deleteMany({});
+    await Recipe.deleteMany({});
     for (let i = 0; i < items.length; i++) {      
         
         const item = new Item({
@@ -32,22 +41,59 @@ const seedDB = async () => {
             expiration_date: `${items[i].expiration_date}`            
         });
 
-        await item.save();
-
-        // await Item.findOneAndUpdate({title: `${items[i].title}`}, { date_purchased_ISO: `${items[i].date}`});
-        // let date = new Date(`${items[i].date}`);
-        // let exDate = new Date(date.setDate(date.getDate() + `${items[i].shelfLife}`));
-        // await Item.findOneAndUpdate({title: `${items[i].title}`}, { expiration_date: exDate });
-        // console.log(`${items[i].title}` + " is the title for this item");                
-        // console.log(`${items[i].date}`);
-        // console.log(exDate);
-        
-        
+        await item.save();   
     }
+    for (let i = 0; i < ingredients.length; i++) {      
+        
+        const ingredient = new Ingredient({
+            name: `${ingredients[i].name}`,
+            description: `${ingredients[i].description}`,    
+            quantity: `${ingredients[i].quantity}`,    
+            quantityType: `${ingredients[i].quantityType}`,  
+        });
+
+        await ingredient.save();   
+    }
+
+    for (let i = 0; i < recipes.length; i++) {      
+        
+        const recipe = new Recipe({
+            name: `${recipes[i].name}`,
+            recipe: `${recipes[i].recipe}`,    
+            minTime: `${recipes[i].minTime}`,    
+            maxTime: `${recipes[i].maxTime}`,  
+        });
+
+        await recipe.save();   
+    }
+    
+    
+
 }
+
+// const updateWithItems = async () => {
+//     const ingredients = await Ingredient.find({});
+//     const recipes = await Recipe.find({});
+//     const ingredient = ingredients.find(x => x.name = 'lemons');
+//     const recipe = recipes.find(x => x.name === "lemon chicken");
+//     const recipeName = recipes.find(x => x.name = 'lemon chicken').name;
+//     console.log(recipe.ingredients);
+//     console.log(ingredient);
+//     recipe.ingredients.push(ingredient);
+//     console.log(recipe);
+//     // const { recipe_lemon_chicken } = await Recipe.find({name: 'lemon chicken'});
+//     // console.log("name of lemons: " + lemons.name + " recipe ingriedients: " + recipe_lemon_chicken.ingredients);
+//     // await Recipe.findOneAndUpdate({name: recipe_lemon_chicken.name}, {ingredients: recipe_lemon_chicken._id});
+//     // console.log(recipe_lemon_chicken);    
+// }
 
 seedDB().then(() => {
     mongoose.connection.close();
-})
+});
+
+// updateWithItems();
+
+
+
 
 
