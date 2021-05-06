@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index of Ingredients</title>
-</head>
-
-<body>
+<% layout("layouts/boilerplate")%>
+    <!-- add displaying recipes here too, and links -->
+    <!-- then work in editing for opposite types -->
     <h1>All Ingredients</h1>
     <% for ( let ingredient of ingredients) { %>
+        <li>
+            <a href="/ingredients/<%=ingredient._id%>">
+                <%=ingredient.name%>
+            </a>
+        </li>
         <ul>
             <li>
                 name: <%=ingredient.name%>
@@ -27,6 +24,3 @@
             </li>
         </ul>
         <% } %>
-</body>
-
-</html>

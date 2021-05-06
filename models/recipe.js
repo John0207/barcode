@@ -10,7 +10,7 @@ const RecipeSchema = new Schema ({
     createdDate: { type: Date, default: Date.now },
     ingredients: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ingredient'
+        ref: 'Ingredient',
     }], 
     item_ingredients: [{
         type: Schema.Types.ObjectId,

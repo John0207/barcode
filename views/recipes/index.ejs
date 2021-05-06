@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipes</title>
-</head>
-
-<body>
+<% layout('layouts/boilerplate')%>
     <h1>All Recipes</h1>
     <ul>
         <% for ( let recipe of recipes) { %>
@@ -30,14 +20,17 @@
                 <li>
                     created on: <%=formatDate(recipe.createdDate)%>
                 </li>
-                <li>
-                    ingredients: <%=recipe.ingredients%>
-                </li>
 
             </ul>
 
             <% } %>
 
-</body>
 
-</html>
+                <footer>
+                    <br>
+                    <a href="/recipes/">All recipes</a>
+                    <br>
+                    <a href="/ingredients/">All ingredients</a>
+                    <br>
+                    <a href="/recipes/new">make a new recipe</a>
+                </footer>

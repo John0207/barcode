@@ -1,9 +1,9 @@
 <% layout('layouts/boilerplate')%>
     <h1>
-        <%=recipe.name %>
+        <%=item.name %>
     </h1>
     <h2>Add an Ingredient</h2>
-    <form action="/ingredients/<%=recipe._id%>/new" method="POST">
+    <form action="/ingredients/<%=item._id%>/newItem" method="POST">
         <div>
             <label for="name">Name</label>
             <input type="text" id='name' name='ingredient[name]'>
@@ -22,15 +22,6 @@
         </div>
         <button>Add ingredient</button>
     </form>
-    <div class="mb-3">
-        <% allIngredients.forEach(function(ingredient, i) {%>
-            <ul>
-                <li>
-                    <%=ingredient.name%>
-                </li>
-            </ul>
-            <% }) %>
-    </div>
     <footer>
-        <a href="/recipes/<%=recipe._id%>/">Back to <%=recipe.name%></a>
+        <a href="/items/<%=item._id%>/">Back to <%=item.title%></a>
     </footer>

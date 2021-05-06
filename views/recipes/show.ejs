@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show</title>
-</head>
-
-<body>
+<% layout('layouts/boilerplate')%>
     <h1>
         <%= recipe.name %>
     </h1>
@@ -25,10 +15,16 @@
         <li>
             Date: <%=formatDate(recipe.createdDate)%>
         </li>
-        <li>
-            ingredients: <%=recipe.ingredients%>
-        </li>
-
+    </ul>
+    <h2>Ingredients</h2>
+    <ul>
+        <% for (let ingredient of recipe.ingredients) {%>
+            <li>
+                <a href="/ingredients/<%=ingredient._id%>">
+                    <%=ingredient.name%>
+                </a>
+            </li>
+            <% } %>
     </ul>
     <p> <a href="/recipes/<%=recipe._id%>/edit">Edit</a>
     </p>
@@ -38,8 +34,6 @@
     </form>
     </p>
     <footer>
+        <a href="/recipes/<%=recipe._id%>/ingredients/new">Add an ingredient</a>
         <a href="/recipes">All recipes</a>
     </footer>
-</body>
-
-</html>

@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate')%>
+    <h1>Edit Ingredient</h1>
+    <form action="/ingredients/<%=ingredient._id%>?_method=PUT" method="POST">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="ingredient[name]" value="<%=ingredient.name%>">
+        </div>
+        <div>
+            <label for="descripton">description:</label>
+            <input type="text" id="descripton" name="ingredient[descripton]" value="<%=ingredient.description%>">
+        </div>
+        <div>
+            <label for="createdDate">created: </label>
+            <input type="date" id="createdDate" name="ingredient[createdDate]"
+                value="<%=formatDate(ingredient.createdDate)%>">
+        </div>
+        <div>
+            <label for="quantity">quantity</label>
+            <input type="number" id="quantity" name="ingredient[quantity]" value="<%=ingredient.quantity%>">
+        </div>
+        <div>
+            <label for="quantityType">quantity type: </label>
+            <input type="text" id="quantityType" name="ingredient[quantityType]" value="<%=ingredient.quantityType%>">
+        </div>
+        <button>Update Item</button>
+    </form>
+    <a href="/ingredients/<%=ingredient._id%>">Back To ingredient</a>

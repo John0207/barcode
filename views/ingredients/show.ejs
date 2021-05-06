@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate')%>
+    <h1>
+        <%=ingredient.name%>
+    </h1>
+    <h2>
+        <%=ingredient.description%>
+    </h2>
+    <ul>
+        <li>
+            date added: <%=formatDate(ingredient.createdDate)%>
+        </li>
+        <li>
+            quantity: <%=ingredient.quantity%>
+        </li>
+        <li>
+            quantity type: <%=ingredient.quantityType%>
+        </li>
+    </ul>
+    <h2>Recipes</h2>
+    <ul>
+        <% for (let recipe of ingredient.recipes) {%>
+            <li>
+                <a href="/recipes/<%=recipe._id%>">
+                    <%=recipe.name%>
+                </a>
+            </li>
+            <% } %>
+    </ul>
+    <p> <a href="/ingredients/<%=ingredient._id%>/edit">Edit the ingredient</a>
+    </p>
+    <p>
+    <form action="/ingredients/<%=ingredient._id%>?_method=DELETE" method="POST">
+        <button>Delete ingredient</button>
+    </form>
+    </p>
+    <footer>
+        <a href="/ingredients/<%=ingredient._id%>/recipes/new">Add a Recipe</a>
+        <a href="/ingredients">All ingredients</a>
+        <a href="/items">All items</a>
+        <a href="/Recipes">All recipes</a>
+    </footer>

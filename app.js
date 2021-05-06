@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const ejsMate = require('ejs-mate');
 
 const Item = require('./models/item');
 const Recipe = require('./models/recipe');
@@ -22,6 +23,8 @@ db.once("open", () => {
 });
 
 const app = express();
+
+app.engine('ejs', ejsMate);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -191,7 +194,7 @@ app.post('/items/delete-by-upc', async(req, res) => {
 
 
 app.get('/items/:id', async (req, res) => { 
-    const item = await Item.findById(req.params.id);   
+    const item = await Item.findById(req.params.id).populate('ingredients');   
     res.render('items/show', { item });
 
 })
@@ -208,6 +211,24 @@ app.put('/items/:id', async (req, res) => {
 });
 
 
+app.get('/items/:id/ingredients/newItem', async (req, res) => {
+    const { id } = req.params;
+    const item = await Item.findById(id);
+    res.render('ingredients/newItem', { item });
+})
+
+// /ingredients/<%=item._id%>/new
+app.post('/ingredients/:id/newItem', async (req, res) => {
+    const { id } = req.params;
+    const item = await Item.findById(id);
+    const {name, description, quantity, quantityType} = req.body.ingredient;
+    const ingredient = new Ingredient({name, description, quantity, quantityType});
+    item.ingredients.push(ingredient);
+    ingredient.items.push(item);
+    await item.save();
+    await ingredient.save();
+    res.redirect(`/items/${item._id}`)
+})
 
 app.delete('/items/:id', async (req, res) => {
     const { id } = req.params;
@@ -229,11 +250,14 @@ app.get('/recipes/new', (req, res) => {
 app.post('/recipes/new', async (req, res) => {
     const recipe = new Recipe(req.body.recipe);
     await recipe.save();
-    console.log("it worked" + recipe.name);
+    res.redirect(`/recipes/${recipe._id}`);
+    // console.log("it worked - " + recipe.name);
 })
 
 app.get('/recipes/:id', async (req, res) => { 
-    const recipe = await Recipe.findById(req.params.id);   
+    const recipe = await Recipe.findById(req.params.id).populate('ingredients');
+    // console.log(recipe);
+    // find matching ingredients if they exist to display them   
     res.render('recipes/show', { recipe });
 
 })
@@ -249,10 +273,18 @@ app.put('/recipes/:id', async (req, res) => {
     res.redirect(`/recipes/${recipe._id}`)
 });
 
-app.get('/recipes/:id/ingredients/new', (req, res) => {
+app.get('/recipes/:id/ingredients/new', async (req, res) => {
     const { id } = req.params;
-    res.render('ingredients/new', { id });
+    const recipe = await Recipe.findById(id);
+    const allIngredients = await Ingredient.find({});    
+    res.render('ingredients/new', { recipe, allIngredients });
 })
+
+app.delete('/recipes/:id', async (req, res) => {
+    const { id } = req.params;
+    await Recipe.findByIdAndDelete(id);
+    res.redirect('/recipes');
+});
 
 app.post('/ingredients/:id/new', async (req, res) => {
     const { id } = req.params;
@@ -263,10 +295,12 @@ app.post('/ingredients/:id/new', async (req, res) => {
     ingredient.recipes.push(recipe);
     await recipe.save();
     await ingredient.save();
-    res.send(recipe);
+    res.redirect(`/recipes/${recipe._id}`)
+    // res.send(recipe);
     // await ingredient.save();
     // res.send(ingredient1);
 })
+
 
 // !!!!!---------------------------------------------------------------!!!!!!!!!!!!!!!!
 //                             Ingriedient routes
@@ -285,6 +319,23 @@ app.post('/ingredients/new', async (req, res) => {
     await ingredient.save();
     console.log("it worked" + ingredient.name);
 })
+
+app.get('/ingredients/:id', async (req, res) => {
+    const ingredient = await Ingredient.findById(req.params.id).populate('recipes');
+    // console.log(recipe);
+    res.render('ingredients/show', { ingredient });
+})
+
+app.get('/ingredients/:id/edit', async (req, res) => {
+    const ingredient = await Ingredient.findById(req.params.id)
+    res.render('ingredients/edit', { ingredient });
+})
+
+app.delete('/ingredients/:id', async (req, res) => {
+    const { id } = req.params;
+    await Ingredient.findByIdAndDelete(id);
+    res.redirect('/ingredients');
+});
 
 
 app.listen(3000, () => {
