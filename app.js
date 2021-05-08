@@ -143,7 +143,6 @@ app.post('/items', async (req, res) => {
     const item = new Item(req.body.item);
     await item.save();
     if (!item.expiration_date && item.date && item.shelfLife) {        
-        // await Item.findOneAndUpdate({title: item.title}, { date_purchased_ISO: item.date});
         date = item.date;
         exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
         await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
@@ -214,19 +213,31 @@ app.put('/items/:id', async (req, res) => {
 app.get('/items/:id/ingredients/newItem', async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
-    res.render('ingredients/newItem', { item });
+    const allIngredients = await Ingredient.find({});
+    res.render('ingredients/newItem', { item, allIngredients });
 })
 
 // /ingredients/<%=item._id%>/new
 app.post('/ingredients/:id/newItem', async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
-    const {name, description, quantity, quantityType} = req.body.ingredient;
-    const ingredient = new Ingredient({name, description, quantity, quantityType});
-    item.ingredients.push(ingredient);
-    ingredient.items.push(item);
-    await item.save();
-    await ingredient.save();
+    if (!req.body.addIngs){
+        const {name, description, quantity, quantityType} = req.body.ingredient;
+        const ingredient = new Ingredient({name, description, quantity, quantityType});
+        item.ingredients.push(ingredient);
+        ingredient.items.push(item);
+        await item.save();
+        await ingredient.save();
+    } else {
+        for (let id of req.body.addIngs){
+            let ing_id = await Ingredient.findById(id);
+            item.ingredients.push(ing_id);
+            ing_id.items.push(item);
+            await item.save();
+            await ing_id.save();
+        }
+    }
+    
     res.redirect(`/items/${item._id}`)
 })
 
@@ -276,8 +287,20 @@ app.put('/recipes/:id', async (req, res) => {
 app.get('/recipes/:id/ingredients/new', async (req, res) => {
     const { id } = req.params;
     const recipe = await Recipe.findById(id);
-    const allIngredients = await Ingredient.find({});    
-    res.render('ingredients/new', { recipe, allIngredients });
+    const allIngredients = await Ingredient.find({});
+    const existingIngredients = recipe.ingredients;
+    const existingIngredientsArray= [];
+    // console.log(existingIngredients);
+    for (let id of existingIngredients) {
+        const ing = await Ingredient.findById(id);
+        if (ing){
+            // console.log(ing.name);
+            existingIngredientsArray.push(ing);
+        }        
+        // console.log(ing);
+    }
+    // console.log(existingIngredientsArray);    
+    res.render('ingredients/new', { recipe, allIngredients, existingIngredientsArray });
 })
 
 app.delete('/recipes/:id', async (req, res) => {
@@ -289,12 +312,27 @@ app.delete('/recipes/:id', async (req, res) => {
 app.post('/ingredients/:id/new', async (req, res) => {
     const { id } = req.params;
     const recipe = await Recipe.findById(id);
-    const {name, description, quantity, quantityType} = req.body.ingredient;
-    const ingredient = new Ingredient({name, description, quantity, quantityType});
-    recipe.ingredients.push(ingredient);
-    ingredient.recipes.push(recipe);
-    await recipe.save();
-    await ingredient.save();
+    if(!req.body.addIngs){
+        const {name, description, quantity, quantityType} = req.body.ingredient;
+        const ingredient = new Ingredient({name, description, quantity, quantityType});
+        recipe.ingredients.push(ingredient);
+        ingredient.recipes.push(recipe);
+        // console.log("empty selection")
+        // console.log(req.body);
+        await recipe.save();
+        await ingredient.save();
+    } else {
+        for (let id of req.body.addIngs){
+            let ing_id = await Ingredient.findById(id);
+            recipe.ingredients.push(ing_id);
+            ing_id.recipes.push(recipe);
+            await recipe.save();
+            await ing_id.save();
+            // console.log(ing_id.name + " was added to " + recipe.name);
+            // console.log(ing_id.recipes + "   " + recipe.ingredients);
+        }
+    }
+    
     res.redirect(`/recipes/${recipe._id}`)
     // res.send(recipe);
     // await ingredient.save();
@@ -314,11 +352,98 @@ app.get('/ingredients/new', (req, res) => {
     res.render('ingredients/new');
 })
 
+app.get('/ingredients/newFromScratch', (req, res) => {
+    res.render('ingredients/newFromScratch');
+})
+
+app.post('/ingredients/newFromScratch', async (req, res) => {
+    const ingredient = new Ingredient(req.body.ingredient);
+    await ingredient.save();
+    res.redirect(`/ingredients/${ingredient._id}`);
+    // res.redirect('/ingredients');
+    // console.log("it worked" + ingredient.name);
+})
 app.post('/ingredients/new', async (req, res) => {
     const ingredient = new Ingredient(req.body.ingredient);
     await ingredient.save();
     console.log("it worked" + ingredient.name);
 })
+
+app.post('/ingredients/:id/items/newIngredient', async (req, res) => {
+    const { id } = req.params;
+    const ingredient = await Ingredient.findById(id);
+    if(!req.body.addItems){
+        const {title, location, upc, quantity, quantityType, price, caseQty, date, shelfLife, expiration_date} = req.body.item;
+        const item = new Item({title, location, upc, quantity, quantityType, price, caseQty, date, shelfLife, expiration_date});
+        ingredient.items.push(item);
+        item.ingredients.push(ingredient);
+        await item.save();
+        await ingredient.save();
+        if (!item.expiration_date && item.date && item.shelfLife) {        
+            let thisDate = item.date;
+            let exDate = new Date(thisDate.setDate(thisDate.getDate() + item.shelfLife));
+            await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
+            // console.log(item.title + " is the title for this item");                
+            // console.log(item.date);
+            // console.log(exDate);
+        }
+        // console.log("empty selection")
+        // console.log(req.body);
+    } else {
+        for (let id of req.body.addItems){
+            let item = await Item.findById(id);
+            ingredient.items.push(item);
+            item.ingredients.push(ingredient);
+            await item.save();
+            await ingredient.save();            
+            // console.log(item.title + " was added to " + ingredient.name);
+            // console.log(item.ingredients + "   " + ingredient.items);
+        }
+    }
+    res.redirect(`/ingredients/${ingredient._id}`);
+})
+
+
+app.get('/ingredients/:id/items/newIngredient', async (req, res) => {
+    const { id } = req.params;
+    const ingredient = await Ingredient.findById(id);
+    const allItems = await Item.find({});
+    res.render('items/newIngredient', { ingredient, allItems });
+})
+
+app.get('/ingredients/:id/recipes/newIngredient', async (req, res) => {
+    const { id } = req.params;
+    const ingredient = await Ingredient.findById(id);
+    const allRecipes = await Recipe.find({});
+    res.render('recipes/newIngredient', { ingredient, allRecipes });
+})
+
+app.post('/ingredients/:id/recipes/newIngredient', async (req, res) => {
+    const { id } = req.params;
+    const ingredient = await Ingredient.findById(id);
+    // res.send(ingredient);
+    if (!req.body.addRecipes){
+        const {name, recipe, minTime, maxTime} = req.body.recipe;
+        const rec_ipe = new Recipe({name, recipe, minTime, maxTime});
+        ingredient.recipes.push(rec_ipe);
+        rec_ipe.ingredients.push(ingredient);
+        console.log(" new recipe " + rec_ipe.name + " was attached to " +  ingredient.name);
+        await rec_ipe.save();
+        await ingredient.save();
+    } else {
+        for (let id of req.body.addRecipes){
+            let rec = await Recipe.findById(id);
+            ingredient.recipes.push(rec);
+            rec.ingredients.push(ingredient);
+            console.log("existing recipe " + rec.name + " attached to " + ingredient.name);
+            await ingredient.save();
+            await rec.save();
+        }
+    }
+    
+    res.redirect(`/ingredients/${ingredient._id}`)
+})
+
 
 app.get('/ingredients/:id', async (req, res) => {
     const ingredient = await Ingredient.findById(req.params.id).populate('recipes');

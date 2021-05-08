@@ -43,38 +43,29 @@
     <h1>Items</h1>
     <ul>
         <% for ( let item of items) { %>
-            <li>
-                <a href="/items/<%=item._id%>">
-                    <%=item.title%>
-                </a>
-            </li>
-            <ul>
-                <li>
-                    upc: <%=item.upc%>
-                </li>
-                <li>
-                    price: <%=item.price%>
-                </li>
-                <li>
-                    quantity: <%=item.quantity%>
-                        <%=item.quantityType%>
-                </li>
-                <li>
-                    location: <%=item.location%>
-                </li>
-                <li>
-                    case quantity: <%=item.caseQty%>
-                </li>
-                <li>
-                    Date of purchase: <%=formatDate(item.date)%>
-                </li>
-                <li>
-                    Shelf Life in Days: <%=item.shelfLife%>
-                </li>
-                <li>
-                    Expiration Date: <%=formatDate(item.expiration_date)%>
-                </li>
-            </ul>
-
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3>
+                            <%=item.title%>
+                        </h3>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Price: $<%=item.price%>
+                            </h5>
+                            <p class="card-text">Location: <%=item.location%>
+                            </p>
+                            <p class="card-text">Expires: <%=formatDate(item.expiration_date)%>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">quantity: <%=item.quantity%>
+                                        <%=item.quantityType%></small>
+                            </p>
+                            <a href="/items/<%=item._id%>" class="btn btn-primary">View <%=item.title%></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <% } %>
     </ul>

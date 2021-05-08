@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate')%>
+    <h1>
+        <%=ingredient.name %>
+    </h1>
+    <h2>Add a Recipe</h2>
+    <form action="/ingredients/<%=ingredient._id%>/recipes/newIngredient" method="POST">
+        <div>
+            <label for="name">name</label>
+            <input type="text" id='name' name='recipe[name]'>
+        </div>
+        <div>
+            <label for="recipe">recipe</label>
+            <input type="text" id='recipe' name='recipe[recipe]'>
+        </div>
+        <div>
+            <label for="minTime">min amount of minutes to make</label>
+            <input type="number" id='minTime' name='recipe[minTime]'>
+        </div>
+        <div>
+            <label for="maxTime">max amount of minutes to make</label>
+            <input type="number" id='maxTime' name='recipe[maxTime]'>
+        </div>
+        <button>Add Recipe</button>
+        <div class="mb-3 mt-3">
+            <h2>All Recipes</h2>
+            <% allRecipes.forEach(function(rec, i) {%>
+                <ul>
+                    <li>
+                        <%=rec.name%>
+                    </li>
+                    <div class="form-check-inline">
+                        <input type="checkbox" id="rec-<%=i%>" name="addRecipes[]" value="<%=rec._id%>">
+                    </div>
+                    <label for="ing-<%=i%>">Attach <%=ingredient.name%> to <%=rec.name%>?</label>
+                </ul>
+                <% }) %>
+        </div>
+    </form>
+    <footer>
+        <a href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%></a>
+    </footer>

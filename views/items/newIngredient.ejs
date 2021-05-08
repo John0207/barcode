@@ -1,0 +1,65 @@
+<% layout('layouts/boilerplate')%>
+    <h1>
+        <%=ingredient.name %>
+    </h1>
+    <h2>Add an Item</h2>
+    <form action="/ingredients/<%=ingredient._id%>/items/newIngredient" method="POST">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id='title' name='item[title]'>
+        </div>
+        <div>
+            <label for="location">location</label>
+            <input type="text" id='location' name='item[location]'>
+        </div>
+        <div>
+            <label for="upc">upc: </label>
+            <input type="number" id='upc' name='item[upc]'>
+        </div>
+        <div>
+            <label for="quantity">quantity</label>
+            <input type="number" id='quantity' name='item[quantity]' min=1 value=1>
+        </div>
+        <div>
+            <label for="quantityType">quantity type</label>
+            <input type="text" id='quantityType' name='item[quantityType]'>
+        </div>
+        <div>
+            <label for="price">price</label>
+            <input type="number" id='price' name='item[price]'>
+        </div>
+        <div>
+            <label for="caseQty">case quantity</label>
+            <input type="number" id='caseQty' name='item[caseQty]'>
+        </div>
+        <div>
+            <label for="date">Date of Purchase</label>
+            <input type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
+        </div>
+        <div>
+            <label for="shelfLife">Shelf Life in Days</label>
+            <input type="number" id='shelfLife' name='item[shelfLife]' min=1>
+        </div>
+        <div>
+            <label for="expiration_date">expiration date</label>
+            <input type="date" id="expiration_date" name="item[expiration_date]" min=1>
+        </div>
+        <button>Add Item</button>
+        <div class="mb-3 mt-3">
+            <h2>Items</h2>
+            <% allItems.forEach(function(item, i) {%>
+                <ul>
+                    <li>
+                        <%=item.title%>
+                    </li>
+                    <div class="form-check-inline">
+                        <input type="checkbox" id="ing-<%=i%>" name="addItems[]" value="<%=item._id%>">
+                    </div>
+                    <label for="ing-<%=i%>">Attach Item to Ingredient?</label>
+                </ul>
+                <% }) %>
+        </div>
+    </form>
+    <footer>
+        <a href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%></a>
+    </footer>
