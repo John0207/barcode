@@ -29,15 +29,21 @@
             Expiration Date: <%=formatDate(item.expiration_date)%>
         </li>
     </ul>
-    <p> <a href="/items/<%=item._id%>/edit">Edit</a>
-    </p>
-    <p>
-    <form action="/items/<%=item._id%>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form>
-    </p>
-    <footer>
-        <a href="/items/<%=item._id%>/ingredients/newItem">Add an ingredient</a>
-        <br>
-        <a href="/items">All Items</a>
-    </footer>
+    <h3>Ingredients <%=item.title%> counts as: </h3>
+    <%for (let ing of item.ingredients) {%>
+        <li>
+            <%=ing.name%>
+        </li>
+        <% } %>
+            <p> <a href="/items/<%=item._id%>/edit">Edit</a>
+            </p>
+            <p>
+            <form action="/items/<%=item._id%>?_method=DELETE" method="POST">
+                <button>Delete</button>
+            </form>
+            </p>
+            <footer>
+                <a href="/items/<%=item._id%>/ingredients/newItem">Add an ingredient</a>
+                <br>
+                <a href="/items">All Items</a>
+            </footer>

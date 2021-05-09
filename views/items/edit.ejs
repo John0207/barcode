@@ -43,5 +43,17 @@
                 value="<%=formatDate(item.expiration_date)%>" min=1>
         </div>
         <button>Update Item</button>
+        <h2>Ingredients</h2>
+        <% existingIngredientsArray.forEach(function(ingredient, i) {%>
+            <ul>
+                <li>
+                    <%=ingredient.name%>
+                </li>
+                <div class="form-check-inline">
+                    <input type="checkbox" id="ing-<%=i%>" name="removeIngs[]" value="<%=ingredient._id%>">
+                </div>
+                <label for="ing-<%=i%>">Remove Ingredient <%=ingredient.name%> from Item <%=item.title%></label>
+            </ul>
+            <% }) %>
     </form>
     <a href="/items/<%= item._id%>">Back To Item</a>

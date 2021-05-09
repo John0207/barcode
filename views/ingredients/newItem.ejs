@@ -21,20 +21,30 @@
             <input type="text" id='quantityType' name='ingredient[quantityType]'>
         </div>
         <button>Add ingredient</button>
-        <div class="mb-3 mt-3">
-            <h2>Ingredients</h2>
-            <% allIngredients.forEach(function(ingredient, i) {%>
-                <ul>
-                    <li>
-                        <%=ingredient.name%>
-                    </li>
-                    <div class="form-check-inline">
-                        <input type="checkbox" id="ing-<%=i%>" name="addIngs[]" value="<%=ingredient._id%>">
-                    </div>
-                    <label for="ing-<%=i%>">Attach to Item?</label>
-                </ul>
-                <% }) %>
-        </div>
+        <h2>Already existing Ingredients</h2>
+        <% for (let ing of existingIngredientsArray) { %>
+            <h5>
+                <%=ing.name%>
+            </h5>
+            <li>
+                <%=ing.quantity%>
+                    <%=ing.quantityType%>
+            </li>
+            <% } %>
+                <div class="mb-3 mt-3">
+                    <h2>Ingredients</h2>
+                    <% allIngredients.forEach(function(ingredient, i) {%>
+                        <ul>
+                            <li>
+                                <%=ingredient.name%>
+                            </li>
+                            <div class="form-check-inline">
+                                <input type="checkbox" id="ing-<%=i%>" name="addIngs[]" value="<%=ingredient._id%>">
+                            </div>
+                            <label for="ing-<%=i%>">Attach to Item?</label>
+                        </ul>
+                        <% }) %>
+                </div>
     </form>
     <footer>
         <a href="/items/<%=item._id%>/">Back to <%=item.title%></a>

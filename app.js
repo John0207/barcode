@@ -193,19 +193,41 @@ app.post('/items/delete-by-upc', async(req, res) => {
 
 
 app.get('/items/:id', async (req, res) => { 
-    const item = await Item.findById(req.params.id).populate('ingredients');   
+    const item = await Item.findById(req.params.id).populate('ingredients');
     res.render('items/show', { item });
 
 })
 
 app.get('/items/:id/edit', async (req, res) => {
     const item = await Item.findById(req.params.id)
-    res.render('items/edit', { item });
+    const existingIngredients = item.ingredients;
+    const existingIngredientsArray = [];
+    for (let id of existingIngredients) {
+        const ing = await Ingredient.findById(id);
+        if (ing) {
+            existingIngredientsArray.push(ing);
+        }
+    }
+
+    res.render('items/edit', { item, existingIngredientsArray });
 })
 
 app.put('/items/:id', async (req, res) => {
     const { id } = req.params;
-    const item = await Item.findByIdAndUpdate(id, { ...req.body.item });
+    let item = await Item.findById(id);    
+    if (req.body.removeIngs){        
+        // console.log('empty');
+        for (let id of req.body.removeIngs){
+            let ing = await Ingredient.findById(id);
+            item.ingredients.pop(ing);
+            ing.items.pop(item);
+            await item.save();
+            await ing.save();
+        }
+    } else {
+        let item = await Item.findByIdAndUpdate(id, { ...req.body.item });
+    }
+        
     res.redirect(`/items/${item._id}`)
 });
 
@@ -213,8 +235,17 @@ app.put('/items/:id', async (req, res) => {
 app.get('/items/:id/ingredients/newItem', async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
-    const allIngredients = await Ingredient.find({});
-    res.render('ingredients/newItem', { item, allIngredients });
+    const existingIngredients = item.ingredients;
+    const allIngredients = await Ingredient.find({_id:{$nin: existingIngredients}});
+    const existingIngredientsArray = [];
+    for (let id of existingIngredients) {
+        const ing = await Ingredient.findById(id);
+        if (ing) {
+            existingIngredientsArray.push(ing);
+        }
+    }
+    // console.log(existingIngredients + " " + allIngredients);
+    res.render('ingredients/newItem', { item, allIngredients, existingIngredientsArray });
 })
 
 // /ingredients/<%=item._id%>/new
@@ -286,11 +317,12 @@ app.put('/recipes/:id', async (req, res) => {
 
 app.get('/recipes/:id/ingredients/new', async (req, res) => {
     const { id } = req.params;
-    const recipe = await Recipe.findById(id);
-    const allIngredients = await Ingredient.find({});
+    const recipe = await Recipe.findById(id);    
     const existingIngredients = recipe.ingredients;
+    const allIngredients = await Ingredient.find({_id:{$nin: existingIngredients}});
+    // const allIngredients = await Ingredient.find({});
     const existingIngredientsArray= [];
-    // console.log(existingIngredients);
+    //  console.log(allIngredients);
     for (let id of existingIngredients) {
         const ing = await Ingredient.findById(id);
         if (ing){
@@ -407,15 +439,33 @@ app.post('/ingredients/:id/items/newIngredient', async (req, res) => {
 app.get('/ingredients/:id/items/newIngredient', async (req, res) => {
     const { id } = req.params;
     const ingredient = await Ingredient.findById(id);
-    const allItems = await Item.find({});
-    res.render('items/newIngredient', { ingredient, allItems });
+    const existingItems = ingredient.items;
+    const allItems = await Item.find({_id:{$nin: existingItems}});
+    const existingItemsArray = [];
+    for (let id of existingItems) {
+        const item = await Item.findById(id);
+        if (item){
+            // console.log(item.title);
+            existingItemsArray.push(item);
+        }
+    }
+    // console.log(existingItemsArray);
+    res.render('items/newIngredient', { ingredient, allItems, existingItemsArray });
 })
 
 app.get('/ingredients/:id/recipes/newIngredient', async (req, res) => {
     const { id } = req.params;
     const ingredient = await Ingredient.findById(id);
-    const allRecipes = await Recipe.find({});
-    res.render('recipes/newIngredient', { ingredient, allRecipes });
+    const existingRecipes = ingredient.recipes;
+    const allRecipes = await Recipe.find({_id:{$nin: existingRecipes}});
+    const existingRecipesArray = [];
+    for (let id of existingRecipes) {
+        const recipe = await Recipe.findById(id);
+        if (recipe) {
+            existingRecipesArray.push(recipe);
+        }
+    }
+    res.render('recipes/newIngredient', { ingredient, allRecipes, existingRecipesArray });
 })
 
 app.post('/ingredients/:id/recipes/newIngredient', async (req, res) => {
@@ -447,8 +497,11 @@ app.post('/ingredients/:id/recipes/newIngredient', async (req, res) => {
 
 app.get('/ingredients/:id', async (req, res) => {
     const ingredient = await Ingredient.findById(req.params.id).populate('recipes');
-    // console.log(recipe);
-    res.render('ingredients/show', { ingredient });
+    const ingredientItem = await Ingredient.findById(req.params.id).populate('items');
+    // ingredient.populate('items');
+    // await ingredient.save();
+    console.log(ingredientItem.items);
+    res.render('ingredients/show', { ingredient, ingredientItem });
 })
 
 app.get('/ingredients/:id/edit', async (req, res) => {

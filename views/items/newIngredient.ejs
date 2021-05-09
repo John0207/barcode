@@ -45,20 +45,30 @@
             <input type="date" id="expiration_date" name="item[expiration_date]" min=1>
         </div>
         <button>Add Item</button>
-        <div class="mb-3 mt-3">
-            <h2>Items</h2>
-            <% allItems.forEach(function(item, i) {%>
-                <ul>
-                    <li>
-                        <%=item.title%>
-                    </li>
-                    <div class="form-check-inline">
-                        <input type="checkbox" id="ing-<%=i%>" name="addItems[]" value="<%=item._id%>">
-                    </div>
-                    <label for="ing-<%=i%>">Attach Item to Ingredient?</label>
-                </ul>
-                <% }) %>
-        </div>
+        <h2>Already existing Items</h2>
+        <% for (let item of existingItemsArray) { %>
+            <h5>
+                <%=item.title%>
+            </h5>
+            <li>
+                <%=item.quantity%>
+                    <%=item.quantityType%>
+            </li>
+            <% } %>
+                <div class="mb-3 mt-3">
+                    <h2>Items</h2>
+                    <% allItems.forEach(function(item, i) {%>
+                        <ul>
+                            <li>
+                                <%=item.title%>
+                            </li>
+                            <div class="form-check-inline">
+                                <input type="checkbox" id="ing-<%=i%>" name="addItems[]" value="<%=item._id%>">
+                            </div>
+                            <label for="ing-<%=i%>">Attach Item to Ingredient?</label>
+                        </ul>
+                        <% }) %>
+                </div>
     </form>
     <footer>
         <a href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%></a>

@@ -26,6 +26,16 @@
             </li>
             <% } %>
     </ul>
+    <h2>Items that count as <%=ingredient.name%>: </h2>
+    <ul>
+        <% for (let item of ingredientItem.items) {%>
+            <li>
+                <a href="/items/<%=item._id%>">
+                    <%=item.title%>
+                </a>
+            </li>
+            <% } %>
+    </ul>
     <p> <a href="/ingredients/<%=ingredient._id%>/edit">Edit the ingredient</a>
     </p>
     <p>
