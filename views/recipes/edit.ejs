@@ -19,8 +19,23 @@
         </div>
         <div>
             <label for="createdDate">date made</label>
-            <input type="date" id="createdDate" name="item[createdDate]" value="<%=formatDate(recipe.createdDate)%>">
+            <input type="date" id="createdDate" name="recipe[createdDate]" value="<%=formatDate(recipe.createdDate)%>">
         </div>
         <button>Update Item</button>
+        <h2>Ingredients</h2>
+        <% existingIngredientsArray.forEach(function(ingredient, i) {%>
+
+            <ul>
+                <li>
+                    <%=ingredient.name%>
+                        <%i++%>
+                            <%=i%>
+                </li>
+                <div class="form-check-inline">
+                    <input type="checkbox" id="ing-<%=i%>" name="removeIngs[]" value="<%=ingredient._id%>">
+                </div>
+                <label for="ing-<%=i%>">Remove Ingredient <%=ingredient.name%> from Recipe <%=recipe.name%></label>
+            </ul>
+            <% }) %>
     </form>
     <a href="/recipes/<%= recipe._id%>">Back To recipe</a>

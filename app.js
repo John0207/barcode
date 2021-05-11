@@ -306,12 +306,30 @@ app.get('/recipes/:id', async (req, res) => {
 
 app.get('/recipes/:id/edit', async (req, res) => {
     const recipe = await Recipe.findById(req.params.id)
-    res.render('recipes/edit', { recipe });
+    const existingIngredients = recipe.ingredients;
+    const existingIngredientsArray = []
+    for (let id of existingIngredients) {
+        let ing = await Ingredient.findById(id);
+        if (ing) {
+            existingIngredientsArray.push(ing);
+        }
+    }
+    res.render('recipes/edit', { recipe, existingIngredientsArray });
 })
 
 app.put('/recipes/:id', async (req, res) => {
     const { id } = req.params;
-    const recipe = await Item.findByIdAndUpdate(id, { ...req.body.recipe });
+    let recipe = await Recipe.findById(id);
+    if(req.body.removeIngs){
+        for (let iD of req.body.removeIngs) {
+            let ing = await Ingredient.findById(iD);
+            await recipe.updateOne({$pull: {ingredients: {$in: req.body.removeIngs}}});
+            await ing.updateOne({$pull: {recipes: recipe._id}});
+        }
+    } else {
+        let recipe = await Recipe.findByIdAndUpdate(id, { ...req.body.recipe });
+    }
+    
     res.redirect(`/recipes/${recipe._id}`)
 });
 
