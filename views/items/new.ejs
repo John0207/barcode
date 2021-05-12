@@ -41,6 +41,18 @@
             <input type="date" id="expiration_date" name="item[expiration_date]" min=1>
         </div>
         <button>Add Item</button>
+        <h2>Ingredients</h2>
+        <% allIngredients.forEach(function(ingredient, i) {%>
+            <ul>
+                <li>
+                    <%=ingredient.name%>
+                </li>
+                <div class="form-check-inline">
+                    <input type="checkbox" id="ing-<%=i%>" name="addIngredients[]" value="<%=ingredient._id%>">
+                </div>
+                <label for="ing-<%=i%>">Attach Ingredient to item?</label>
+            </ul>
+            <% }) %>
     </form>
     <footer>
         <a href="/items">All Items</a>

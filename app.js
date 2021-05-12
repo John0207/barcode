@@ -113,8 +113,9 @@ app.get('/items', async (req, res) => {
 })
 
 
-app.get('/items/new', (req, res) => {
-    res.render('items/new');
+app.get('/items/new', async (req, res) => {
+    
+    res.render('items/new', { allIngredients });
 })
 
 app.get('/items/new-upc', (req, res) => {
@@ -140,35 +141,45 @@ app.post('/items/decrement-by-upc', async(req, res) => {
 }) 
 
 app.post('/items', async (req, res) => {
-    const item = new Item(req.body.item);
-    await item.save();
+    const item = new Item(req.body.item);    
     if (!item.expiration_date && item.date && item.shelfLife) {        
         date = item.date;
         exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
         await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
-        console.log(item.title + " is the title for this item");                
-        console.log(item.date);
-        console.log(exDate);
-    }    
+        // console.log(item.title + " is the title for this item");                
+        // console.log(item.date);
+        // console.log(exDate);
+    }
+    if (req.body.addIngredients) {
+        for (let id of req.body.addIngredients){
+            let ingredient = await Ingredient.findById(id);
+            item.ingredients.push(ingredient);
+            ingredient.items.push(item);
+            await ingredient.save();
+        }
+    }
+    await item.save();    
     res.redirect(`/items/${item._id}`);
 })
 
 
 
-app.get('/items/add-by-upc', (req, res) => {
-    res.render('items/add-by-upc');
+app.get('/items/add-by-upc', async (req, res) => {
+    const allIngredients = await Ingredient.find({});
+    res.render('items/add-by-upc', { allIngredients });
 })
 
 app.post('/items/add-by-upc', async (req, res) => {
     const  upc1  = req.body.upc;
     const multi = req.body.multi;
     const item = await Item.findOne({upc: upc1});
+    const allIngredients = await Ingredient.find({});
     if (item) {
         await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + (item.caseQty * multi) });
         console.log(item.title + " Successfully incremented using multiplier: " + multi);
         res.redirect("/items/add-by-upc");
     } else {
-        res.render('items/new-upc', { upc1 });
+        res.render('items/new-upc', { upc1, allIngredients });
 
         // FIX ERROR WHEN PAGE REFRESHES IT EXECUTES
 
