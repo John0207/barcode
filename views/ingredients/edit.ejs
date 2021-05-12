@@ -22,6 +22,30 @@
             <label for="quantityType">quantity type: </label>
             <input type="text" id="quantityType" name="ingredient[quantityType]" value="<%=ingredient.quantityType%>">
         </div>
-        <button>Update Item</button>
+        <button>Update Ingredient</button>
+        <h2>Recipes</h2>
+        <% existingRecipesArray.forEach(function(recipe, i) {%>
+            <ul>
+                <li>
+                    <%=recipe.name%>
+                </li>
+                <div class="form-check-inline">
+                    <input type="checkbox" id="ing-<%=i%>" name="removeRecipes[]" value="<%=recipe._id%>">
+                </div>
+                <label for="ing-<%=i%>">Remove Recipe <%=recipe.name%> from Ingredient <%=ingredient.name%></label>
+            </ul>
+            <% }) %>
+                <h2>Items</h2>
+                <% existingItemsArray.forEach(function(item, i) {%>
+                    <ul>
+                        <li>
+                            <%=item.title%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="removeItems[]" value="<%=item._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Remove Item <%=item.title%> from Ingredient <%=ingredient.name%></label>
+                    </ul>
+                    <% }) %>
     </form>
     <a href="/ingredients/<%=ingredient._id%>">Back To ingredient</a>

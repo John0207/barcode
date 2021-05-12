@@ -216,13 +216,10 @@ app.put('/items/:id', async (req, res) => {
     const { id } = req.params;
     let item = await Item.findById(id);    
     if (req.body.removeIngs){        
-        // console.log('empty');
-        for (let id of req.body.removeIngs){
-            let ing = await Ingredient.findById(id);
-            item.ingredients.pop(ing);
-            ing.items.pop(item);
-            await item.save();
-            await ing.save();
+        for (let iD of req.body.removeIngs){
+            let ing = await Ingredient.findById(iD);            
+            await item.updateOne({$pull: {ingredients: {$in: req.body.removeIngs}}});
+            await ing.updateOne({$pull: {items: item._id}});
         }
     } else {
         let item = await Item.findByIdAndUpdate(id, { ...req.body.item });
@@ -307,7 +304,7 @@ app.get('/recipes/:id', async (req, res) => {
 app.get('/recipes/:id/edit', async (req, res) => {
     const recipe = await Recipe.findById(req.params.id)
     const existingIngredients = recipe.ingredients;
-    const existingIngredientsArray = []
+    const existingIngredientsArray = [];
     for (let id of existingIngredients) {
         let ing = await Ingredient.findById(id);
         if (ing) {
@@ -524,8 +521,48 @@ app.get('/ingredients/:id', async (req, res) => {
 
 app.get('/ingredients/:id/edit', async (req, res) => {
     const ingredient = await Ingredient.findById(req.params.id)
-    res.render('ingredients/edit', { ingredient });
+    const existingItems = ingredient.items;
+    const existingItemsArray = [];
+    const existingRecipes = ingredient.recipes;
+    const existingRecipesArray = [];
+    for (let id of existingItems) {
+        let item = await Item.findById(id);
+        if (item) {
+            existingItemsArray.push(item);
+        }
+    };
+    for (let id of existingRecipes) {
+        let recipe = await Recipe.findById(id); 
+        if (recipe) {
+            existingRecipesArray.push(recipe);
+        }
+    };
+    res.render('ingredients/edit', { ingredient, existingItemsArray, existingRecipesArray });
 })
+
+
+app.put('/ingredients/:id', async (req, res) => {
+    const { id } = req.params;
+    let ingredient = await Ingredient.findById(id);
+    if(req.body.removeItems){
+        for (let iD of req.body.removeItems) {
+            let item = await Item.findById(iD);
+            await ingredient.updateOne({$pull: {items: {$in: req.body.removeItems}}});
+            await item.updateOne({$pull: {ingredients: ingredient._id}});
+        }
+    } 
+    else if (req.body.removeRecipes) {
+        for (let iD of req.body.removeRecipes){
+            let recipe = await Recipe.findById(iD);
+            await ingredient.updateOne({$pull: {recipes: {$in: req.body.removeRecipes}}});
+            await recipe.updateOne({$pull: {ingredients: ingredient._id}});
+        }
+    } else {
+        let ingredient = await Ingredient.findByIdAndUpdate(id, { ...req.body.ingredient });
+    }
+    
+    res.redirect(`/ingredients/${ingredient._id}`)
+});
 
 app.delete('/ingredients/:id', async (req, res) => {
     const { id } = req.params;
