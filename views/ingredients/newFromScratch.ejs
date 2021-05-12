@@ -17,6 +17,30 @@
             <input type="text" id='quantityType' name='ingredient[quantityType]'>
         </div>
         <button>Add Ingredient</button>
+        <h2>Items</h2>
+        <% allItems.forEach(function(item, i) {%>
+            <ul>
+                <li>
+                    <%=item.title%>
+                </li>
+                <div class="form-check-inline">
+                    <input type="checkbox" id="ing-<%=i%>" name="addItems[]" value="<%=item._id%>">
+                </div>
+                <label for="ing-<%=i%>">Attach to Ingredient?</label>
+            </ul>
+            <% }) %>
+                <h2>Recipes</h2>
+                <% allRecipes.forEach(function(recipe, i) {%>
+                    <ul>
+                        <li>
+                            <%=recipe.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="addRecipes[]" value="<%=recipe._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Attach to Ingredient?</label>
+                    </ul>
+                    <% }) %>
     </form>
     <footer>
         <a href="/ingredients">All Ingredients</a>

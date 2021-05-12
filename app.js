@@ -282,12 +282,21 @@ app.get('/recipes', async (req, res) => {
     res.render('recipes/index', { recipes });
 })
 
-app.get('/recipes/new', (req, res) => {
-    res.render('recipes/new');
+app.get('/recipes/new', async (req, res) => {
+    const allIngredients = await Ingredient.find({});
+    res.render('recipes/new', { allIngredients });
 })
 
 app.post('/recipes/new', async (req, res) => {
     const recipe = new Recipe(req.body.recipe);
+    if (req.body.addIngredients){
+        for (let id of req.body.addIngredients){
+            let ingredient = await Ingredient.findById(id);
+            recipe.ingredients.push(ingredient);
+            ingredient.recipes.push(recipe);
+            await ingredient.save();
+        }
+    }
     await recipe.save();
     res.redirect(`/recipes/${recipe._id}`);
     // console.log("it worked - " + recipe.name);
@@ -399,12 +408,30 @@ app.get('/ingredients/new', (req, res) => {
     res.render('ingredients/new');
 })
 
-app.get('/ingredients/newFromScratch', (req, res) => {
-    res.render('ingredients/newFromScratch');
+app.get('/ingredients/newFromScratch', async (req, res) => {
+    const allItems = await Item.find({});
+    const allRecipes = await Recipe.find({});
+    res.render('ingredients/newFromScratch', { allItems, allRecipes });
 })
 
 app.post('/ingredients/newFromScratch', async (req, res) => {
     const ingredient = new Ingredient(req.body.ingredient);
+    if (req.body.addItems){
+        for (let id of req.body.addItems){
+            let item = await Item.findById(id);
+            ingredient.items.push(item);
+            item.ingredients.push(ingredient);
+            await item.save();
+        }
+    } 
+    if (req.body.addRecipes) {
+        for (let id of req.body.addRecipes){
+            let recipe = await Recipe.findById(id);
+            ingredient.recipes.push(recipe);
+            recipe.ingredients.push(ingredient);
+            await recipe.save();
+        }        
+    }
     await ingredient.save();
     res.redirect(`/ingredients/${ingredient._id}`);
     // res.redirect('/ingredients');
