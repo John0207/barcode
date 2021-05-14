@@ -114,7 +114,7 @@ app.get('/items', async (req, res) => {
 
 
 app.get('/items/new', async (req, res) => {
-    
+    const allIngredients = await Ingredient.find({});    
     res.render('items/new', { allIngredients });
 })
 
@@ -315,22 +315,40 @@ app.post('/recipes/new', async (req, res) => {
 
 app.get('/recipes/:id', async (req, res) => { 
     const recipe = await Recipe.findById(req.params.id).populate('ingredients');
-    // console.log(recipe);
+    const itemsArray = [];
+    const ingredientsNeededArray = [];
+    for (let ingredient of recipe.ingredients){
+        if(ingredient.items.length === 0){
+            ingredientsNeededArray.push(ingredient);
+        }
+        for (let id of ingredient.items){
+            let item = await Item.findById(id);
+            if (item.quantity <= 0){
+                for (let id of item.ingredients){
+                    let ingredient = await Ingredient.findById(id);
+                    ingredientsNeededArray.push(ingredient); 
+                }
+            } else {
+                itemsArray.push(item);
+            }                      
+        }
+    }
+    
     // find matching ingredients if they exist to display them   
-    res.render('recipes/show', { recipe });
+    res.render('recipes/show', { recipe, itemsArray, ingredientsNeededArray });
 
 })
 
 app.get('/recipes/:id/edit', async (req, res) => {
     const recipe = await Recipe.findById(req.params.id)
     const existingIngredients = recipe.ingredients;
-    const existingIngredientsArray = [];
+    const existingIngredientsArray = [];    
     for (let id of existingIngredients) {
         let ing = await Ingredient.findById(id);
         if (ing) {
             existingIngredientsArray.push(ing);
         }
-    }
+    }    
     res.render('recipes/edit', { recipe, existingIngredientsArray });
 })
 

@@ -32,7 +32,9 @@
     <h3>Ingredients <%=item.title%> counts as: </h3>
     <%for (let ing of item.ingredients) {%>
         <li>
-            <%=ing.name%>
+            <a href="/ingredients/<%=ing._id%>">
+                <%=ing.name%>
+            </a>
         </li>
         <% } %>
             <p> <a href="/items/<%=item._id%>/edit">Edit</a>
