@@ -9,7 +9,7 @@ module.exports = [
         caseQty: 1,
         date: '2021-04-28',
         shelfLife: 2,
-        expiration_date: "2021-04-30",
+        expiration_date: "2021-07-30",
                 
     },        
     {
@@ -22,7 +22,7 @@ module.exports = [
         caseQty: 1,
         date: '2021-04-28',
         shelfLife: 2,
-        expiration_date: "2021-04-30",
+        expiration_date: "2021-07-30",
                     
     },        
     {
@@ -35,7 +35,7 @@ module.exports = [
         caseQty: 24,
         date: '2021-04-28',
         shelfLife: 2,
-        expiration_date: "2021-04-30",           
+        expiration_date: "2021-07-30",           
     },        
     {
         title: 'brick', 
@@ -47,7 +47,7 @@ module.exports = [
         caseQty: 1,
         date: '2021-04-28',
         shelfLife: 2,
-        expiration_date: "2021-04-30",           
+        expiration_date: "2021-07-30",           
     },        
     {
         title: 'Honey', 
@@ -59,6 +59,6 @@ module.exports = [
         caseQty: 5,
         date: '2021-04-28',
         shelfLife: 2,
-        expiration_date: "2021-04-30",           
+        expiration_date: "2021-07-30",           
     },        
 ];

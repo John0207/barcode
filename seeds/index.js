@@ -3,7 +3,7 @@ const Item = require('../models/item');
 const Ingredient = require('../models/ingredient');
 const Recipe = require('../models/recipe');
 const ingredients = require('./ingredients');
-const items = require('./items');
+// const items = require('./items');
 const recipes = require('./recipes');
 
 
@@ -21,55 +21,62 @@ db.once("open", () => {
     console.log('database connected');
 });
 
-const seedDB = async () => {
-    await Item.deleteMany({});
-    await Ingredient.deleteMany({});
-    await Recipe.deleteMany({});
-    for (let i = 0; i < items.length; i++) {      
-        
-        const item = new Item({
-            title: `${items[i].title}`,
-            upc: `${items[i].upc}`,    
-            quantity: `${items[i].quantity}`,    
-            quantityType: `${items[i].quantityType}`,    
-            price: `${items[i].price}`,   
-            location: `${items[i].location}`,   
-            caseQty: `${items[i].caseQty}`,   
-            date: `${items[i].date}`,
-            shelfLife: `${items[i].shelfLife}`,
-            date_purchased_ISO: `${items[i].date}`,
-            expiration_date: `${items[i].expiration_date}`            
-        });
-
-        await item.save();   
+const imageSeedDb = async () => {
+    const items = await Item.find({});
+    for (let item of items){
+        await Item.findOneAndUpdate({title: item.title}, {image: "https://source.unsplash.com/collection/1265838"});
     }
-    for (let i = 0; i < ingredients.length; i++) {      
-        
-        const ingredient = new Ingredient({
-            name: `${ingredients[i].name}`,
-            description: `${ingredients[i].description}`,    
-            quantity: `${ingredients[i].quantity}`,    
-            quantityType: `${ingredients[i].quantityType}`,  
-        });
-
-        await ingredient.save();   
-    }
-
-    for (let i = 0; i < recipes.length; i++) {      
-        
-        const recipe = new Recipe({
-            name: `${recipes[i].name}`,
-            recipe: `${recipes[i].recipe}`,    
-            minTime: `${recipes[i].minTime}`,    
-            maxTime: `${recipes[i].maxTime}`,  
-        });
-
-        await recipe.save();   
-    }
-    
-    
-
 }
+
+// const seedDB = async () => {
+//     await Item.deleteMany({});
+//     await Ingredient.deleteMany({});
+//     await Recipe.deleteMany({});
+//     for (let i = 0; i < items.length; i++) {      
+        
+//         const item = new Item({
+//             title: `${items[i].title}`,
+//             upc: `${items[i].upc}`,    
+//             quantity: `${items[i].quantity}`,    
+//             quantityType: `${items[i].quantityType}`,    
+//             price: `${items[i].price}`,   
+//             location: `${items[i].location}`,   
+//             caseQty: `${items[i].caseQty}`,   
+//             date: `${items[i].date}`,
+//             shelfLife: `${items[i].shelfLife}`,
+//             date_purchased_ISO: `${items[i].date}`,
+//             expiration_date: `${items[i].expiration_date}`            
+//         });
+
+//         await item.save();   
+//     }
+//     for (let i = 0; i < ingredients.length; i++) {      
+        
+//         const ingredient = new Ingredient({
+//             name: `${ingredients[i].name}`,
+//             description: `${ingredients[i].description}`,    
+//             quantity: `${ingredients[i].quantity}`,    
+//             quantityType: `${ingredients[i].quantityType}`,  
+//         });
+
+//         await ingredient.save();   
+//     }
+
+//     for (let i = 0; i < recipes.length; i++) {      
+        
+//         const recipe = new Recipe({
+//             name: `${recipes[i].name}`,
+//             recipe: `${recipes[i].recipe}`,    
+//             minTime: `${recipes[i].minTime}`,    
+//             maxTime: `${recipes[i].maxTime}`,  
+//         });
+
+//         await recipe.save();   
+//     }
+    
+    
+
+// }
 
 // const updateWithItems = async () => {
 //     const ingredients = await Ingredient.find({});
@@ -87,7 +94,7 @@ const seedDB = async () => {
 //     // console.log(recipe_lemon_chicken);    
 // }
 
-seedDB().then(() => {
+imageSeedDb().then(() => {
     mongoose.connection.close();
 });
 

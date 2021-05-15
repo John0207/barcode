@@ -40,6 +40,14 @@
             </li>
             <% } %>
     </ul>
+    <h4>Out of Stock: </h4>
+    <ul>
+        <% for ( let item of outOfStock) { %>
+            <li>
+                <%=item.title%>
+            </li>
+            <% } %>
+    </ul>
     <h1>Items</h1>
     <ul>
         <% for ( let item of items) { %>
@@ -47,13 +55,16 @@
                 <div class="row">
                     <div class="col-md-4">
                         <h3>
-                            <%=item.title%>
+                            <img class="img-fluid" src="<%=item.image%>" alt="">
                         </h3>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">Price: $<%=item.price%>
+                            <h5 class="card-title">
+                                <%=item.title%>
                             </h5>
+                            <p class="card-text">Price: <%=item.price%>
+                            </p>
                             <p class="card-text">Location: <%=item.location%>
                             </p>
                             <p class="card-text">Expires: <%=formatDate(item.expiration_date)%>

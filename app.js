@@ -106,10 +106,16 @@ app.get('/items', async (req, res) => {
     const throw_outs = await Item.find({ expiration_date: { $gte: today, $lte: todayPlusSeven } });
     const expired = await Item.find({ expiration_date: { $lte: today } }); 
     const total = allPrices[0].prices;   
-    const average = total / items.length;   
+    const average = total / items.length;
+    const outOfStock = [];
+    for (let item of items){
+        if(item.quantity <= 0){
+            outOfStock.push(item);
+        }
+    }   
     // console.log(todayPlusSeven);
     // console.log(throw_outs);
-    res.render('items/index', { items, total, average, throw_outs, expired });
+    res.render('items/index', { items, total, average, throw_outs, expired, outOfStock });
 })
 
 

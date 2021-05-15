@@ -13,6 +13,7 @@ const ItemSchema = new Schema ({
     date: Date,
     shelfLife: Number,
     expiration_date: Date,
+    image: String,
     ingredients: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ingredient'
