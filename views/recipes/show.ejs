@@ -1,62 +1,78 @@
 <% layout('layouts/boilerplate')%>
-    <h1>
-        <%= recipe.name %>
-    </h1>
-    <h2>
-        <%= recipe.recipe %>
-    </h2>
-    <ul>
-        <li>
-            minimum amount of time to cook: <%=recipe.minTime%>
-        </li>
-        <li>
-            maximum amount of time to cook: <%=recipe.maxTime%>
-        </li>
-        <li>
-            Date: <%=formatDate(recipe.createdDate)%>
-        </li>
-    </ul>
-    <h2>Ingredients</h2>
-    <ul>
-        <% for (let ingredient of recipe.ingredients) {%>
-            <li>
-                <a href="/ingredients/<%=ingredient._id%>">
-                    <%=ingredient.name%> - <%=ingredient.quantity%>
-                            <%=ingredient.quantityType%>
-                </a>
-            </li>
-            <% } %>
-    </ul>
-    <h2>What you have: </h2>
-    <% for (let item of itemsArray) {%>
-        <ul>
-            <li>
-                <a href="/items/<%=item._id%>">
-                    <%=item.title%> - <%=item.quantity%>
-                            <%=item.quantityType%>
-                </a>
-            </li>
-        </ul>
-        <% } %>
-            <h2>What you need: </h2>
-            <% for (let ingredient of ingredientsNeededArray) {%>
-                <ul>
-                    <li>
-                        <a href="/ingredients/<%=ingredient._id%>">
-                            <%=ingredient.name%> - <%=ingredient.quantity%>
-                                    <%=ingredient.quantityType%>
-                        </a>
-                    </li>
-                </ul>
+    <div class="row gy-2 gx-3 align-items-center">
+        <div class="mb-3 col-auto">
+            <h1>
+                <%= recipe.name %>
+            </h1>
+            <h2>
+                <%= recipe.recipe %>
+            </h2>
+            <ul>
+                <li>
+                    minimum amount of time to cook: <%=recipe.minTime%>
+                </li>
+                <li>
+                    maximum amount of time to cook: <%=recipe.maxTime%>
+                </li>
+                <li>
+                    Date: <%=formatDate(recipe.createdDate)%>
+                </li>
+            </ul>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Ingredients</h2>
+            <ul>
+                <% for (let ingredient of recipe.ingredients) {%>
+                    <div class="mb-3 col-auto">
+                        <li>
+                            <a href="/ingredients/<%=ingredient._id%>">
+                                <%=ingredient.name%> - <%=ingredient.quantity%>
+                                        <%=ingredient.quantityType%>
+                            </a>
+                        </li>
+                    </div>
+                    <% } %>
+            </ul>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>What you have: </h2>
+            <% for (let item of itemsArray) {%>
+                <div class="mb-3 col-auto">
+                    <ul>
+                        <li>
+                            <a href="/items/<%=item._id%>">
+                                <%=item.title%> - <%=item.quantity%>
+                                        <%=item.quantityType%>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <% } %>
-                    <p> <a href="/recipes/<%=recipe._id%>/edit">Edit</a>
-                    </p>
-                    <p>
-                    <form action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
-                        <button>Delete</button>
-                    </form>
-                    </p>
-                    <footer>
-                        <a href="/recipes/<%=recipe._id%>/ingredients/new">Add an ingredient</a>
-                        <a href="/recipes">All recipes</a>
-                    </footer>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>What you need: </h2>
+            <div class="mb-3 col-auto">
+                <% for (let ingredient of ingredientsNeededArray) {%>
+                    <ul>
+                        <li>
+                            <a href="/ingredients/<%=ingredient._id%>">
+                                <%=ingredient.name%> - <%=ingredient.quantity%>
+                                        <%=ingredient.quantityType%>
+                            </a>
+                        </li>
+                    </ul>
+            </div>
+            <% } %>
+        </div>
+        <p> <a href="/recipes/<%=recipe._id%>/edit">Edit</a>
+        </p>
+        <p>
+        <form action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+        </p>
+    </div>
+    <footer>
+        <a href="/recipes/<%=recipe._id%>/ingredients/new">Add an ingredient</a>
+        <a href="/recipes">All recipes</a>
+    </footer>

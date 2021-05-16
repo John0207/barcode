@@ -1,48 +1,60 @@
 <% layout('layouts/boilerplate')%>
-    <h1>
-        <%=ingredient.name%>
-    </h1>
-    <h2>
-        <%=ingredient.description%>
-    </h2>
-    <ul>
-        <li>
-            date added: <%=formatDate(ingredient.createdDate)%>
-        </li>
-        <li>
-            quantity: <%=ingredient.quantity%>
-        </li>
-        <li>
-            quantity type: <%=ingredient.quantityType%>
-        </li>
-    </ul>
-    <h2>Recipes</h2>
-    <ul>
-        <% for (let recipe of ingredient.recipes) {%>
-            <li>
-                <a href="/recipes/<%=recipe._id%>">
-                    <%=recipe.name%>
-                </a>
-            </li>
-            <% } %>
-    </ul>
-    <h2>Items that count as <%=ingredient.name%>: </h2>
-    <ul>
-        <% for (let item of ingredientItem.items) {%>
-            <li>
-                <a href="/items/<%=item._id%>">
-                    <%=item.title%>
-                </a>
-            </li>
-            <% } %>
-    </ul>
-    <p> <a href="/ingredients/<%=ingredient._id%>/edit">Edit the ingredient</a>
-    </p>
-    <p>
-    <form action="/ingredients/<%=ingredient._id%>?_method=DELETE" method="POST">
-        <button>Delete ingredient</button>
-    </form>
-    </p>
+    <div class="row gy-2 gx-3 align-items-center">
+        <div class="mb-3 col-auto">
+            <h1>
+                <%=ingredient.name%>
+            </h1>
+            <h2>
+                <%=ingredient.description%>
+            </h2>
+            <ul>
+                <li>
+                    date added: <%=formatDate(ingredient.createdDate)%>
+                </li>
+                <li>
+                    quantity: <%=ingredient.quantity%>
+                </li>
+                <li>
+                    quantity type: <%=ingredient.quantityType%>
+                </li>
+            </ul>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Recipes</h2>
+            <ul>
+                <% for (let recipe of ingredient.recipes) {%>
+                    <div class="mb-3 col-auto">
+                        <li>
+                            <a href="/recipes/<%=recipe._id%>">
+                                <%=recipe.name%>
+                            </a>
+                        </li>
+                    </div>
+                    <% } %>
+            </ul>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Items that count as <%=ingredient.name%>: </h2>
+            <ul>
+                <% for (let item of ingredientItem.items) {%>
+                    <div class="mb-3 col-auto">
+                        <li>
+                            <a href="/items/<%=item._id%>">
+                                <%=item.title%>
+                            </a>
+                        </li>
+                    </div>
+                    <% } %>
+            </ul>
+        </div>
+        <p> <a href="/ingredients/<%=ingredient._id%>/edit">Edit the ingredient</a>
+        </p>
+        <p>
+        <form action="/ingredients/<%=ingredient._id%>?_method=DELETE" method="POST">
+            <button>Delete ingredient</button>
+        </form>
+        </p>
+    </div>
     <footer>
         <a href="/ingredients/<%=ingredient._id%>/items/newIngredient">Attach an Item</a>
         <a href="/ingredients/<%=ingredient._id%>/recipes/newIngredient">Add a Recipe</a>
