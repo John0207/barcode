@@ -329,6 +329,7 @@ app.get('/recipes/:id', async (req, res) => {
         }
         for (let id of ingredient.items){
             let item = await Item.findById(id);
+            
             if (item.quantity <= 0){
                 for (let id of item.ingredients){
                     let ingredient = await Ingredient.findById(id);

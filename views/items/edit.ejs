@@ -1,59 +1,67 @@
 <% layout('layouts/boilerplate')%>
-    <h1>Edit Item</h1>
-    <form action="/items/<%=item._id%>?_method=PUT" method="POST">
-        <div>
+    <h1>Edit Item <%=item.title%>
+    </h1>
+    <form class="row gy-2 gx-3 align-items-center" action="/items/<%=item._id%>?_method=PUT" method="POST">
+        <div class="mb-3 col-auto">
             <label for="title">Title</label>
             <input type="text" id="title" name="item[title]" value="<%=item.title%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="upc">UPC</label>
             <input type="number" id="upc" name="item[upc]" value="<%=item.upc%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="location">Location</label>
             <input type="text" id="location" name="item[location]" value="<%=item.location%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="quantity">quantity</label>
             <input type="number" id="quantity" name="item[quantity]" value="<%=item.quantity%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="quantityType">quantity type</label>
             <input type="text" id="quantityType" name="item[quantityType]" value="<%=item.quantityType%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="price">Price</label>
-            <input type="number" id="price" name="item[price]" value="<%=item.price%>" min=1>
+            <input type="text" id="price" name="item[price]" value="<%=item.price%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="caseQty">case quantity</label>
             <input type="number" id="caseQty" name="item[caseQty]" value="<%=item.caseQty%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="date">Date purchased</label>
             <input type="date" id="date" name="item[date]" value="<%=formatDate(item.date)%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="shelfLife">Shelf Life in Days</label>
             <input type="number" id="shelfLife" name="item[shelfLife]" value="<%=item.shelfLife%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="expiration_date">expiration date</label>
             <input type="date" id="expiration_date" name="item[expiration_date]"
                 value="<%=formatDate(item.expiration_date)%>" min=1>
         </div>
-        <button>Update Item</button>
-        <h2>Ingredients</h2>
-        <% existingIngredientsArray.forEach(function(ingredient, i) {%>
-            <ul>
-                <li>
-                    <%=ingredient.name%>
-                </li>
-                <div class="form-check-inline">
-                    <input type="checkbox" id="ing-<%=i%>" name="removeIngs[]" value="<%=ingredient._id%>">
+        <div class="mb-3 col-auto">
+            <button class="btn btn-success">Update Item</button>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Ingredients that <%=item.title%> counts as:
+            </h2>
+            <% existingIngredientsArray.forEach(function(ingredient, i) {%>
+                <div class="col-auto form-check-inline">
+                    <ul>
+                        <li>
+                            <%=ingredient.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="removeIngs[]" value="<%=ingredient._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Remove Ingredient <%=ingredient.name%> from Item <%=item.title%></label>
+                    </ul>
                 </div>
-                <label for="ing-<%=i%>">Remove Ingredient <%=ingredient.name%> from Item <%=item.title%></label>
-            </ul>
-            <%})%>
+                <%})%>
+        </div>
     </form>
-    <a href="/items/<%= item._id%>">Back To Item</a>
+    <a href="/items/<%= item._id%>">Back To Item <%=item.title%> </a>

@@ -1,54 +1,60 @@
 <% layout('layouts/boilerplate')%>
-    <form action="/items" method="POST">
-        <div>
+    <form class="row gy-2 gx-3 align-items-center" action="/items" method="POST">
+        <div class="mb-3 col-auto">
             <label for="title">Title</label>
             <input type="text" id='title' name='item[title]'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="upc">UPC</label>
             <input type="number" id='upc' name='item[upc]' value="<%=upc1%>" min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="location">location</label>
             <input type="text" id='location' name='item[location]'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="quantity">quantity</label>
             <input type="number" id='quantity' name='item[quantity]' min=1 value=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="quantityType">quantity type</label>
             <input type="text" id='quantityType' name='item[quantityType]'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="price">price</label>
-            <input type="number" id='price' name='item[price]' min=1>
+            <input type="text" id='price' name='item[price]' min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="caseQty">case quantity</label>
             <input type="number" id='caseQty' name='item[caseQty]' min=1>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="date">Date of Purchase</label>
             <input type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="shelfLife">Shelf Life in Days</label>
             <input type="number" id='shelfLife' name='item[shelfLife]' min=1>
         </div>
-        <button>Add Item</button>
-        <h2>Ingredients</h2>
-        <% allIngredients.forEach(function(ingredient, i) {%>
-            <ul>
-                <li>
-                    <%=ingredient.name%>
-                </li>
-                <div class="form-check-inline">
-                    <input type="checkbox" id="ing-<%=i%>" name="addIngredients[]" value="<%=ingredient._id%>">
+        <div class="mb-3 col-auto">
+            <button class="btn btn-success">Add Item</button>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Ingredients</h2>
+            <% allIngredients.forEach(function(ingredient, i) {%>
+                <div class="col-auto form-check-inline">
+                    <ul>
+                        <li>
+                            <%=ingredient.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="addIngredients[]" value="<%=ingredient._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Add Ingredient?</label>
+                    </ul>
                 </div>
-                <label for="ing-<%=i%>">Add Ingredient?</label>
-            </ul>
-            <% }) %>
+                <% }) %>
+        </div>
     </form>
     <footer>
         <a href="/items">All Items</a>

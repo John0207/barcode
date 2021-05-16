@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <% layout('layouts/boilerplate')%>
-    <form action="/recipes/new" method="POST">
-        <div>
+    <form class="row gy-2 gx-3 align-items-center" action="/recipes/new" method="POST">
+        <div class="mb-3 col-auto">
             <label for="name">name</label>
             <input type="text" id='name' name='recipe[name]'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="recipe">recipe</label>
             <input type="text" id='recipe' name='recipe[recipe]'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="minTime">min amount of minutes to make</label>
             <input type="number" id='minTime' name='recipe[minTime]'>
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="maxTime">max amount of minutes to make</label>
             <input type="number" id='maxTime' name='recipe[maxTime]'>
         </div>
-
-
-        <button>Add Recipe</button>
-        <h2>Ingredients</h2>
-        <% allIngredients.forEach(function(ingredient, i) {%>
-            <ul>
-                <li>
-                    <%=ingredient.name%>
-                </li>
-                <div class="form-check-inline">
-                    <input type="checkbox" id="ing-<%=i%>" name="addIngredients[]" value="<%=ingredient._id%>">
+        <div class="mb-3 col-auto">
+            <button class="btn btn-success">Add Recipe</button>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Ingredients</h2>
+            <% allIngredients.forEach(function(ingredient, i) {%>
+                <div class="col-auto form-check-inline">
+                    <ul>
+                        <li>
+                            <%=ingredient.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="addIngredients[]" value="<%=ingredient._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Add Ingredient?</label>
+                    </ul>
                 </div>
-                <label for="ing-<%=i%>">Add Ingredient?</label>
-            </ul>
-            <% }) %>
+                <% }) %>
+        </div>
     </form>
     <footer>
         <a href="/items">All Items</a>

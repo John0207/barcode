@@ -1,42 +1,52 @@
 <% layout('layouts/boilerplate')%>
-    <h1>Edit Ingredient</h1>
-    <form action="/ingredients/<%=ingredient._id%>?_method=PUT" method="POST">
-        <div>
+    <h1>Edit Ingredient <%=ingredient.name%>
+    </h1>
+    <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>?_method=PUT" method="POST">
+        <div class="mb-3 col-auto">
             <label for="name">Name</label>
             <input type="text" id="name" name="ingredient[name]" value="<%=ingredient.name%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="descripton">description:</label>
             <input type="text" id="descripton" name="ingredient[descripton]" value="<%=ingredient.description%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="createdDate">created: </label>
             <input type="date" id="createdDate" name="ingredient[createdDate]"
                 value="<%=formatDate(ingredient.createdDate)%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="quantity">quantity</label>
             <input type="number" id="quantity" name="ingredient[quantity]" value="<%=ingredient.quantity%>">
         </div>
-        <div>
+        <div class="mb-3 col-auto">
             <label for="quantityType">quantity type: </label>
             <input type="text" id="quantityType" name="ingredient[quantityType]" value="<%=ingredient.quantityType%>">
         </div>
-        <button>Update Ingredient</button>
-        <h2>Recipes</h2>
-        <% existingRecipesArray.forEach(function(recipe, i) {%>
-            <ul>
-                <li>
-                    <%=recipe.name%>
-                </li>
-                <div class="form-check-inline">
-                    <input type="checkbox" id="ing-<%=i%>" name="removeRecipes[]" value="<%=recipe._id%>">
+        <div class="mb-3 col-auto">
+            <button class="btn btn-success">Update Ingredient</button>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Recipes</h2>
+            <% existingRecipesArray.forEach(function(recipe, i) {%>
+                <div class="col-auto form-check-inline">
+                    <ul>
+                        <li>
+                            <%=recipe.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="removeRecipes[]" value="<%=recipe._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Remove Recipe <%=recipe.name%> from Ingredient <%=ingredient.name%>
+                        </label>
+                    </ul>
                 </div>
-                <label for="ing-<%=i%>">Remove Recipe <%=recipe.name%> from Ingredient <%=ingredient.name%></label>
-            </ul>
-            <% }) %>
-                <h2>Items</h2>
-                <% existingItemsArray.forEach(function(item, i) {%>
+                <% }) %>
+        </div>
+        <div class="mb-3 col-auto">
+            <h2>Items</h2>
+            <% existingItemsArray.forEach(function(item, i) {%>
+                <div class="col-auto form-check-inline">
                     <ul>
                         <li>
                             <%=item.title%>
@@ -46,6 +56,8 @@
                         </div>
                         <label for="ing-<%=i%>">Remove Item <%=item.title%> from Ingredient <%=ingredient.name%></label>
                     </ul>
-                    <% }) %>
+                </div>
+                <% }) %>
+        </div>
     </form>
     <a href="/ingredients/<%=ingredient._id%>">Back To ingredient</a>
