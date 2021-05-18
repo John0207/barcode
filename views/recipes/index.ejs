@@ -1,36 +1,42 @@
 <% layout('layouts/boilerplate')%>
     <h1>All Recipes</h1>
-    <ul>
-        <% for ( let recipe of recipes) { %>
-            <li>
-                <a href="/recipes/<%=recipe._id%>">
-                    <%=recipe.name%>
-                </a>
-            </li>
-            <ul>
-                <li>
-                    recipe: <%=recipe.recipe%>
-                </li>
-                <li>
-                    minTime: <%=recipe.minTime%>
-                </li>
-                <li>
-                    maxTime: <%=recipe.maxTime%>
-                </li>
-                <li>
-                    created on: <%=formatDate(recipe.createdDate)%>
-                </li>
+    <div class="container mt-3">
+        <div class="row">
+            <% for ( let recipe of recipes) { %>
+                <div class="col-auto mb-3">
+                    <div class="card mb-3" style="width: 12rem;">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>
+                                    <%=recipe.name%>
+                                </h5>
+                            </div>
+                            <p class="card-text">
+                                recipe: <%=recipe.recipe%>
+                            </p>
+                            <p class="card-text">
+                                minTime: <%=recipe.minTime%>
+                            </p>
+                            <p class="card-text">
+                                maxTime: <%=recipe.maxTime%>
+                            </p>
+                            <p class="card-text">
+                                created on: <%=formatDate(recipe.createdDate)%>
+                            </p>
+                            <a href="/recipes/<%=recipe._id%>" class="btn btn-primary">View <%=recipe.name%></a>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+        </div>
+    </div>
 
-            </ul>
 
-            <% } %>
-
-
-                <footer>
-                    <br>
-                    <a href="/recipes/">All recipes</a>
-                    <br>
-                    <a href="/ingredients/">All ingredients</a>
-                    <br>
-                    <a href="/recipes/new">make a new recipe</a>
-                </footer>
+    <footer>
+        <br>
+        <a href="/recipes/">All recipes</a>
+        <br>
+        <a href="/ingredients/">All ingredients</a>
+        <br>
+        <a href="/recipes/new">make a new recipe</a>
+    </footer>
