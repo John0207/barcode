@@ -18,47 +18,67 @@
     <div>
         <a href="/items/delete-by-upc">Delete Item by Scanning</a>
     </div>
-    <h2>
-        Total cost of all items: $<%=total%>
-    </h2>
-    <h3>
-        average cost per item: $<%=average%>
-    </h3>
-    <h4>Expired in location: </h4>
-    <ul>
-        <% for ( let item of expired) { %>
-            <li>
-                <%=item.title%> at <%=item.location%>
-            </li>
-            <% } %>
-    </ul>
-    <h4>upcoming expirations: </h4>
-    <ul>
-        <% for ( let item of throw_outs) { %>
-            <li>
-                <%=item.title%> at <%=item.location%>
-            </li>
-            <% } %>
-    </ul>
-    <h4>Out of Stock: </h4>
-    <ul>
-        <% for ( let item of outOfStock) { %>
-            <li>
-                <%=item.title%>
-            </li>
-            <% } %>
-    </ul>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-auto mb-3">
+                <div class="card mb-3" style="width: 12rem;">
+                    <h5 class="card-title">
+                        Total cost of all items:
+                    </h5>
+                    <p class="card-text">$<%=total%>
+                    </p>
+                    <h5 class="card-title">
+                        Average cost per item:
+                    </h5>
+                    <p class="card-text">$<%=average%>
+                    </p>
+                </div>
+            </div>
+            <div class="col-auto mb-3">
+                <div class="card mb-3" style="width: 12rem;">
+                    <h5 class="card-title">
+                        Expired in location:
+                    </h5>
+                    <% for ( let item of expired) { %>
+                        <li class="card-text">
+                            <%=item.title%> at <%=item.location%>
+                        </li>
+                        <% } %>
+                </div>
+            </div>
+            <div class="col-auto mb-3">
+                <div class="card mb-3" style="width: 12rem;">
+                    <h5 class="card-title">
+                        Upcoming expirations:
+                    </h5>
+                    <% for ( let item of throw_outs) { %>
+                        <li class="card-text">
+                            <%=item.title%> at <%=item.location%>
+                        </li>
+                        <% } %>
+                </div>
+            </div>
+            <div class="col-auto mb-3">
+                <div class="card mb-3" style="width: 12rem;">
+                    <h5 class="card-title">
+                        Out of Stock:
+                    </h5>
+                    <% for ( let item of outOfStock) { %>
+                        <li class="card-text">
+                            <%=item.title%>
+                        </li>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
     <h1>Items</h1>
-    <ul>
-        <% for ( let item of items) { %>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h3>
-                            <img class="img-fluid" src="<%=item.image%>" alt="">
-                        </h3>
-                    </div>
-                    <div class="col-md-8">
+    <div class="container mt-3">
+        <div class="row">
+            <% for ( let item of items) { %>
+                <div class="col-auto mb-3">
+                    <div class="card mb-3" style="width: 12rem;">
+                        <img class="card-img-top" src="<%=item.image%>" alt="" style="height: 9rem;">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <%=item.title%>
@@ -77,6 +97,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <% } %>
-    </ul>
+                <%}%>
+        </div>
+    </div>
