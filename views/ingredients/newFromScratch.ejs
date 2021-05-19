@@ -1,24 +1,28 @@
 <% layout('layouts/boilerplate')%>
-    <form class="row gy-2 gx-3 align-items-center" action="/ingredients/newFromScratch" method="POST">
-        <div class="mb-3 col-auto">
-            <label for="name">Name</label>
-            <input type="text" id='name' name='ingredient[name]'>
-        </div>
-        <div class="mb-3 col-auto">
-            <label for="description">description</label>
-            <input type="text" id='upc' name='ingredient[description]'>
-        </div>
-        <div class="mb-3 col-auto">
-            <label for="quantity">quantity</label>
-            <input type="number" id='quantity' name='ingredient[quantity]' min=1 value=1>
-        </div>
-        <div class="mb-3 col-auto">
-            <label for="quantityType">quantity type</label>
-            <input type="text" id='quantityType' name='ingredient[quantityType]'>
-        </div>
-        <div class="mb-3 col-auto">
-            <button class="btn btn-success">Add Ingredient</button>
-        </div>
+    <div class="row">
+        <h2>Add A New Ingredient</h2>
+        <form class="row gy-2 gx-3 align-items-center" action="/ingredients/newFromScratch" method="POST">
+            <div class="mb-3 col-auto">
+                <label for="name">Name</label>
+                <input type="text" id='name' name='ingredient[name]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="description">description</label>
+                <input type="text" id='upc' name='ingredient[description]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="quantity">quantity</label>
+                <input type="number" id='quantity' name='ingredient[quantity]' min=1 value=1>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="quantityType">quantity type</label>
+                <input type="text" id='quantityType' name='ingredient[quantityType]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <button class="btn btn-success">Add Ingredient</button>
+            </div>
+    </div>
+    <div class="row">
         <h2>Items</h2>
         <div class="mb-3 col-auto">
             <% allItems.forEach(function(item, i) {%>
@@ -34,21 +38,24 @@
                     </ul>
                 </div>
                 <% }) %>
-                    <h2>Recipes</h2>
-                    <% allRecipes.forEach(function(recipe, i) {%>
-                        <div class="col-auto form-check-inline">
-                            <ul>
-                                <li>
-                                    <%=recipe.name%>
-                                </li>
-                                <div class="form-check-inline">
-                                    <input type="checkbox" id="ing-<%=i%>" name="addRecipes[]" value="<%=recipe._id%>">
-                                </div>
-                                <label for="ing-<%=i%>">Attach to Ingredient?</label>
-                            </ul>
-                        </div>
-                        <% }) %>
         </div>
+        <div class="row">
+            <h2>Recipes</h2>
+            <% allRecipes.forEach(function(recipe, i) {%>
+                <div class="col-auto form-check-inline">
+                    <ul>
+                        <li>
+                            <%=recipe.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="ing-<%=i%>" name="addRecipes[]" value="<%=recipe._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Attach to Ingredient?</label>
+                    </ul>
+                </div>
+                <% }) %>
+        </div>
+    </div>
     </form>
     <footer>
         <a href="/ingredients">All Ingredients</a>
