@@ -1,48 +1,62 @@
 <% layout('layouts/boilerplate')%>
     <h1>
-        <%=ingredient.name %>
+        <%=ingredient.name%>
     </h1>
-    <h2>Add a Recipe</h2>
-    <form action="/ingredients/<%=ingredient._id%>/recipes/newIngredient" method="POST">
-        <div>
-            <label for="name">name</label>
-            <input type="text" id='name' name='recipe[name]'>
-        </div>
-        <div>
-            <label for="recipe">recipe</label>
-            <input type="text" id='recipe' name='recipe[recipe]'>
-        </div>
-        <div>
-            <label for="minTime">min amount of minutes to make</label>
-            <input type="number" id='minTime' name='recipe[minTime]'>
-        </div>
-        <div>
-            <label for="maxTime">max amount of minutes to make</label>
-            <input type="number" id='maxTime' name='recipe[maxTime]'>
-        </div>
-        <button>Add Recipe</button>
-        <h2>Already existing Recipes</h2>
-        <% for (let recipe of existingRecipesArray) { %>
-            <li>
-                <a href="/recipes/<%=recipe._id%>/">
-                    <%=recipe.name%>
-                </a>
-            </li>
-            <% } %>
-                <div class="mb-3 mt-3">
-                    <h2>All Recipes</h2>
-                    <% allRecipes.forEach(function(rec, i) {%>
-                        <ul>
-                            <li>
-                                <%=rec.name%>
-                            </li>
-                            <div class="form-check-inline">
-                                <input type="checkbox" id="rec-<%=i%>" name="addRecipes[]" value="<%=rec._id%>">
-                            </div>
-                            <label for="ing-<%=i%>">Attach <%=ingredient.name%> to <%=rec.name%>?</label>
-                        </ul>
-                        <% }) %>
+    <h2>Add a New Recipe to <%=ingredient.name%>
+    </h2>
+    <div class="row">
+        <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>/recipes/newIngredient"
+            method="POST">
+            <div class="mb-3 col-auto">
+                <label for="name">name</label>
+                <input type="text" id='name' name='recipe[name]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="recipe">recipe</label>
+                <input type="text" id='recipe' name='recipe[recipe]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="minTime">min amount of minutes to make</label>
+                <input type="number" id='minTime' name='recipe[minTime]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="maxTime">max amount of minutes to make</label>
+                <input type="number" id='maxTime' name='recipe[maxTime]'>
+            </div>
+            <div class="mb-3 col-auto">
+                <button class="btn btn-success">Add Recipe</button>
+            </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col-auto">
+            <h2>Already existing Recipes</h2>
+            <% for (let recipe of existingRecipesArray) { %>
+                <div class="col-auto mb-3">
+                    <li>
+                        <a href="/recipes/<%=recipe._id%>/">
+                            <%=recipe.name%>
+                        </a>
+                    </li>
+                    <% } %>
                 </div>
+        </div>
+        <div class="row">
+            <h2>All Recipes</h2>
+            <% allRecipes.forEach(function(rec, i) {%>
+                <div class="col-auto form-check-inline">
+                    <ul>
+                        <li>
+                            <%=rec.name%>
+                        </li>
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="rec-<%=i%>" name="addRecipes[]" value="<%=rec._id%>">
+                        </div>
+                        <label for="ing-<%=i%>">Attach <%=ingredient.name%> to <%=rec.name%>?</label>
+                    </ul>
+                </div>
+                <% }) %>
+        </div>
+    </div>
     </form>
     <footer>
         <a href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%></a>
