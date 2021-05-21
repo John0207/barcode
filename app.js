@@ -361,7 +361,7 @@ app.get('/recipes/:id', async (req, res) => {
     const itemsArray = [];
     const ingredientsNeededArray = [];
     for (let ingredient of recipe.ingredients){
-        if(ingredient.items.length === 0){
+        if((ingredient.items.length === 0)){
             ingredientsNeededArray.push(ingredient);
         }
         for (let id of ingredient.items){

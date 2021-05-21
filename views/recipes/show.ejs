@@ -4,9 +4,13 @@
             <h1>
                 <%= recipe.name %>
             </h1>
-            <h2>
-                <%= recipe.recipe %>
-            </h2>
+            <div>
+                <p>
+                <pre><%=recipe.recipe%></pre>
+                </p>
+            </div>
+        </div>
+        <div class="col-auto">
             <ul>
                 <li>
                     minimum amount of time to cook: <%=recipe.minTime%>
@@ -19,6 +23,8 @@
                 </li>
             </ul>
         </div>
+
+
         <div class="mb-3 col-auto">
             <h2>Ingredients</h2>
             <ul>
