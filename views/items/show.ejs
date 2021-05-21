@@ -1,60 +1,54 @@
 <% layout('layouts/boilerplate')%>
-    <div class="row gy-2 gx-3 align-items-center">
+    <div class="row gy-2 gx-3 align-items-center mt-3">
+
         <div class="mb-3 col-auto">
-            <img src="<%=item.image%>" alt="">
+            <div class="card mb-3" style="width: 15rem;">
+                <img class="card-img-top" src="<%=item.image%>" alt="" style="height: 10rem;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%=item.title%>
+                    </h5>
+                    <p class="card-text">Price: <%=item.price%>
+                    </p>
+
+                    <p class="card-text">UPC: <%=item.upc%>
+                    </p>
+                    <p class="card-text">Location: <%=item.location%>
+                    </p>
+                    <p class="card-text">Case Quantity: <%=item.caseQty%>
+                    </p>
+                    <p class="card-text">Shelf Life: <%=item.shelfLife%> Days
+                    </p>
+                    <p class="card-text">Expires: <%=formatDate(item.expiration_date)%>
+                    </p>
+                    <p class="card-text">Date Purchased: <%=formatDate(item.date)%>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">quantity: <%=item.quantity%>
+                                <%=item.quantityType%></small>
+                    </p>
+                    <a href="/items/<%=item._id%>" class="btn btn-primary">View <%=item.title%></a>
+                </div>
+            </div>
         </div>
-        <div class="mb-3 col-auto">
-            <h1>
-                <%= item.title %>
-            </h1>
-            <h2>
-                <%= item.upc %>
-            </h2>
-            <ul>
-                <li>
-                    price: <%=item.price%>
-                </li>
-                <li>
-                    quantity: <%=item.quantity%>
-                        <%=item.quantityType%>
-                </li>
-                <li>
-                    location: <%=item.location%>
-                </li>
-                <li>
-                    case quantity: <%=item.caseQty%>
-                </li>
-                <li>
-                    Date purchased: <%=formatDate(item.date)%>
-                </li>
-                <li>
-                    Shelf Life in Days: <%=item.shelfLife%>
-                </li>
-                <li>
-                    Expiration Date: <%=formatDate(item.expiration_date)%>
-                </li>
-            </ul>
+        <div class="col-auto">
+            <div class="col-auto">
+                <a class="btn btn-primary btn-md mb-3" href="/items/<%=item._id%>/edit">Edit</a>
+                <br>
+                <a class="btn btn-success btn-md" href="/items/<%=item._id%>/ingredients/newItem">Add an ingredient</a>
+                <form class="mt-3 mb-3" action="/items/<%=item._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger btn-md">Delete</button>
+                </form>
+            </div>
         </div>
         <div class="mb-3 col-auto">
             <h3>Ingredients <%=item.title%> counts as: </h3>
             <%for (let ing of item.ingredients) {%>
                 <li>
-                    <a href="/ingredients/<%=ing._id%>">
+                    <a class="btn btn-primary btn-md" href="/ingredients/<%=ing._id%>">
                         <%=ing.name%>
                     </a>
                 </li>
                 <% } %>
         </div>
     </div>
-    <p> <a href="/items/<%=item._id%>/edit">Edit</a>
-    </p>
-    <p>
-    <form action="/items/<%=item._id%>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form>
-    </p>
-    <footer>
-        <a href="/items/<%=item._id%>/ingredients/newItem">Add an ingredient</a>
-        <br>
-        <a href="/items">All Items</a>
-    </footer>

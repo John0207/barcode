@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <% layout('layouts/boilerplate')%>
+    <h1 class="mb-3">Make a New Recipe</h1>
     <form class="row gy-2 gx-3 align-items-center" action="/recipes/new" method="POST">
         <div class="mb-3 col-auto">
             <label for="name">name</label>
             <input type="text" id='name' name='recipe[name]'>
-        </div>
-        <div class="mb-3 col-auto">
-            <label for="recipe">recipe</label>
-            <input type="text" id='recipe' name='recipe[recipe]'>
         </div>
         <div class="mb-3 col-auto">
             <label for="minTime">min amount of minutes to make</label>
@@ -17,6 +14,13 @@
         <div class="mb-3 col-auto">
             <label for="maxTime">max amount of minutes to make</label>
             <input type="number" id='maxTime' name='recipe[maxTime]'>
+        </div>
+        <div class="row">
+            <label for="recipe">Recipe:</label>
+            <div class="mb-3 form-floating">
+                <textarea style="white-space: pre-wrap;" class="form-control" style="height: 100px" type="text"
+                    id='recipe' name='recipe[recipe]'></textarea>
+            </div>
         </div>
         <div class="mb-3 col-auto">
             <button class="btn btn-success">Add Recipe</button>
@@ -38,11 +42,3 @@
                 <% }) %>
         </div>
     </form>
-    <footer>
-        <a href="/items">All Items</a>
-        <br>
-        <a href="/recipes/">All recipes</a>
-        <br>
-        <a href="/ingredients/">All ingredients</a>
-        <br>
-    </footer>

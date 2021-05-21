@@ -2,7 +2,7 @@
     <div class="row gy-2 gx-3 align-items-center">
         <div class="mb-3 col-auto">
             <h1>
-                <%=ingredient.name%>
+                <%=ingredient.name%>:
             </h1>
             <h2>
                 <%=ingredient.description%>
@@ -20,7 +20,7 @@
             </ul>
         </div>
         <div class="mb-3 col-auto">
-            <h2>Recipes</h2>
+            <h2>Recipes:</h2>
             <ul>
                 <% for (let recipe of ingredient.recipes) {%>
                     <div class="mb-3 col-auto">
@@ -47,18 +47,16 @@
                     <% } %>
             </ul>
         </div>
-        <p> <a href="/ingredients/<%=ingredient._id%>/edit">Edit the ingredient</a>
+        <p> <a class="btn btn-primary" href="/ingredients/<%=ingredient._id%>/edit">Edit the ingredient</a>
+            <a class="btn btn-success" href="/ingredients/<%=ingredient._id%>/items/newIngredient">Attach an Item</a>
+            <a class="btn btn-success" href="/ingredients/<%=ingredient._id%>/recipes/newIngredient">Add a Recipe</a>
         </p>
         <p>
         <form action="/ingredients/<%=ingredient._id%>?_method=DELETE" method="POST">
-            <button>Delete ingredient</button>
+            <button class="btn btn-danger">Delete ingredient</button>
         </form>
         </p>
     </div>
     <footer>
-        <a href="/ingredients/<%=ingredient._id%>/items/newIngredient">Attach an Item</a>
-        <a href="/ingredients/<%=ingredient._id%>/recipes/newIngredient">Add a Recipe</a>
-        <a href="/ingredients">All ingredients</a>
-        <a href="/items">All items</a>
-        <a href="/Recipes">All recipes</a>
+
     </footer>

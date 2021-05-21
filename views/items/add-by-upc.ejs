@@ -1,27 +1,24 @@
 <% layout('layouts/boilerplate')%>
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-6 offset-3 mb-3">
-                <div class="card mb-3" style="width: 12rem;">
-                    <h4 class="card-title">ADD BY UPC</h4>
-                    <div class="card-body">
-                        <form id="upc-form" action="/items/add-by-upc" method="POST">
-                            <div class="card-text">
-                                <label class="form-label" for="upc">UPC</label>
-                                <input class='form-control' autofocus="autofocus" type="number" id='upc' name='upc'>
-                            </div>
-                            <div class="card-text mt-3">
-                                <label class="form-label" for="multi">Multiplier</label>
-                                <input class='form-control' autofocus="autofocus" type="number" id='multimultiplier'
-                                    name='multi' value=1 min=1>
-                            </div>
-                            <button class='btn btn-primary mt-3'>Scan</button>
-                        </form>
-                    </div>
+    <div class="row">
+        <div class="col-6 offset-3 mb-3">
+            <div class="card mb-3" style="width: 12rem;">
+                <h4 class="card-title">Add By UPC</h4>
+                <div class="card-body">
+                    <form id="upc-form" action="/items/add-by-upc" method="POST">
+                        <div class="card-text">
+                            <label class="form-label" for="upc">UPC</label>
+                            <input class='form-control' autofocus="autofocus" type="number" id='upc' name='upc'>
+                        </div>
+                        <div class="card-text mt-3">
+                            <label class="form-label" for="multi">Multiplier</label>
+                            <input class='form-control' autofocus="autofocus" type="number" id='multimultiplier'
+                                name='multi' value=1 min=1>
+                        </div>
+                        <button class='btn btn-success mt-3'>Scan</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <footer>
-        <a href="/items">All Items</a>
-    </footer>
+    </div>
+    <a class="btn btn-primary btn-lg" href="/items">All Items</a>

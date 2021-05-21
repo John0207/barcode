@@ -1,78 +1,15 @@
 <% layout('layouts/boilerplate')%>
     <h1>All Items</h1>
-    <div>
-        <a href="/items/new">Add Item Manually</a>
-    </div>
-    <div>
-        <a href="/recipes/">All recipes</a>
-    </div>
-    <div>
-        <a href="/ingredients/">All ingredients</a>
-    </div>
-    <div>
-        <a href="/items/add-by-upc">Add Item by Scanning</a>
-    </div>
-    <div>
-        <a href="/items/decrement-by-upc">Subtract Item by Scanning</a>
-    </div>
-    <div>
-        <a href="/items/delete-by-upc">Delete Item by Scanning</a>
-    </div>
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-auto mb-3">
-                <div class="card mb-3" style="width: 12rem;">
-                    <h5 class="card-title">
-                        Total cost of all items:
-                    </h5>
-                    <p class="card-text">$<%=total%>
-                    </p>
-                    <h5 class="card-title">
-                        Average cost per item:
-                    </h5>
-                    <p class="card-text">$<%=average%>
-                    </p>
-                </div>
-            </div>
-            <div class="col-auto mb-3">
-                <div class="card mb-3" style="width: 12rem;">
-                    <h5 class="card-title">
-                        Expired in location:
-                    </h5>
-                    <% for ( let item of expired) { %>
-                        <li class="card-text">
-                            <%=item.title%> at <%=item.location%>
-                        </li>
-                        <% } %>
-                </div>
-            </div>
-            <div class="col-auto mb-3">
-                <div class="card mb-3" style="width: 12rem;">
-                    <h5 class="card-title">
-                        Upcoming expirations:
-                    </h5>
-                    <% for ( let item of throw_outs) { %>
-                        <li class="card-text">
-                            <%=item.title%> at <%=item.location%>
-                        </li>
-                        <% } %>
-                </div>
-            </div>
-            <div class="col-auto mb-3">
-                <div class="card mb-3" style="width: 12rem;">
-                    <h5 class="card-title">
-                        Out of Stock:
-                    </h5>
-                    <% for ( let item of outOfStock) { %>
-                        <li class="card-text">
-                            <%=item.title%>
-                        </li>
-                        <% } %>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h1>Items</h1>
+    <form class="mt-3 mb-3" action="/items/itemSearch" method="POST">
+        <label class="form-label" for="txtAutoComplete">Search Items: </label>
+        <input type="text" id="txtAutoComplete" list="itemsList" name="txtAutoComplete">
+        <button class="btn btn-success">Search</button>
+    </form>
+    <datalist id="itemsList">
+        <% for(let item of items) {%>
+            <option value="<%=item.title%>" />
+            <% } %>
+    </datalist>
     <div class="container mt-3">
         <div class="row">
             <% for ( let item of items) { %>

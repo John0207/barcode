@@ -1,12 +1,19 @@
 <% layout('layouts/boilerplate')%>
-    <h1>Delete BY UPC</h1>
-    <form id="upc-form" action="/items/delete-by-upc" method="POST">
-        <div>
-            <label for="upc">UPC</label>
-            <input autofocus="autofocus" type="number" id='upc' name='upc'>
+    <div class="row">
+        <div class="col-6 offset-3 mb-3">
+            <div class="card mb-3" style="width: 12rem;">
+                <h4 class="card-title">Delete By UPC</h4>
+                <div class="card-body">
+                    <form id="upc-form" action="/items/delete-by-upc" method="POST">
+                        <div class="card-text">
+                            <label class="form-label" for="upc">UPC</label>
+                            <input class='form-control' autofocus="autofocus" type="number" id='upc' name='upc'>
+                        </div>
+                        <button class='btn btn-danger mt-3'>Delete</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button>Scan To Delete</button>
-    </form>
-    <footer>
-        <a href="/items">All Items</a>
-    </footer>
+    </div>
+    </div>
+    <a class="btn btn-primary btn-lg" href="/items">All Items</a>

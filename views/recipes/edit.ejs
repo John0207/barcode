@@ -39,10 +39,10 @@
                             <input type="checkbox" id="ing-<%=i%>" name="removeIngs[]" value="<%=ingredient._id%>">
                         </div>
                         <label for="ing-<%=i%>">Remove Ingredient <%=ingredient.name%> from Recipe <%=recipe.name%>
-                                    </label>
+                        </label>
                     </ul>
                 </div>
                 <% }) %>
         </div>
     </form>
-    <a href="/recipes/<%= recipe._id%>">Back To recipe</a>
+    <a class="btn btn-primary btn-lg" href="/recipes/<%= recipe._id%>">Back To <%=recipe.name%> </a>

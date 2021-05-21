@@ -1,6 +1,15 @@
 <% layout("layouts/boilerplate")%>
     <h1>All Ingredients</h1>
-    <a href="/ingredients/newFromScratch" class="btn btn-success">Make a New Ingredient</a>
+    <form action="/ingredients/ingredientSearch" method="POST">
+        <label class="form-label" for="txtAutoComplete">Search Ingredients: </label>
+        <input type="text" id="txtAutoComplete" list="ingList" name="txtAutoComplete">
+        <button class="btn btn-success">Search</button>
+    </form>
+    <datalist id="ingList">
+        <% for(let ingredient of ingredients) {%>
+            <option value="<%=ingredient.name%>" />
+            <% } %>
+    </datalist>
     <div class="container mt-3">
         <div class="row">
             <% for ( let ingredient of ingredients) { %>

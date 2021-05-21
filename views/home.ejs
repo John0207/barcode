@@ -1,2 +1,54 @@
 <% layout('layouts/boilerplate')%>
-    <h1>HOME!</h1>
+    <h1>Welcome!</h1>
+    <div class="row mt-5">
+        <div class="col-auto mb-3">
+            <div class="card mb-3" style="width: 12rem;">
+                <h5 class="card-title">
+                    Total cost of all items:
+                </h5>
+                <p class="card-text">$<%=total%>
+                </p>
+                <h5 class="card-title">
+                    Average cost per item:
+                </h5>
+                <p class="card-text">$<%=average%>
+                </p>
+            </div>
+        </div>
+        <div class="col-auto mb-3">
+            <div class="card mb-3" style="width: 12rem;">
+                <h5 class="card-title">
+                    Expired in location:
+                </h5>
+                <% for ( let item of expired) { %>
+                    <li class="card-text">
+                        <%=item.title%> at <%=item.location%>
+                    </li>
+                    <% } %>
+            </div>
+        </div>
+        <div class="col-auto mb-3">
+            <div class="card mb-3" style="width: 12rem;">
+                <h5 class="card-title">
+                    Upcoming expirations:
+                </h5>
+                <% for ( let item of throw_outs) { %>
+                    <li class="card-text">
+                        <%=item.title%> at <%=item.location%>
+                    </li>
+                    <% } %>
+            </div>
+        </div>
+        <div class="col-auto mb-3">
+            <div class="card mb-3" style="width: 12rem;">
+                <h5 class="card-title">
+                    Out of Stock:
+                </h5>
+                <% for ( let item of outOfStock) { %>
+                    <li class="card-text">
+                        <%=item.title%>
+                    </li>
+                    <% } %>
+            </div>
+        </div>
+    </div>

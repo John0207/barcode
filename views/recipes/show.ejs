@@ -23,46 +23,42 @@
             <h2>Ingredients</h2>
             <ul>
                 <% for (let ingredient of recipe.ingredients) {%>
-                    <div class="mb-3 col-auto">
-                        <li>
-                            <a href="/ingredients/<%=ingredient._id%>">
-                                <%=ingredient.name%> - <%=ingredient.quantity%>
-                                        <%=ingredient.quantityType%>
-                            </a>
-                        </li>
-                    </div>
+                    <li>
+                        <a href="/ingredients/<%=ingredient._id%>">
+                            <%=ingredient.name%> - <%=ingredient.quantity%>
+                                    <%=ingredient.quantityType%>
+                        </a>
+                    </li>
                     <% } %>
             </ul>
         </div>
         <div class="mb-3 col-auto">
             <h2>What you have: </h2>
-            <% for (let item of itemsArray) {%>
-                <div class="mb-3 col-auto">
-                    <ul>
-                        <li>
-                            <a href="/items/<%=item._id%>">
-                                <%=item.title%> - <%=item.quantity%>
-                                        <%=item.quantityType%>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <% } %>
+            <ul>
+                <% for (let item of itemsArray) {%>
+                    <li>
+                        <a href="/items/<%=item._id%>">
+                            <%=item.title%> - <%=item.quantity%>
+                                    <%=item.quantityType%>
+                        </a>
+                    </li>
+                    <% } %>
+            </ul>
         </div>
         <div class="mb-3 col-auto">
             <h2>What you need: </h2>
-            <div class="mb-3 col-auto">
+            <ul>
                 <% for (let ingredient of ingredientsNeededArray) {%>
-                    <ul>
+                    <%if (ingredient) {%>
                         <li>
                             <a href="/ingredients/<%=ingredient._id%>">
                                 <%=ingredient.name%> - <%=ingredient.quantity%>
                                         <%=ingredient.quantityType%>
                             </a>
                         </li>
-                    </ul>
-            </div>
-            <% } %>
+                        <%}%>
+                            <%}%>
+            </ul>
         </div>
         <p> <a href="/recipes/<%=recipe._id%>/edit">Edit</a>
         </p>

@@ -93,11 +93,7 @@ app.locals.todaysDate = () => {
 
 // app.use(createExpiration);
 
-app.get('/', (req, res) => {
-    res.render('home')
-})
-
-app.get('/items', async (req, res) => {
+app.get('/', async (req, res) => {
     const today = new Date();
     const todayPlusSeven = new Date();
     todayPlusSeven.setDate(today.getDate() + 7 );
@@ -112,12 +108,42 @@ app.get('/items', async (req, res) => {
         if(item.quantity <= 0){
             outOfStock.push(item);
         }
-    }   
-    // console.log(todayPlusSeven);
-    // console.log(throw_outs);
-    res.render('items/index', { items, total, average, throw_outs, expired, outOfStock });
+    } 
+    res.render('home', { items, total, average, throw_outs, expired, outOfStock })
 })
 
+app.get('/items', async (req, res) => {
+    // const today = new Date();
+    // const todayPlusSeven = new Date();
+    // todayPlusSeven.setDate(today.getDate() + 7 );
+    const items = await Item.find({});
+    // const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
+    // const throw_outs = await Item.find({ expiration_date: { $gte: today, $lte: todayPlusSeven } });
+    // const expired = await Item.find({ expiration_date: { $lte: today } }); 
+    // const total = allPrices[0].prices;   
+    // const average = total / items.length;
+    // const outOfStock = [];
+    // for (let item of items){
+    //     if(item.quantity <= 0){
+    //         outOfStock.push(item);
+    //     }
+    // }   
+    // console.log(todayPlusSeven);
+    // console.log(throw_outs);
+    res.render('items/index', { items });
+})
+
+app.post('/items/itemSearch', async (req, res) => {
+    const txtAutoComplete = req.body.txtAutoComplete;
+    const item = await Item.findOne({title: txtAutoComplete});
+    // console.log(item);    
+    if (item){
+        const id = item._id;
+        res.redirect(`/items/${id}`);
+    } else {
+        res.redirect("/items/");
+    }    
+})
 
 app.get('/items/new', async (req, res) => {
     const allIngredients = await Ingredient.find({});    
@@ -299,6 +325,17 @@ app.get('/recipes', async (req, res) => {
     res.render('recipes/index', { recipes });
 })
 
+app.post('/recipes/recipeSearch', async (req, res) => {
+    const txtAutoComplete = req.body.txtAutoComplete;
+    const recipe = await Recipe.findOne({name: txtAutoComplete});
+    if (recipe){
+        const id = recipe._id;
+        res.redirect(`/recipes/${id}`);
+    } else {
+        res.redirect("/recipes/");
+    }    
+})
+
 app.get('/recipes/new', async (req, res) => {
     const allIngredients = await Ingredient.find({});
     res.render('recipes/new', { allIngredients });
@@ -329,16 +366,17 @@ app.get('/recipes/:id', async (req, res) => {
         }
         for (let id of ingredient.items){
             let item = await Item.findById(id);
-            
-            if (item.quantity <= 0){
-                for (let id of item.ingredients){
-                    let ingredient = await Ingredient.findById(id);
-                    ingredientsNeededArray.push(ingredient); 
+            if(item){            
+                if (item.quantity <= 0){
+                    for (let id of item.ingredients){
+                        let ingredient = await Ingredient.findById(id);
+                        ingredientsNeededArray.push(ingredient); 
+                    }
+                } else {
+                    itemsArray.push(item);
                 }
-            } else {
-                itemsArray.push(item);
-            }                      
-        }
+            }
+        }                      
     }
     
     // find matching ingredients if they exist to display them   
@@ -440,6 +478,19 @@ app.get('/ingredients', async (req, res) => {
     const ingredients = await Ingredient.find({});
     res.render('ingredients/index', { ingredients });
 })
+
+app.post('/ingredients/ingredientSearch', async (req, res) => {
+    const txtAutoComplete = req.body.txtAutoComplete;
+    const ingredient = await Ingredient.findOne({name: txtAutoComplete});
+    console.log(ingredient);    
+    if (ingredient){
+        const id = ingredient._id;
+        res.redirect(`/ingredients/${id}`);
+    } else {
+        res.redirect("/ingredients/");
+    }    
+})
+
 app.get('/ingredients/new', (req, res) => {
     res.render('ingredients/new');
 })

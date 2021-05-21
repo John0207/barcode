@@ -25,17 +25,20 @@
                 <button class="btn btn-success">Add Ingredient</button>
             </div>
     </div>
+    <div class="row-auto">
+        <a class="btn btn-primary btn-lg" href="/recipes/<%=recipe._id%>">Back To <%=recipe.name%> </a>
+    </div>
     <div class="row">
-        <h2>Already existing Ingredients</h2>
+        <h2>Current Ingredients for <%=recipe.name%>
+        </h2>
         <% for (let ing of existingIngredientsArray) { %>
             <div class="mb-3 col-auto">
                 <a href="/ingredients/<%=ing._id%>" class="btn btn-primary">
                     <%=ing.name%>
+                        <br>
+                        <%=ing.quantity%>
+                            <%=ing.quantityType%>
                 </a>
-                <li>
-                    <%=ing.quantity%>
-                        <%=ing.quantityType%>
-                </li>
             </div>
             <% } %>
 
@@ -45,20 +48,20 @@
         <% allIngredients.forEach(function(ingredient, i) {%>
             <div class="col-auto form-check-inline">
                 <ul>
-                    <li>
+                    <a href="/ingredients/<%=ingredient._id%>" class="btn btn-primary">
                         <%=ingredient.name%>
-                    </li>
+                            <br>
+                            <%=ingredient.quantity%>
+                                <%=ingredient.quantityType%>
+                    </a>
+                    <br>
                     <div class="form-check-inline">
                         <input type="checkbox" id="ing-<%=i%>" name="addIngs[]" value="<%=ingredient._id%>">
                     </div>
-                    <label for="ing-<%=i%>">Add to Recipe?</label>
+                    <label for="ing-<%=i%>">Add to <%=recipe.name%>?</label>
                 </ul>
             </div>
             <% }) %>
     </div>
     </div>
     </form>
-
-    <footer>
-        <a href="/recipes/<%=recipe._id%>/">Back to <%=recipe.name%></a>
-    </footer>
