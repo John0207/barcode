@@ -8,20 +8,23 @@
         <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>/recipes/newIngredient"
             method="POST">
             <div class="mb-3 col-auto">
-                <label for="name">name</label>
-                <input type="text" id='name' name='recipe[name]'>
+                <label class="form-label" for="name">Name:</label>
+                <input class="form-control" type="text" id='name' name='recipe[name]'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="recipe">recipe</label>
-                <input type="text" id='recipe' name='recipe[recipe]'>
+                <label class="form-label" for="minTime">Min amount of minutes to make:</label>
+                <input class="form-control" type="number" id='minTime' name='recipe[minTime]'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="minTime">min amount of minutes to make</label>
-                <input type="number" id='minTime' name='recipe[minTime]'>
+                <label class="form-label" for="maxTime">Max amount of minutes to make:</label>
+                <input class="form-control" type="number" id='maxTime' name='recipe[maxTime]'>
             </div>
-            <div class="mb-3 col-auto">
-                <label for="maxTime">max amount of minutes to make</label>
-                <input type="number" id='maxTime' name='recipe[maxTime]'>
+            <div class="row">
+                <label class="form-label" for="recipe">Recipe:</label>
+                <div class="mb-3 form-floating">
+                    <textarea class="form-control" style="white-space: pre-wrap;height: 15rem;" class="form-control"
+                        type="text" id='recipe' name='recipe[recipe]'></textarea>
+                </div>
             </div>
             <div class="mb-3 col-auto">
                 <button class="btn btn-success">Add Recipe</button>
@@ -58,6 +61,9 @@
         </div>
     </div>
     </form>
-    <footer>
-        <a href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%></a>
-    </footer>
+    <div class="row">
+        <div class="col-auto">
+            <a class="btn btn-primary btn-lg mb-3" href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%>
+            </a>
+        </div>
+    </div>

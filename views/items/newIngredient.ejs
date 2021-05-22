@@ -3,48 +3,52 @@
         <h1>
             <%=ingredient.name%>:
         </h1>
-        <h2>Add an Item</h2>
+        <h2>Attach an Item</h2>
         <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>/items/newIngredient"
             method="POST">
             <div class="mb-3 col-auto">
-                <label for="title">Title</label>
-                <input type="text" id='title' name='item[title]'>
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id='title' name='item[title]'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="location">location</label>
-                <input type="text" id='location' name='item[location]'>
+                <label class="form-label" for="location">Location:</label>
+                <input class="form-control" type="text" id='location' name='item[location]'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="upc">upc: </label>
-                <input type="number" id='upc' name='item[upc]'>
+                <label class="form-label" for="upc">UPC:</label>
+                <input class="form-control" type="number" id='upc' name='item[upc]'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="quantity">quantity</label>
-                <input type="number" id='quantity' name='item[quantity]' min=1 value=1>
+                <label class="form-label" for="quantity">Quantity:</label>
+                <input class="form-control" type="number" id='quantity' name='item[quantity]' min=1 value=1>
             </div>
             <div class="mb-3 col-auto">
-                <label for="quantityType">quantity type</label>
-                <input type="text" id='quantityType' name='item[quantityType]'>
+                <label class="form-label" for="quantityType">Quantity Type</label>
+                <input class="form-control" type="text" id='quantityType' name='item[quantityType]'
+                    placeholder="ex. tsp(s) or jar(s)">
             </div>
             <div class="mb-3 col-auto">
-                <label for="price">price</label>
-                <input type="text" id='price' name='item[price]'>
+                <label class="form-label" for="price">Price:</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="price-label">$</span>
+                    <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=0>
+                </div>
             </div>
             <div class="mb-3 col-auto">
-                <label for="caseQty">case quantity</label>
-                <input type="number" id='caseQty' name='item[caseQty]'>
+                <label class="form-label" for="caseQty">Case Quantity:</label>
+                <input class="form-control" type="number" id='caseQty' name='item[caseQty]'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="date">Date of Purchase</label>
-                <input type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
+                <label class="form-label" for="date">Date of Purchase:</label>
+                <input class="form-control" type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
             </div>
             <div class="mb-3 col-auto">
-                <label for="shelfLife">Shelf Life in Days</label>
-                <input type="number" id='shelfLife' name='item[shelfLife]' min=1>
+                <label class="form-label" for="shelfLife">Shelf Life in Days:</label>
+                <input class="form-control" type="number" id='shelfLife' name='item[shelfLife]' min=1>
             </div>
             <div class="mb-3 col-auto">
-                <label for="expiration_date">expiration date</label>
-                <input type="date" id="expiration_date" name="item[expiration_date]" min=1>
+                <label class="form-label" for="expiration_date">Expiration Date:</label>
+                <input class="form-control" type="date" id="expiration_date" name="item[expiration_date]" min=1>
             </div>
             <div class="mb-3 col-auto">
                 <button class="btn btn-success">Add Item</button>
@@ -56,7 +60,7 @@
         <h2>Already existing Items</h2>
         <% for (let item of existingItemsArray) { %>
             <div class="mb-3 col-auto">
-                <a href="/ingredients/<%=item._id%>" class="btn btn-primary">
+                <a href="/items/<%=item._id%>" class="btn btn-primary">
                     <%=item.title%>
                 </a>
                 <li>

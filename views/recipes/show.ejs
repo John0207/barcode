@@ -4,6 +4,11 @@
             <h1>
                 <%= recipe.name %>
             </h1>
+            <a class="btn btn-success" href="/recipes/<%=recipe._id%>/ingredients/new">Add an ingredient</a>
+            <a class="btn btn-primary" href="/recipes/<%=recipe._id%>/edit">Edit</a>
+            <form action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
+                <button class="mt-3 btn btn-danger">Delete</button>
+            </form>
             <div>
                 <p>
                 <pre><%=recipe.recipe%></pre>
@@ -22,10 +27,7 @@
                     Date: <%=formatDate(recipe.createdDate)%>
                 </li>
             </ul>
-        </div>
 
-
-        <div class="mb-3 col-auto">
             <h2>Ingredients</h2>
             <ul>
                 <% for (let ingredient of recipe.ingredients) {%>
@@ -50,8 +52,7 @@
                     </li>
                     <% } %>
             </ul>
-        </div>
-        <div class="mb-3 col-auto">
+
             <h2>What you need: </h2>
             <ul>
                 <% for (let ingredient of ingredientsNeededArray) {%>
@@ -66,15 +67,7 @@
                             <%}%>
             </ul>
         </div>
-        <p> <a href="/recipes/<%=recipe._id%>/edit">Edit</a>
-        </p>
         <p>
-        <form action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-danger">Delete</button>
-        </form>
+
         </p>
     </div>
-    <footer>
-        <a href="/recipes/<%=recipe._id%>/ingredients/new">Add an ingredient</a>
-        <a href="/recipes">All recipes</a>
-    </footer>

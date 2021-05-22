@@ -7,20 +7,21 @@
             <h2>Add an Ingredient</h2>
             <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=item._id%>/newItem" method="POST">
                 <div class="mb-3 col-auto">
-                    <label for=" name">Name</label>
-                    <input type="text" id='name' name='ingredient[name]'>
+                    <label class="form-label" for="name">Name:</label>
+                    <input class="form-control" type="text" id='name' name='ingredient[name]'>
                 </div>
                 <div class="mb-3 col-auto">
-                    <label for=" description">description</label>
-                    <input type="text" id='upc' name='ingredient[description]'>
+                    <label class="form-label" for=" description">Description:</label>
+                    <input class="form-control" type="text" id='upc' name='ingredient[description]'>
                 </div>
                 <div class="mb-3 col-auto">
-                    <label for=" quantity">quantity</label>
-                    <input type="number" id='quantity' name='ingredient[quantity]' min=1 value=1>
+                    <label class="form-label" for=" quantity">Quantity:</label>
+                    <input class="form-control" type="number" id='quantity' name='ingredient[quantity]' min=1 value=1>
                 </div>
                 <div class="mb-3 col-auto">
-                    <label for=" quantityType">quantity type</label>
-                    <input type="text" id='quantityType' name='ingredient[quantityType]'>
+                    <label class="form-label" for=" quantityType">Quantity Type:</label>
+                    <input class="form-control" type="text" id='quantityType' name='ingredient[quantityType]'
+                        placeholder="ex. tsp(s) or jar(s)">
                 </div>
                 <div class="mb-3 col-auto">
                     <button class="btn btn-success">Add Ingredient</button>
@@ -31,9 +32,9 @@
             <% for (let ing of existingIngredientsArray) { %>
                 <div class="mb-3 col-auto">
                     <ul>
-                        <h5>
+                        <a href="/ingredients/<%=ing._id%>">
                             <%=ing.name%>
-                        </h5>
+                        </a>
                         <li>
                             <%=ing.quantity%>
                                 <%=ing.quantityType%>

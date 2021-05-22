@@ -1,50 +1,52 @@
 <% layout('layouts/boilerplate')%>
+    <h1>New Item</h1>
     <form class="row gy-2 gx-3 align-items-center" action="/items" method="POST">
         <div class="mb-3 col-auto">
-            <label class="form-label" for="title">Title</label>
+            <label class="form-label" for="title">Title:</label>
             <input class="form-control" type="text" id='title' name='item[title]'>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="upc">UPC</label>
+            <label class="form-label" for="upc">UPC:</label>
             <input class="form-control" type="number" id='upc' name='item[upc]' min=1>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="location">location</label>
+            <label class="form-label" for="location">Location:</label>
             <input class="form-control" type="text" id='location' name='item[location]'>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="quantity">quantity</label>
+            <label class="form-label" for="quantity">Quantity:</label>
             <input class="form-control" type="number" id='quantity' name='item[quantity]' min=1 value=1>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="quantity">quantity type</label>
-            <input class="form-control" type="text" id='quantityType' name='item[quantityType]'>
+            <label class="form-label" for="quantityType">Quantity Type:</label>
+            <input class="form-control" type="text" id='quantityType' name='item[quantityType]'
+                placeholder="ex. tsp(s) or jar(s)">
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="price">price</label>
+            <label class="form-label" for="price">Price:</label>
             <div class="input-group">
                 <span class="input-group-text" id="price-label">$</span>
-                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=1>
+                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=0>
             </div>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="caseQty">case quantity</label>
+            <label class="form-label" for="caseQty">Case Quantity:</label>
             <input class="form-control" type="number" id='caseQty' name='item[caseQty]' min=1>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="date">Date of Purchase</label>
+            <label class="form-label" for="date">Date of Purchase:</label>
             <input class="form-control" type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="shelfLife">Shelf Life in Days</label>
+            <label class="form-label" for="shelfLife">Shelf Life in Days:</label>
             <input class="form-control" type="number" id='shelfLife' name='item[shelfLife]' min=1>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="expiration_date">expiration date</label>
+            <label class="form-label" for="expiration_date">Expiration Date:</label>
             <input class="form-control" type="date" id="expiration_date" name="item[expiration_date]" min=1>
         </div>
         <div class="mb-3 col-auto">
-            <label class="form-label" for="image">image url</label>
+            <label class="form-label" for="image">Image Url:</label>
             <input class="form-control" type="text" id="image" name="item[image]">
         </div>
         <div class="mb-3 col-auto">
@@ -68,4 +70,4 @@
         </div>
     </form>
 
-    <a class="btn btn-primary btn-lg" href="/items">All Items</a>
+    <a class="btn btn-primary btn-lg mb-3" href="/items">All Items</a>

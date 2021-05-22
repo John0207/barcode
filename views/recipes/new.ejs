@@ -4,22 +4,22 @@
     <h1 class="mb-3">Make a New Recipe</h1>
     <form class="row gy-2 gx-3 align-items-center" action="/recipes/new" method="POST">
         <div class="mb-3 col-auto">
-            <label for="name">name</label>
-            <input type="text" id='name' name='recipe[name]'>
+            <label class="form-label" for="name">Name:</label>
+            <input class="form-control" type="text" id='name' name='recipe[name]'>
         </div>
         <div class="mb-3 col-auto">
-            <label for="minTime">min amount of minutes to make</label>
-            <input type="number" id='minTime' name='recipe[minTime]'>
+            <label class="form-label" for="minTime">Min amount of minutes to make:</label>
+            <input class="form-control" type="number" id='minTime' name='recipe[minTime]'>
         </div>
         <div class="mb-3 col-auto">
-            <label for="maxTime">max amount of minutes to make</label>
-            <input type="number" id='maxTime' name='recipe[maxTime]'>
+            <label class="form-label" for="maxTime">Max amount of minutes to make:</label>
+            <input class="form-control" type="number" id='maxTime' name='recipe[maxTime]'>
         </div>
         <div class="row">
-            <label for="recipe">Recipe:</label>
+            <label class="form-label" for="recipe">Recipe:</label>
             <div class="mb-3 form-floating">
-                <textarea style="white-space: pre-wrap;" class="form-control" type="text" id='recipe'
-                    name='recipe[recipe]'></textarea>
+                <textarea class="form-control" style="white-space: pre-wrap;height: 20rem;" class="form-control"
+                    type="text" id='recipe' name='recipe[recipe]'></textarea>
             </div>
         </div>
         <div class="mb-3 col-auto">
@@ -32,6 +32,8 @@
                     <ul>
                         <li>
                             <%=ingredient.name%>
+                                <br>
+                                <%=ingredient.quantity%> - <%=ingredient.quantityType%>
                         </li>
                         <div class="form-check-inline">
                             <input type="checkbox" id="ing-<%=i%>" name="addIngredients[]" value="<%=ingredient._id%>">
