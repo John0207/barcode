@@ -10,6 +10,8 @@ const Ingredient = require('./models/ingredient');
 const ingredients = require('./seeds/ingredients');
 const ingredient = require('./models/ingredient');
 
+const items = require('./routes/items');
+
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -31,6 +33,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use('/items', items);
 
 
 // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd#:~:text=The%20simplest%20way%20to%20convert,getTimezoneOffset()%20*%2060000%20))%20.
@@ -60,39 +63,6 @@ app.locals.todaysDate = () => {
     
 }
 
-
-// https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd#:~:text=The%20simplest%20way%20to%20convert,getTimezoneOffset()%20*%2060000%20))%20.
-
-
-// const createExpiration = async (req, res, next) => {
-//     const items = await Item.find({});
-//     for (let i=0; i < items.length; i++) {        
-//         console.log(items[i].title);
-//         if (!item[i].date){
-//             // dateNow = new Date();
-//             // dateNowString = dateNow.toISOString().slice(0,10).replace(/-/g,"");
-//             // await Item.findOneAndUpdate({title: item[i].title}, { date: dateNowString});
-//             console.log(item[i].title + " was given the current date " + dateNowString);
-//         }
-//     //     if (!item[i].date_purchased_ISO && item[i].date){
-//     //         await Item.findOneAndUpdate({title: item[i].title}, { date_purchased_ISO: item[i].date});
-//     //         console.log(item[i].title + " had it's iso date set because it had none")
-//     //     }
-//     //     if (!items[i].expiration_date && items[i].date_purchased_ISO && items[i].shelfLife){            
-//     //         dateMiddleware = new Date(items[i].date);
-//     //         exDateMiddleware = new Date(dateMiddleware.setDate(dateMiddleware.getDate() + items[i].shelfLife));
-//     //         await Item.findOneAndUpdate({title: items[i].title}, {expiration_date: exDateMiddleware});
-//     //         console.log(items[i].title + " expiration date was reset and is now " + items[i].expiration_date);
-//     //     }
-//     // }
-//         console.log(items.length);
-//         console.log('middleware test for all routes!');
-//         next();
-//     }
-// };
-
-// app.use(createExpiration);
-
 app.get('/', async (req, res) => {
     const today = new Date();
     const todayPlusSeven = new Date();
@@ -112,211 +82,6 @@ app.get('/', async (req, res) => {
     res.render('home', { items, total, average, throw_outs, expired, outOfStock })
 })
 
-app.get('/items', async (req, res) => {
-    // const today = new Date();
-    // const todayPlusSeven = new Date();
-    // todayPlusSeven.setDate(today.getDate() + 7 );
-    const items = await Item.find({});
-    // const allPrices = await Item.aggregate([{ $group: { _id : null,  "prices" : { $sum: { "$multiply" : ["$price", "$quantity"] }}}}]);
-    // const throw_outs = await Item.find({ expiration_date: { $gte: today, $lte: todayPlusSeven } });
-    // const expired = await Item.find({ expiration_date: { $lte: today } }); 
-    // const total = allPrices[0].prices;   
-    // const average = total / items.length;
-    // const outOfStock = [];
-    // for (let item of items){
-    //     if(item.quantity <= 0){
-    //         outOfStock.push(item);
-    //     }
-    // }   
-    // console.log(todayPlusSeven);
-    // console.log(throw_outs);
-    res.render('items/index', { items });
-})
-
-app.post('/items/itemSearch', async (req, res) => {
-    const txtAutoComplete = req.body.txtAutoComplete;
-    const item = await Item.findOne({title: txtAutoComplete});
-    // console.log(item);    
-    if (item){
-        const id = item._id;
-        res.redirect(`/items/${id}`);
-    } else {
-        res.redirect("/items/");
-    }    
-})
-
-app.get('/items/new', async (req, res) => {
-    const allIngredients = await Ingredient.find({});    
-    res.render('items/new', { allIngredients });
-})
-
-app.get('/items/new-upc', (req, res) => {
-    res.render('items/new');
-})
-
-
-app.get('/items/decrement-by-upc', (req, res) => {
-    res.render('items/decrement-by-upc');
-})
-
-app.post('/items/decrement-by-upc', async(req, res) => {
-    const  upc1  = req.body.upc;
-    const item = await Item.findOne({upc: upc1});
-    const multi = req.body.multi;
-    if (item) {
-        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - (item.caseQty * multi)});
-        console.log(item.title + " Successfully decremented using multiplier: " + multi);
-        res.redirect("/items/decrement-by-upc");
-    } else {
-        res.render('items/new-upc', { upc1 });
-    }
-}) 
-
-app.post('/items', async (req, res) => {
-    const item = new Item(req.body.item);    
-    if (!item.expiration_date && item.date && item.shelfLife) {        
-        date = item.date;
-        exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
-        await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
-        // console.log(item.title + " is the title for this item");                
-        // console.log(item.date);
-        // console.log(exDate);
-    }
-    if (req.body.addIngredients) {
-        for (let id of req.body.addIngredients){
-            let ingredient = await Ingredient.findById(id);
-            item.ingredients.push(ingredient);
-            ingredient.items.push(item);
-            await ingredient.save();
-        }
-    }
-    await item.save();    
-    res.redirect(`/items/${item._id}`);
-})
-
-
-
-app.get('/items/add-by-upc', async (req, res) => {
-    const allIngredients = await Ingredient.find({});
-    res.render('items/add-by-upc', { allIngredients });
-})
-
-app.post('/items/add-by-upc', async (req, res) => {
-    const  upc1  = req.body.upc;
-    const multi = req.body.multi;
-    const item = await Item.findOne({upc: upc1});
-    const allIngredients = await Ingredient.find({});
-    if (item) {
-        await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity + (item.caseQty * multi) });
-        console.log(item.title + " Successfully incremented using multiplier: " + multi);
-        res.redirect("/items/add-by-upc");
-    } else {
-        res.render('items/new-upc', { upc1, allIngredients });
-
-        // FIX ERROR WHEN PAGE REFRESHES IT EXECUTES
-
-    }
-})
-
-app.get('/items/delete-by-upc', (req, res) => {
-    res.render('items/delete-by-upc');
-})
-
-app.post('/items/delete-by-upc', async(req, res) => {
-    const  upc1  = req.body.upc;
-    const item = await Item.findOne({upc: upc1});
-    if (item) {
-        await Item.findOneAndDelete({upc: upc1});
-        console.log(item.title + " Successfully removed");
-        res.redirect("/items/delete-by-upc");
-    } else {
-        res.send('sorry item doesnt exist yet');
-    }
-})   
-
-
-app.get('/items/:id', async (req, res) => { 
-    const item = await Item.findById(req.params.id).populate('ingredients');
-    res.render('items/show', { item });
-
-})
-
-app.get('/items/:id/edit', async (req, res) => {
-    const item = await Item.findById(req.params.id)
-    const existingIngredients = item.ingredients;
-    const existingIngredientsArray = [];
-    for (let id of existingIngredients) {
-        const ing = await Ingredient.findById(id);
-        if (ing) {
-            existingIngredientsArray.push(ing);
-        }
-    }
-
-    res.render('items/edit', { item, existingIngredientsArray });
-})
-
-app.put('/items/:id', async (req, res) => {
-    const { id } = req.params;
-    let item = await Item.findById(id);    
-    if (req.body.removeIngs){        
-        for (let iD of req.body.removeIngs){
-            let ing = await Ingredient.findById(iD);            
-            await item.updateOne({$pull: {ingredients: {$in: req.body.removeIngs}}});
-            await ing.updateOne({$pull: {items: item._id}});
-        }
-    } else {
-        let item = await Item.findByIdAndUpdate(id, { ...req.body.item });
-    }
-        
-    res.redirect(`/items/${item._id}`)
-});
-
-
-app.get('/items/:id/ingredients/newItem', async (req, res) => {
-    const { id } = req.params;
-    const item = await Item.findById(id);
-    const existingIngredients = item.ingredients;
-    const allIngredients = await Ingredient.find({_id:{$nin: existingIngredients}});
-    const existingIngredientsArray = [];
-    for (let id of existingIngredients) {
-        const ing = await Ingredient.findById(id);
-        if (ing) {
-            existingIngredientsArray.push(ing);
-        }
-    }
-    // console.log(existingIngredients + " " + allIngredients);
-    res.render('ingredients/newItem', { item, allIngredients, existingIngredientsArray });
-})
-
-// /ingredients/<%=item._id%>/new
-app.post('/ingredients/:id/newItem', async (req, res) => {
-    const { id } = req.params;
-    const item = await Item.findById(id);
-    if (!req.body.addIngs){
-        const {name, description, quantity, quantityType} = req.body.ingredient;
-        const ingredient = new Ingredient({name, description, quantity, quantityType});
-        item.ingredients.push(ingredient);
-        ingredient.items.push(item);
-        await item.save();
-        await ingredient.save();
-    } else {
-        for (let id of req.body.addIngs){
-            let ing_id = await Ingredient.findById(id);
-            item.ingredients.push(ing_id);
-            ing_id.items.push(item);
-            await item.save();
-            await ing_id.save();
-        }
-    }
-    
-    res.redirect(`/items/${item._id}`)
-})
-
-app.delete('/items/:id', async (req, res) => {
-    const { id } = req.params;
-    await Item.findByIdAndDelete(id);
-    res.redirect('/items');
-});
 
 // !!!!!---------------------------------------------------------------!!!!!!!!!!!!!!!!
 //                             recipe routes
