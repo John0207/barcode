@@ -1,53 +1,45 @@
 <% layout('layouts/boilerplate')%>
-    <form class="row gy-2 gx-3 align-items-center" action="/items" method="POST">
+    <form class="row gy-2 gx-3 align-items-center validated-form" action="/items" method="POST" novalidate>
         <div class="mb-3 col-auto">
             <label class="form-label" for="title">Title:</label>
-            <br>
-            <input class="form-control" type="text" id='title' name='item[title]'>
+            <input class="form-control" type="text" id='title' name='item[title]' required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="upc">UPC:</label>
-            <br>
-            <input class="form-control" type="number" id='upc' name='item[upc]' value="<%=upc1%>" min=1>
+            <input class="form-control" type="number" id='upc' name='item[upc]' value="<%=upc1%>" min=1 required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="location">Location:</label>
-            <br>
-            <input class="form-control" type="text" id='location' name='item[location]'>
+            <input class="form-control" type="text" id='location' name='item[location]' required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="quantity">Quantity:</label>
-            <br>
-            <input class="form-control" type="number" id='quantity' name='item[quantity]' min=1 value=1>
+            <input class="form-control" type="number" id='quantity' name='item[quantity]' min=1 value=1 required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="quantityType">Quantity Type:</label>
-            <br>
             <input class="form-control" type="text" id='quantityType' name='item[quantityType]'
-                placeholder="ex. tsp(s) or jar(s)">
+                placeholder="ex. tsp(s) or jar(s)" required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="price">Price:</label>
-            <br>
             <div class="input-group">
                 <span class="input-group-text" id="price-label">$</span>
-                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=1>
+                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=1 required>
             </div>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="caseQty">Case Quantity:</label>
-            <br>
-            <input class="form-control" type="number" id='caseQty' name='item[caseQty]' min=1>
+            <input class="form-control" type="number" id='caseQty' name='item[caseQty]' min=1 value=1 required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="date">Date of Purchase:</label>
-            <br>
-            <input class="form-control" type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'>
+            <input class="form-control" type="date" id='date' name='item[date]' value='<%=todaysDate(new Date())%>'
+                required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="shelfLife">Shelf Life in Days:</label>
-            <br>
-            <input class="form-control" type="number" id='shelfLife' name='item[shelfLife]' min=1>
+            <input class="form-control" type="number" id='shelfLife' name='item[shelfLife]' min=1 required>
         </div>
         <div class="mb-3 col-auto">
             <button class="btn btn-success">Add Item</button>

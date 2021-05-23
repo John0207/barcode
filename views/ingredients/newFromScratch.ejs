@@ -1,23 +1,25 @@
 <% layout('layouts/boilerplate')%>
     <div class="row">
         <h2>Add A New Ingredient</h2>
-        <form class="row gy-2 gx-3 align-items-center" action="/ingredients/newFromScratch" method="POST">
+        <form class="row gy-2 gx-3 align-items-center validated-form" action="/ingredients/newFromScratch" method="POST"
+            novalidate>
             <div class="mb-3 col-auto">
                 <label class="form-label" for="name">Name:</label>
-                <input class="form-control" type="text" id='name' name='ingredient[name]'>
+                <input class="form-control" type="text" id='name' name='ingredient[name]' required>
             </div>
             <div class="mb-3 col-auto">
                 <label class="form-label" for="description">Description:</label>
-                <input class="form-control" type="text" id='upc' name='ingredient[description]'>
+                <input class="form-control" type="text" id='upc' name='ingredient[description]' required>
             </div>
             <div class="mb-3 col-auto">
                 <label class="form-label" for="quantity">Quantity:</label>
-                <input class="form-control" type="number" id='quantity' name='ingredient[quantity]' min=1 value=1>
+                <input class="form-control" type="number" id='quantity' name='ingredient[quantity]' min=1 value=1
+                    required>
             </div>
             <div class="mb-3 col-auto">
-                <label class="form-label" for="quantityType">Quantity Type</label>
+                <label class="form-label" for="quantityType">Quantity Type:</label>
                 <input class="form-control" type="text" id='quantityType' name='ingredient[quantityType]'
-                    placeholder="ex. tsp(s) or jar(s)">
+                    placeholder="ex. tsp(s) or jar(s)" required>
             </div>
             <div class="mb-3 col-auto">
                 <button class="btn btn-success">Add Ingredient</button>

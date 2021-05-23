@@ -5,25 +5,31 @@
     <h2>Add a New Recipe to <%=ingredient.name%>
     </h2>
     <div class="row">
-        <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>/recipes/newIngredient"
-            method="POST">
+        <form class="row gy-2 gx-3 align-items-center validated-form"
+            action="/ingredients/<%=ingredient._id%>/recipes/newIngredient" method="POST" novalidate>
             <div class="mb-3 col-auto">
                 <label class="form-label" for="name">Name:</label>
-                <input class="form-control" type="text" id='name' name='recipe[name]'>
+                <input class="form-control" type="text" id='name' name='recipe[name]' required>
             </div>
             <div class="mb-3 col-auto">
                 <label class="form-label" for="minTime">Min amount of minutes to make:</label>
-                <input class="form-control" type="number" id='minTime' name='recipe[minTime]'>
+                <div class="input-group">
+                    <span class="input-group-text" id="minTime-label">Minutes:</span>
+                    <input class="form-control" type="number" id='minTime' name='recipe[minTime]' min=0 required>
+                </div>
             </div>
             <div class="mb-3 col-auto">
                 <label class="form-label" for="maxTime">Max amount of minutes to make:</label>
-                <input class="form-control" type="number" id='maxTime' name='recipe[maxTime]'>
+                <div class="input-group">
+                    <span class="input-group-text" id="maxTime-label">Minutes:</span>
+                    <input class="form-control" type="number" id='maxTime' name='recipe[maxTime]' min=0 required>
+                </div>
             </div>
             <div class="row">
                 <label class="form-label" for="recipe">Recipe:</label>
                 <div class="mb-3 form-floating">
                     <textarea class="form-control" style="white-space: pre-wrap;height: 15rem;" class="form-control"
-                        type="text" id='recipe' name='recipe[recipe]'></textarea>
+                        type="text" id='recipe' name='recipe[recipe]' required></textarea>
                 </div>
             </div>
             <div class="mb-3 col-auto">

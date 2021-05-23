@@ -1,29 +1,39 @@
 <% layout('layouts/boilerplate')%>
     <h1>Edit Recipe <%=recipe.name%>
     </h1>
-    <form class="row gy-2 gx-3 align-items-center" action="/recipes/<%=recipe._id%>?_method=PUT" method="POST">
+    <form class="row gy-2 gx-3 align-items-center validated-form" action="/recipes/<%=recipe._id%>?_method=PUT"
+        method="POST" novalidate>
         <div class="mb-3 col-auto">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="recipe[name]" value="<%=recipe.name%>">
+            <label class="form-label" for="name">Name:</label>
+            <input type="text" id="name" name="recipe[name]" value="<%=recipe.name%>" class="form-control" required>
         </div>
         <div class="row">
-            <label for="recipe">Recipe:</label>
+            <label class="form-label" for="recipe">Recipe:</label>
             <div class="mb-3 form-floating">
                 <textarea style="white-space: pre-wrap; height: 15rem;" class="form-control" type="text" id='recipe'
-                    name='recipe[recipe]'><%=recipe.recipe%></textarea>
+                    name='recipe[recipe]' required><%=recipe.recipe%></textarea>
             </div>
         </div>
         <div class="mb-3 col-auto">
-            <label for="minTime">min time to make</label>
-            <input type="number" id="minTime" name="recipe[minTime]" value="<%=recipe.minTime%>" min=0>
+            <label class="form-label" for="minTime">Min time to make:</label>
+            <div class="input-group">
+                <span class="input-group-text" id="minTime-label">Minutes:</span>
+                <input class="form-control" type="number" id='minTime' name='recipe[minTime]' min=0 required
+                    value="<%=recipe.minTime%>">
+            </div>
         </div>
         <div class="mb-3 col-auto">
-            <label for="maxTime">max time to make</label>
-            <input type="number" id="maxTime" name="recipe[maxTime]" value="<%=recipe.maxTime%>" min=0>
+            <label class="form-label" for="maxTime">Max time to make:</label>
+            <div class="input-group">
+                <span class="input-group-text" id="maxTime-label">Minutes:</span>
+                <input class="form-control" type="number" id='maxTime' name='recipe[maxTime]' min=0 required
+                    value="<%=recipe.maxTime%>">
+            </div>
         </div>
         <div class="mb-3 col-auto">
-            <label for="createdDate">date made</label>
-            <input type="date" id="createdDate" name="recipe[createdDate]" value="<%=formatDate(recipe.createdDate)%>">
+            <label class="form-label" for="createdDate">Date created:</label>
+            <input type="date" id="createdDate" name="recipe[createdDate]" value="<%=formatDate(recipe.createdDate)%>"
+                class="form-control" required>
         </div>
         <div class="mb-3 col-auto">
             <button class="btn btn-success">Update Recipe</button>

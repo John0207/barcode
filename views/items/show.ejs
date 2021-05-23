@@ -8,6 +8,10 @@
                     <h5 class="card-title">
                         <%=item.title%>
                     </h5>
+                    <p class="card-text">
+                        Quantity: <%=item.quantity%>
+                            <%=item.quantityType%>
+                    </p>
                     <p class="card-text">Price: <%=item.price%>
                     </p>
 
@@ -23,10 +27,7 @@
                     </p>
                     <p class="card-text">Date Purchased: <%=formatDate(item.date)%>
                     </p>
-                    <p class="card-text">
-                        <small class="text-muted">quantity: <%=item.quantity%>
-                                <%=item.quantityType%></small>
-                    </p>
+
                     <a href="/items/<%=item._id%>" class="btn btn-primary">View <%=item.title%></a>
                 </div>
             </div>

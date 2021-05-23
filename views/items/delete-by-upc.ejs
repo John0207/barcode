@@ -4,10 +4,11 @@
             <div class="card mb-3" style="width: 12rem;">
                 <h4 class="card-title">Delete By UPC</h4>
                 <div class="card-body">
-                    <form id="upc-form" action="/items/delete-by-upc" method="POST">
+                    <form class="validated-form" id="upc-form" action="/items/delete-by-upc" method="POST" novalidate>
                         <div class="card-text">
                             <label class="form-label" for="upc">UPC</label>
-                            <input class='form-control' autofocus="autofocus" type="number" id='upc' name='upc'>
+                            <input class='form-control' autofocus="autofocus" type="number" id='upc' name='upc'
+                                required>
                         </div>
                         <button class='btn btn-danger mt-3'>Delete</button>
                     </form>

@@ -4,29 +4,32 @@
         </h1>
     </div>
     <div class="row">
-        <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>?_method=PUT"
-            method="POST">
+        <form class="row gy-2 gx-3 align-items-center validated-form"
+            action="/ingredients/<%=ingredient._id%>?_method=PUT" method="POST" novalidate>
             <div class="mb-3 col-auto">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="ingredient[name]" value="<%=ingredient.name%>">
+                <label class="form-label" for="name">Name:</label>
+                <input class="form-control" type="text" id="name" name="ingredient[name]" value="<%=ingredient.name%>"
+                    required>
             </div>
             <div class="mb-3 col-auto">
-                <label for="descripton">description:</label>
-                <input type="text" id="descripton" name="ingredient[descripton]" value="<%=ingredient.description%>">
+                <label class="form-label" for="descripton">Description:</label>
+                <input class="form-control" type="text" id="descripton" name="ingredient[descripton]"
+                    value="<%=ingredient.description%>" required>
             </div>
             <div class="mb-3 col-auto">
-                <label for="createdDate">created: </label>
-                <input type="date" id="createdDate" name="ingredient[createdDate]"
-                    value="<%=formatDate(ingredient.createdDate)%>">
+                <label class="form-label" for="createdDate">Created:</label>
+                <input class="form-control" type="date" id="createdDate" name="ingredient[createdDate]"
+                    value="<%=formatDate(ingredient.createdDate)%>" required>
             </div>
             <div class="mb-3 col-auto">
-                <label for="quantity">quantity</label>
-                <input type="number" id="quantity" name="ingredient[quantity]" value="<%=ingredient.quantity%>">
+                <label class="form-label" for="quantity">Quantity:</label>
+                <input class="form-control" type="number" id="quantity" name="ingredient[quantity]"
+                    value="<%=ingredient.quantity%>" required>
             </div>
             <div class="mb-3 col-auto">
-                <label for="quantityType">quantity type: </label>
-                <input type="text" id="quantityType" name="ingredient[quantityType]"
-                    value="<%=ingredient.quantityType%>">
+                <label class="form-label" for="quantityType">Quantity Type: </label>
+                <input class="form-control" type="text" id="quantityType" name="ingredient[quantityType]"
+                    value="<%=ingredient.quantityType%>" required>
             </div>
             <div class="mb-3 col-auto">
                 <button class="btn btn-success btn-lg">Update Ingredient</button>

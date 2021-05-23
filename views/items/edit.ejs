@@ -1,57 +1,58 @@
 <% layout('layouts/boilerplate')%>
     <h1>Edit Item <%=item.title%>
     </h1>
-    <form class="row gy-2 gx-3 align-items-center" action="/items/<%=item._id%>?_method=PUT" method="POST">
+    <form class="row gy-2 gx-3 align-items-center validated-form" action="/items/<%=item._id%>?_method=PUT"
+        method="POST" novalidate>
         <div class="mb-3 col-auto">
-            <label for="title">Title:</label>
-            <br>
-            <input type="text" id="title" name="item[title]" value="<%=item.title%>">
+            <label class="form-label" for="title">Title:</label>
+            <input class="form-control" type="text" id="title" name="item[title]" value="<%=item.title%>" required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="upc">UPC:</label>
-            <br>
-            <input type="number" id="upc" name="item[upc]" value="<%=item.upc%>" min=1>
+            <label class="form-label" for="upc">UPC:</label>
+            <input class="form-control" type="number" id="upc" name="item[upc]" value="<%=item.upc%>" min=1 required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="location">Location:</label>
-            <br>
-            <input type="text" id="location" name="item[location]" value="<%=item.location%>">
+            <label class="form-label" for="location">Location:</label>
+            <input class="form-control" type="text" id="location" name="item[location]" value="<%=item.location%>"
+                required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="quantity">Quantity:</label>
+            <label class="form-label" for="quantity">Quantity:</label>
             <br>
-            <input type="number" id="quantity" name="item[quantity]" value="<%=item.quantity%>" min=0>
+            <input class="form-control" type="number" id="quantity" name="item[quantity]" value="<%=item.quantity%>"
+                min=0 required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="quantityType">Quantity Type:</label>
-            <br>
-            <input type="text" id="quantityType" name="item[quantityType]" value="<%=item.quantityType%>" min=1>
+            <label class="form-label" for="quantityType">Quantity Type:</label>
+            <input class="form-control" type="text" id="quantityType" name="item[quantityType]"
+                value="<%=item.quantityType%>" min=1 required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="price">Price:</label>
-            <br>
-            <input type="text" id="price" name="item[price]" value="<%=item.price%>" min=0>
+            <label class="form-label" for="price">Price:</label>
+            <div class="input-group">
+                <span class="input-group-text" id="price-label">$</span>
+                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=0 required>
+            </div>
         </div>
         <div class="mb-3 col-auto">
-            <label for="caseQty">Case Quantity:</label>
-            <br>
-            <input type="number" id="caseQty" name="item[caseQty]" value="<%=item.caseQty%>" min=1>
+            <label class="form-label" for="caseQty">Case Quantity:</label>
+            <input class="form-control" type="number" id="caseQty" name="item[caseQty]" value="<%=item.caseQty%>" min=1
+                required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="date">Date Purchased:</label>
-            <br>
-            <input type="date" id="date" name="item[date]" value="<%=formatDate(item.date)%>">
+            <label class="form-label" for="date">Date Purchased:</label>
+            <input class="form-control" type="date" id="date" name="item[date]" value="<%=formatDate(item.date)%>"
+                required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="shelfLife">Shelf Life in Days:</label>
-            <br>
-            <input type="number" id="shelfLife" name="item[shelfLife]" value:="<%=item.shelfLife%>" min=1>
+            <label class="form-label" for="shelfLife">Shelf Life in Days:</label>
+            <input class="form-control" type="number" id="shelfLife" name="item[shelfLife]" value:="<%=item.shelfLife%>"
+                min=1 required>
         </div>
         <div class="mb-3 col-auto">
-            <label for="expiration_date">Expiration Date:</label>
-            <br>
-            <input type="date" id="expiration_date" name="item[expiration_date]"
-                value="<%=formatDate(item.expiration_date)%>" min=1>
+            <label class="form-label" for="expiration_date">Expiration Date:</label>
+            <input class="form-control" type="date" id="expiration_date" name="item[expiration_date]"
+                value="<%=formatDate(item.expiration_date)%>" min=1 required>
         </div>
         <div class="mb-3 col-auto">
             <button class="btn btn-success">Update Item</button>
