@@ -31,7 +31,8 @@
             <label class="form-label" for="price">Price:</label>
             <div class="input-group">
                 <span class="input-group-text" id="price-label">$</span>
-                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=0 required>
+                <input class="form-control" type="text" id='price' placeholder="0.00" name='item[price]' min=0 required
+                    value="<%=item.price%>">
             </div>
         </div>
         <div class="mb-3 col-auto">
@@ -46,7 +47,7 @@
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="shelfLife">Shelf Life in Days:</label>
-            <input class="form-control" type="number" id="shelfLife" name="item[shelfLife]" value:="<%=item.shelfLife%>"
+            <input class="form-control" type="number" id="shelfLife" name="item[shelfLife]" value="<%=item.shelfLife%>"
                 min=1 required>
         </div>
         <div class="mb-3 col-auto">

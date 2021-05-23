@@ -11,6 +11,7 @@ const ingredients = require('./seeds/ingredients');
 const ingredient = require('./models/ingredient');
 
 const items = require('./routes/items');
+const catchAsync = require('./utils/catchAsync');
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -63,7 +64,7 @@ app.locals.todaysDate = () => {
     
 }
 
-app.get('/', async (req, res) => {
+app.get('/', catchAsync(async (req, res) => {
     const today = new Date();
     const todayPlusSeven = new Date();
     todayPlusSeven.setDate(today.getDate() + 7 );
@@ -80,17 +81,17 @@ app.get('/', async (req, res) => {
         }
     } 
     res.render('home', { items, total, average, throw_outs, expired, outOfStock })
-})
+}))
 
 
 // !!!!!---------------------------------------------------------------!!!!!!!!!!!!!!!!
 //                             recipe routes
-app.get('/recipes', async (req, res) => {
+app.get('/recipes', catchAsync(async (req, res) => {
     const recipes = await Recipe.find({});
     res.render('recipes/index', { recipes });
-})
+}))
 
-app.post('/recipes/recipeSearch', async (req, res) => {
+app.post('/recipes/recipeSearch', catchAsync(async (req, res) => {
     const txtAutoComplete = req.body.txtAutoComplete;
     const recipe = await Recipe.findOne({name: txtAutoComplete});
     if (recipe){
@@ -99,14 +100,14 @@ app.post('/recipes/recipeSearch', async (req, res) => {
     } else {
         res.redirect("/recipes/");
     }    
-})
+}))
 
-app.get('/recipes/new', async (req, res) => {
+app.get('/recipes/new', catchAsync(async (req, res) => {
     const allIngredients = await Ingredient.find({});
     res.render('recipes/new', { allIngredients });
-})
+}))
 
-app.post('/recipes/new', async (req, res) => {
+app.post('/recipes/new', catchAsync( async (req, res) => {
     const recipe = new Recipe(req.body.recipe);
     if (req.body.addIngredients){
         for (let id of req.body.addIngredients){
@@ -119,9 +120,9 @@ app.post('/recipes/new', async (req, res) => {
     await recipe.save();
     res.redirect(`/recipes/${recipe._id}`);
     // console.log("it worked - " + recipe.name);
-})
+}))
 
-app.get('/recipes/:id', async (req, res) => { 
+app.get('/recipes/:id', catchAsync(async (req, res) => { 
     const recipe = await Recipe.findById(req.params.id).populate('ingredients');
     const itemsArray = [];
     const ingredientsNeededArray = [];
@@ -147,9 +148,9 @@ app.get('/recipes/:id', async (req, res) => {
     // find matching ingredients if they exist to display them   
     res.render('recipes/show', { recipe, itemsArray, ingredientsNeededArray });
 
-})
+}))
 
-app.get('/recipes/:id/edit', async (req, res) => {
+app.get('/recipes/:id/edit', catchAsync(async (req, res) => {
     const recipe = await Recipe.findById(req.params.id)
     const existingIngredients = recipe.ingredients;
     const existingIngredientsArray = [];    
@@ -160,9 +161,9 @@ app.get('/recipes/:id/edit', async (req, res) => {
         }
     }    
     res.render('recipes/edit', { recipe, existingIngredientsArray });
-})
+}))
 
-app.put('/recipes/:id', async (req, res) => {
+app.put('/recipes/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     let recipe = await Recipe.findById(id);
     if(req.body.removeIngs){
@@ -176,9 +177,9 @@ app.put('/recipes/:id', async (req, res) => {
     }
     
     res.redirect(`/recipes/${recipe._id}`)
-});
+}))
 
-app.get('/recipes/:id/ingredients/new', async (req, res) => {
+app.get('/recipes/:id/ingredients/new', catchAsync(async (req, res) => {
     const { id } = req.params;
     const recipe = await Recipe.findById(id);    
     const existingIngredients = recipe.ingredients;
@@ -196,15 +197,15 @@ app.get('/recipes/:id/ingredients/new', async (req, res) => {
     }
     // console.log(existingIngredientsArray);    
     res.render('ingredients/new', { recipe, allIngredients, existingIngredientsArray });
-})
+}))
 
-app.delete('/recipes/:id', async (req, res) => {
+app.delete('/recipes/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Recipe.findByIdAndDelete(id);
     res.redirect('/recipes');
-});
+}))
 
-app.post('/ingredients/:id/new', async (req, res) => {
+app.post('/ingredients/:id/new', catchAsync(async (req, res) => {
     const { id } = req.params;
     const recipe = await Recipe.findById(id);
     if(!req.body.addIngs){
@@ -232,19 +233,19 @@ app.post('/ingredients/:id/new', async (req, res) => {
     // res.send(recipe);
     // await ingredient.save();
     // res.send(ingredient1);
-})
+}))
 
 
 // !!!!!---------------------------------------------------------------!!!!!!!!!!!!!!!!
 //                             Ingriedient routes
 
 
-app.get('/ingredients', async (req, res) => {
+app.get('/ingredients', catchAsync(async (req, res) => {
     const ingredients = await Ingredient.find({});
     res.render('ingredients/index', { ingredients });
-})
+}))
 
-app.post('/ingredients/ingredientSearch', async (req, res) => {
+app.post('/ingredients/ingredientSearch', catchAsync(async (req, res) => {
     const txtAutoComplete = req.body.txtAutoComplete;
     const ingredient = await Ingredient.findOne({name: txtAutoComplete});
     console.log(ingredient);    
@@ -254,19 +255,19 @@ app.post('/ingredients/ingredientSearch', async (req, res) => {
     } else {
         res.redirect("/ingredients/");
     }    
-})
+}))
 
 app.get('/ingredients/new', (req, res) => {
     res.render('ingredients/new');
 })
 
-app.get('/ingredients/newFromScratch', async (req, res) => {
+app.get('/ingredients/newFromScratch', catchAsync(async (req, res) => {
     const allItems = await Item.find({});
     const allRecipes = await Recipe.find({});
     res.render('ingredients/newFromScratch', { allItems, allRecipes });
-})
+}))
 
-app.post('/ingredients/newFromScratch', async (req, res) => {
+app.post('/ingredients/newFromScratch', catchAsync(async (req, res) => {
     const ingredient = new Ingredient(req.body.ingredient);
     if (req.body.addItems){
         for (let id of req.body.addItems){
@@ -288,14 +289,15 @@ app.post('/ingredients/newFromScratch', async (req, res) => {
     res.redirect(`/ingredients/${ingredient._id}`);
     // res.redirect('/ingredients');
     // console.log("it worked" + ingredient.name);
-})
-app.post('/ingredients/new', async (req, res) => {
+}))
+
+app.post('/ingredients/new', catchAsync(async (req, res) => {
     const ingredient = new Ingredient(req.body.ingredient);
     await ingredient.save();
     console.log("it worked" + ingredient.name);
-})
+}))
 
-app.post('/ingredients/:id/items/newIngredient', async (req, res) => {
+app.post('/ingredients/:id/items/newIngredient', catchAsync(async (req, res) => {
     const { id } = req.params;
     const ingredient = await Ingredient.findById(id);
     if(!req.body.addItems){
@@ -327,10 +329,10 @@ app.post('/ingredients/:id/items/newIngredient', async (req, res) => {
         }
     }
     res.redirect(`/ingredients/${ingredient._id}`);
-})
+}))
 
 
-app.get('/ingredients/:id/items/newIngredient', async (req, res) => {
+app.get('/ingredients/:id/items/newIngredient', catchAsync(async (req, res) => {
     const { id } = req.params;
     const ingredient = await Ingredient.findById(id);
     const existingItems = ingredient.items;
@@ -345,9 +347,9 @@ app.get('/ingredients/:id/items/newIngredient', async (req, res) => {
     }
     // console.log(existingItemsArray);
     res.render('items/newIngredient', { ingredient, allItems, existingItemsArray });
-})
+}))
 
-app.get('/ingredients/:id/recipes/newIngredient', async (req, res) => {
+app.get('/ingredients/:id/recipes/newIngredient', catchAsync(async (req, res) => {
     const { id } = req.params;
     const ingredient = await Ingredient.findById(id);
     const existingRecipes = ingredient.recipes;
@@ -360,9 +362,9 @@ app.get('/ingredients/:id/recipes/newIngredient', async (req, res) => {
         }
     }
     res.render('recipes/newIngredient', { ingredient, allRecipes, existingRecipesArray });
-})
+}))
 
-app.post('/ingredients/:id/recipes/newIngredient', async (req, res) => {
+app.post('/ingredients/:id/recipes/newIngredient', catchAsync(async (req, res) => {
     const { id } = req.params;
     const ingredient = await Ingredient.findById(id);
     // res.send(ingredient);
@@ -386,19 +388,19 @@ app.post('/ingredients/:id/recipes/newIngredient', async (req, res) => {
     }
     
     res.redirect(`/ingredients/${ingredient._id}`)
-})
+}))
 
 
-app.get('/ingredients/:id', async (req, res) => {
+app.get('/ingredients/:id', catchAsync(async (req, res) => {
     const ingredient = await Ingredient.findById(req.params.id).populate('recipes');
     const ingredientItem = await Ingredient.findById(req.params.id).populate('items');
     // ingredient.populate('items');
     // await ingredient.save();
     console.log(ingredientItem.items);
     res.render('ingredients/show', { ingredient, ingredientItem });
-})
+}))
 
-app.get('/ingredients/:id/edit', async (req, res) => {
+app.get('/ingredients/:id/edit', catchAsync(async (req, res) => {
     const ingredient = await Ingredient.findById(req.params.id)
     const existingItems = ingredient.items;
     const existingItemsArray = [];
@@ -417,10 +419,10 @@ app.get('/ingredients/:id/edit', async (req, res) => {
         }
     };
     res.render('ingredients/edit', { ingredient, existingItemsArray, existingRecipesArray });
-})
+}))
 
 
-app.put('/ingredients/:id', async (req, res) => {
+app.put('/ingredients/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     let ingredient = await Ingredient.findById(id);
     if(req.body.removeItems){
@@ -441,13 +443,17 @@ app.put('/ingredients/:id', async (req, res) => {
     }
     
     res.redirect(`/ingredients/${ingredient._id}`)
-});
+}))
 
-app.delete('/ingredients/:id', async (req, res) => {
+app.delete('/ingredients/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Ingredient.findByIdAndDelete(id);
     res.redirect('/ingredients');
-});
+}))
+
+app.use((err, req, res, next) => {
+    res.send('oh boy something went wrong');
+})
 
 
 app.listen(3000, () => {

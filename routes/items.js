@@ -4,13 +4,14 @@ const Item = require('../models/item');
 const Ingredient = require('../models/ingredient');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
+const catchAsync = require('../utils/catchAsync');
 
-router.get('/', async (req, res) => {    
+router.get('/', catchAsync(async (req, res) => {    
     const items = await Item.find({});    
     res.render('items/index', { items });
-})
+}))
 
-router.post('/itemSearch', async (req, res) => {
+router.post('/itemSearch', catchAsync(async (req, res) => {
     const txtAutoComplete = req.body.txtAutoComplete;
     const item = await Item.findOne({title: txtAutoComplete});
     // console.log(item);    
@@ -20,12 +21,12 @@ router.post('/itemSearch', async (req, res) => {
     } else {
         res.redirect("/items/");
     }    
-})
+}))
 
-router.get('/new', async (req, res) => {
+router.get('/new', catchAsync(async (req, res) => {
     const allIngredients = await Ingredient.find({});    
     res.render('items/new', { allIngredients });
-})
+}))
 
 router.get('/new-upc', (req, res) => {
     res.render('items/new');
@@ -36,7 +37,7 @@ router.get('/decrement-by-upc', (req, res) => {
     res.render('items/decrement-by-upc');
 })
 
-router.post('/decrement-by-upc', async(req, res) => {
+router.post('/decrement-by-upc', catchAsync(async(req, res) => {
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
     const multi = req.body.multi;
@@ -47,9 +48,9 @@ router.post('/decrement-by-upc', async(req, res) => {
     } else {
         res.render('items/new-upc', { upc1 });
     }
-}) 
+})) 
 
-router.post('/', async (req, res) => {
+router.post('/', catchAsync(async (req, res) => {
     const item = new Item(req.body.item);    
     if (!item.expiration_date && item.date && item.shelfLife) {        
         date = item.date;
@@ -69,16 +70,16 @@ router.post('/', async (req, res) => {
     }
     await item.save();    
     res.redirect(`/items/${item._id}`);
-})
+}))
 
 
 
-router.get('/add-by-upc', async (req, res) => {
+router.get('/add-by-upc', catchAsync(async (req, res) => {
     const allIngredients = await Ingredient.find({});
     res.render('items/add-by-upc', { allIngredients });
-})
+}))
 
-router.post('/add-by-upc', async (req, res) => {
+router.post('/add-by-upc', catchAsync(async (req, res) => {
     const  upc1  = req.body.upc;
     const multi = req.body.multi;
     const item = await Item.findOne({upc: upc1});
@@ -88,18 +89,16 @@ router.post('/add-by-upc', async (req, res) => {
         console.log(item.title + " Successfully incremented using multiplier: " + multi);
         res.redirect("/items/add-by-upc");
     } else {
-        res.render('items/new-upc', { upc1, allIngredients });
-
-        // FIX ERROR WHEN PAGE REFRESHES IT EXECUTES
+        res.render('items/new-upc', { upc1, allIngredients });      
 
     }
-})
+}))
 
 router.get('/delete-by-upc', (req, res) => {
     res.render('items/delete-by-upc');
 })
 
-router.post('/delete-by-upc', async(req, res) => {
+router.post('/delete-by-upc', catchAsync(async(req, res) => {
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
     if (item) {
@@ -109,16 +108,16 @@ router.post('/delete-by-upc', async(req, res) => {
     } else {
         res.send('sorry item doesnt exist yet');
     }
-})   
+}))   
 
 
-router.get('/:id', async (req, res) => { 
+router.get('/:id', catchAsync(async (req, res) => { 
     const item = await Item.findById(req.params.id).populate('ingredients');
     res.render('items/show', { item });
 
-})
+}))
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', catchAsync(async (req, res) => {
     const item = await Item.findById(req.params.id)
     const existingIngredients = item.ingredients;
     const existingIngredientsArray = [];
@@ -130,9 +129,9 @@ router.get('/:id/edit', async (req, res) => {
     }
 
     res.render('items/edit', { item, existingIngredientsArray });
-})
+}))
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     let item = await Item.findById(id);    
     if (req.body.removeIngs){        
@@ -146,10 +145,10 @@ router.put('/:id', async (req, res) => {
     }
         
     res.redirect(`/items/${item._id}`)
-});
+}))
 
 
-router.get('/:id/ingredients/newItem', async (req, res) => {
+router.get('/:id/ingredients/newItem', catchAsync(async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
     const existingIngredients = item.ingredients;
@@ -163,10 +162,10 @@ router.get('/:id/ingredients/newItem', async (req, res) => {
     }
     // console.log(existingIngredients + " " + allIngredients);
     res.render('ingredients/newItem', { item, allIngredients, existingIngredientsArray });
-})
+}))
 
 // /ingredients/<%=item._id%>/new
-router.post('/:id/newItem', async (req, res) => {
+router.post('/:id/newItem', catchAsync(async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
     if (!req.body.addIngs){
@@ -187,13 +186,13 @@ router.post('/:id/newItem', async (req, res) => {
     }
     
     res.redirect(`/items/${item._id}`)
-})
+}))
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Item.findByIdAndDelete(id);
     res.redirect('/items');
-});
+}))
 
 
 module.exports = router;
