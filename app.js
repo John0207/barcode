@@ -11,7 +11,9 @@ const ingredients = require('./seeds/ingredients');
 const ingredient = require('./models/ingredient');
 
 const items = require('./routes/items');
+
 const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
@@ -451,8 +453,13 @@ app.delete('/ingredients/:id', catchAsync(async (req, res) => {
     res.redirect('/ingredients');
 }))
 
+// app.all('*', (req, res, next) => {
+//     next(new ExpressError('Page Not Found', 404))
+// })
+
 app.use((err, req, res, next) => {
-    res.send('oh boy something went wrong');
+    const {statusCode = 500, message = "something went wrong"} = err;
+    res.status(statusCode).send(message);
 })
 
 

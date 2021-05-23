@@ -5,6 +5,7 @@ const Ingredient = require('../models/ingredient');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const catchAsync = require('../utils/catchAsync');
+const ExpressError = require('../utils/ExpressError');
 
 router.get('/', catchAsync(async (req, res) => {    
     const items = await Item.find({});    
@@ -12,6 +13,7 @@ router.get('/', catchAsync(async (req, res) => {
 }))
 
 router.post('/itemSearch', catchAsync(async (req, res) => {
+    if(!req.body.txtAutoComplete) throw new ExpressError('Invalid Search', 400);
     const txtAutoComplete = req.body.txtAutoComplete;
     const item = await Item.findOne({title: txtAutoComplete});
     // console.log(item);    
@@ -38,19 +40,22 @@ router.get('/decrement-by-upc', (req, res) => {
 })
 
 router.post('/decrement-by-upc', catchAsync(async(req, res) => {
+    if(!req.body.upc || !req.body.multi) throw new ExpressError('Invalid UPC', 400);
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
     const multi = req.body.multi;
+    const allIngredients = await Ingredient.find({});    
     if (item) {
         await Item.findOneAndUpdate({upc: upc1}, { quantity: item.quantity - (item.caseQty * multi)});
         console.log(item.title + " Successfully decremented using multiplier: " + multi);
         res.redirect("/items/decrement-by-upc");
     } else {
-        res.render('items/new-upc', { upc1 });
+        res.render('items/new-upc', { upc1, allIngredients });
     }
 })) 
 
 router.post('/', catchAsync(async (req, res) => {
+    if(!req.body.item) throw new ExpressError('Invalid Item', 400);
     const item = new Item(req.body.item);    
     if (!item.expiration_date && item.date && item.shelfLife) {        
         date = item.date;
@@ -80,6 +85,7 @@ router.get('/add-by-upc', catchAsync(async (req, res) => {
 }))
 
 router.post('/add-by-upc', catchAsync(async (req, res) => {
+    if(!req.body.upc || !req.body.multi) throw new ExpressError('Invalid UPC', 400);
     const  upc1  = req.body.upc;
     const multi = req.body.multi;
     const item = await Item.findOne({upc: upc1});
@@ -99,6 +105,7 @@ router.get('/delete-by-upc', (req, res) => {
 })
 
 router.post('/delete-by-upc', catchAsync(async(req, res) => {
+    if(!req.body.upc) throw new ExpressError('Invalid UPC', 400);
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
     if (item) {
@@ -132,6 +139,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 }))
 
 router.put('/:id', catchAsync(async (req, res) => {
+    if(!req.body.item) throw new ExpressError('Invalid Item', 400);
     const { id } = req.params;
     let item = await Item.findById(id);    
     if (req.body.removeIngs){        
@@ -165,7 +173,8 @@ router.get('/:id/ingredients/newItem', catchAsync(async (req, res) => {
 }))
 
 // /ingredients/<%=item._id%>/new
-router.post('/:id/newItem', catchAsync(async (req, res) => {
+router.post('/:id/ingredients/newItem', catchAsync(async (req, res) => {
+    // if(!req.params) throw new ExpressError('Invalid Item', 400);
     const { id } = req.params;
     const item = await Item.findById(id);
     if (!req.body.addIngs){

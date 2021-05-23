@@ -5,8 +5,8 @@
                 Item: <%=item.title%>
             </h1>
             <h2>Add an Ingredient</h2>
-            <form class="row gy-2 gx-3 align-items-center validated-form" action="/ingredients/<%=item._id%>/newItem"
-                method="POST" novalidate>
+            <form id='ingredientForm' class="row gy-2 gx-3 align-items-center validated-form"
+                action="/items/<%=item._id%>/ingredients/newItem" method="POST" novalidate>
                 <div class="mb-3 col-auto">
                     <label class="form-label" for="name">Name:</label>
                     <input class="form-control" type="text" id='name' name='ingredient[name]' required>
@@ -29,6 +29,8 @@
                     <button class="btn btn-success">Add Ingredient</button>
                 </div>
         </div>
+        </form>
+        <form class="row gy-2 gx-3 align-items-center" action="/items/<%=item._id%>/ingredients/newItem" method="POST" novalidate>
         <div class="mb-3 col-auto">
             <h2>Already existing Ingredients</h2>
             <% for (let ing of existingIngredientsArray) { %>
@@ -62,5 +64,10 @@
                 <% }) %>
         </div>
     </div>
+    <div class="mb-3 col-auto">
+        <button class="btn btn-success">Attach Ingredient</button>
+    </div>
     </form>
     <a class="btn btn-primary btn-lg mb-3" href="/items/<%=item._id%>/">Back to <%=item.title%></a>
+
+ 

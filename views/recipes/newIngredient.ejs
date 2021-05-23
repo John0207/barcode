@@ -36,36 +36,42 @@
                 <button class="btn btn-success">Add Recipe</button>
             </div>
     </div>
-    <div class="row">
-        <div class="mb-3 col-auto">
-            <h2>Already existing Recipes</h2>
-            <% for (let recipe of existingRecipesArray) { %>
-                <div class="col-auto mb-3">
-                    <li>
-                        <a href="/recipes/<%=recipe._id%>/">
-                            <%=recipe.name%>
-                        </a>
-                    </li>
-                    <% } %>
-                </div>
-        </div>
+    </form>
+    <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>/recipes/newIngredient"
+        method="POST" novalidate>
         <div class="row">
-            <h2>All Recipes</h2>
-            <% allRecipes.forEach(function(rec, i) {%>
-                <div class="col-auto form-check-inline">
-                    <ul>
+            <div class="mb-3 col-auto">
+                <h2>Already existing Recipes</h2>
+                <% for (let recipe of existingRecipesArray) { %>
+                    <div class="col-auto mb-3">
                         <li>
-                            <%=rec.name%>
+                            <a href="/recipes/<%=recipe._id%>/">
+                                <%=recipe.name%>
+                            </a>
                         </li>
-                        <div class="form-check-inline">
-                            <input type="checkbox" id="rec-<%=i%>" name="addRecipes[]" value="<%=rec._id%>">
-                        </div>
-                        <label for="ing-<%=i%>">Attach <%=ingredient.name%> to <%=rec.name%>?</label>
-                    </ul>
-                </div>
-                <% }) %>
+                        <% } %>
+                    </div>
+            </div>
+            <div class="row">
+                <h2>All Recipes</h2>
+                <% allRecipes.forEach(function(rec, i) {%>
+                    <div class="col-auto form-check-inline">
+                        <ul>
+                            <li>
+                                <%=rec.name%>
+                            </li>
+                            <div class="form-check-inline">
+                                <input type="checkbox" id="rec-<%=i%>" name="addRecipes[]" value="<%=rec._id%>">
+                            </div>
+                            <label for="ing-<%=i%>">Attach <%=ingredient.name%> to <%=rec.name%>?</label>
+                        </ul>
+                    </div>
+                    <% }) %>
+            </div>
         </div>
-    </div>
+        <div class="mb-3 col-auto">
+            <button class="btn btn-success">Add Recipe</button>
+        </div>
     </form>
     <div class="row">
         <div class="col-auto">

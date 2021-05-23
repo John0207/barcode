@@ -56,40 +56,43 @@
                 <button class="btn btn-success">Add Item</button>
             </div>
     </div>
-
-
-    <div class="row">
-        <h2>Already existing Items</h2>
-        <% for (let item of existingItemsArray) { %>
-            <div class="mb-3 col-auto">
-                <a href="/items/<%=item._id%>" class="btn btn-primary">
-                    <%=item.title%>
-                </a>
-                <li>
-                    <%=item.quantity%>
-                        <%=item.quantityType%>
-                </li>
-            </div>
-            <% } %>
-    </div>
-    <div class="row">
-        <div class="mb-3 mt-3 col-auto">
-            <h2>Items</h2>
-            <% allItems.forEach(function(item, i) {%>
-                <div class="col-auto form-check-inline">
-                    <ul>
-                        <li>
-                            <%=item.title%>
-                        </li>
-                        <div class="form-check-inline">
-                            <input type="checkbox" id="ing-<%=i%>" name="addItems[]" value="<%=item._id%>">
-                        </div>
-                        <label for="ing-<%=i%>">Attach Item to Ingredient?</label>
-                    </ul>
+    </form>
+    <form class="row gy-2 gx-3 align-items-center" action="/ingredients/<%=ingredient._id%>/items/newIngredient"
+        method="POST" novalidate>
+        <div class="row">
+            <h2>Already existing Items</h2>
+            <% for (let item of existingItemsArray) { %>
+                <div class="mb-3 col-auto">
+                    <a href="/items/<%=item._id%>" class="btn btn-primary">
+                        <%=item.title%>
+                    </a>
+                    <li>
+                        <%=item.quantity%>
+                            <%=item.quantityType%>
+                    </li>
                 </div>
-                <% }) %>
+                <% } %>
         </div>
-    </div>
-
+        <div class="row">
+            <div class="mb-3 mt-3 col-auto">
+                <h2>Items</h2>
+                <% allItems.forEach(function(item, i) {%>
+                    <div class="col-auto form-check-inline">
+                        <ul>
+                            <li>
+                                <%=item.title%>
+                            </li>
+                            <div class="form-check-inline">
+                                <input type="checkbox" id="ing-<%=i%>" name="addItems[]" value="<%=item._id%>">
+                            </div>
+                            <label for="ing-<%=i%>">Attach Item to Ingredient?</label>
+                        </ul>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+        <div class="mb-3 col-auto">
+            <button class="btn btn-success">Add Ingredient</button>
+        </div>
     </form>
     <a class="btn btn-primary btn-lg mb-3" href="/ingredients/<%=ingredient._id%>/">Back to <%=ingredient.name%></a>
