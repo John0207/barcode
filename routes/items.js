@@ -6,6 +6,17 @@ const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const {itemSchema} = require('../schemas.js');
+
+const validateItem = (req, res, next) => {    
+    const {error} = itemSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
 
 router.get('/', catchAsync(async (req, res) => {    
     const items = await Item.find({});    
@@ -54,8 +65,7 @@ router.post('/decrement-by-upc', catchAsync(async(req, res) => {
     }
 })) 
 
-router.post('/', catchAsync(async (req, res) => {
-    if(!req.body.item) throw new ExpressError('Invalid Item', 400);
+router.post('/', validateItem, catchAsync(async (req, res) => {    
     const item = new Item(req.body.item);    
     if (!item.expiration_date && item.date && item.shelfLife) {        
         date = item.date;
@@ -138,7 +148,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('items/edit', { item, existingIngredientsArray });
 }))
 
-router.put('/:id', catchAsync(async (req, res) => {
+router.put('/:id', validateItem, catchAsync(async (req, res) => {
     if(!req.body.item) throw new ExpressError('Invalid Item', 400);
     const { id } = req.params;
     let item = await Item.findById(id);    
@@ -174,7 +184,6 @@ router.get('/:id/ingredients/newItem', catchAsync(async (req, res) => {
 
 // /ingredients/<%=item._id%>/new
 router.post('/:id/ingredients/newItem', catchAsync(async (req, res) => {
-    // if(!req.params) throw new ExpressError('Invalid Item', 400);
     const { id } = req.params;
     const item = await Item.findById(id);
     if (!req.body.addIngs){

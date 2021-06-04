@@ -2,10 +2,10 @@
 <html lang="en">
 <% layout('layouts/boilerplate')%>
     <h1 class="mb-3">Make a New Recipe</h1>
-    <form class="row gy-2 gx-3 align-items-center" action="/recipes/new" method="POST">
+    <form class="row gy-2 gx-3 align-items-center validated-form" action="/recipes/new" method="POST" novalidate>
         <div class="mb-3 col-auto">
             <label class="form-label" for="name">Name:</label>
-            <input class="form-control" type="text" id='name' name='recipe[name]'>
+            <input class="form-control" type="text" id='name' name='recipe[name]' required>
         </div>
         <div class="mb-3 col-auto">
             <label class="form-label" for="minTime">Min time to make:</label>
@@ -26,7 +26,7 @@
             <label class="form-label" for="recipe">Recipe:</label>
             <div class="mb-3 form-floating">
                 <textarea class="form-control" style="white-space: pre-wrap;height: 20rem;" class="form-control"
-                    type="text" id='recipe' name='recipe[recipe]'></textarea>
+                    type="text" id='recipe' name='recipe[recipe]' required></textarea>
             </div>
         </div>
         <div class="mb-3 col-auto">

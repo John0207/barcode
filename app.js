@@ -15,6 +15,19 @@ const items = require('./routes/items');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 
+const {recipeSchema} = require('./schemas.js');
+
+const validateRecipe = (req, res, next) => {    
+    const {error} = recipeSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
+
+
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -94,6 +107,7 @@ app.get('/recipes', catchAsync(async (req, res) => {
 }))
 
 app.post('/recipes/recipeSearch', catchAsync(async (req, res) => {
+    if(!req.body.txtAutoComplete) throw new ExpressError('Invalid Search', 400);
     const txtAutoComplete = req.body.txtAutoComplete;
     const recipe = await Recipe.findOne({name: txtAutoComplete});
     if (recipe){
@@ -109,7 +123,7 @@ app.get('/recipes/new', catchAsync(async (req, res) => {
     res.render('recipes/new', { allIngredients });
 }))
 
-app.post('/recipes/new', catchAsync( async (req, res) => {
+app.post('/recipes/new', validateRecipe, catchAsync( async (req, res) => {
     const recipe = new Recipe(req.body.recipe);
     if (req.body.addIngredients){
         for (let id of req.body.addIngredients){
@@ -165,7 +179,8 @@ app.get('/recipes/:id/edit', catchAsync(async (req, res) => {
     res.render('recipes/edit', { recipe, existingIngredientsArray });
 }))
 
-app.put('/recipes/:id', catchAsync(async (req, res) => {
+app.put('/recipes/:id', validateRecipe, catchAsync(async (req, res) => {
+    if(!req.body.recipe) throw new ExpressError('Invalid Recipe', 400);
     const { id } = req.params;
     let recipe = await Recipe.findById(id);
     if(req.body.removeIngs){
@@ -230,7 +245,6 @@ app.post('/ingredients/:id/new', catchAsync(async (req, res) => {
             // console.log(ing_id.recipes + "   " + recipe.ingredients);
         }
     }
-    
     res.redirect(`/recipes/${recipe._id}`)
     // res.send(recipe);
     // await ingredient.save();
@@ -250,7 +264,6 @@ app.get('/ingredients', catchAsync(async (req, res) => {
 app.post('/ingredients/ingredientSearch', catchAsync(async (req, res) => {
     const txtAutoComplete = req.body.txtAutoComplete;
     const ingredient = await Ingredient.findOne({name: txtAutoComplete});
-    console.log(ingredient);    
     if (ingredient){
         const id = ingredient._id;
         res.redirect(`/ingredients/${id}`);
@@ -459,7 +472,8 @@ app.delete('/ingredients/:id', catchAsync(async (req, res) => {
 
 app.use((err, req, res, next) => {
     const {statusCode = 500, message = "something went wrong"} = err;
-    res.status(statusCode).send(message);
+    if(!err.message) err.message = 'Oh No! something went wrong!';
+    res.status(statusCode).render('error', { err });
 })
 
 
