@@ -16,9 +16,19 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 
 const {recipeSchema} = require('./schemas.js');
+const {ingredientSchema} = require('./schemas.js');
 
 const validateRecipe = (req, res, next) => {    
     const {error} = recipeSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
+const validateIngredient = (req, res, next) => {    
+    const {error} = ingredientSchema.validate(req.body);
     if(error){
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);
@@ -282,7 +292,7 @@ app.get('/ingredients/newFromScratch', catchAsync(async (req, res) => {
     res.render('ingredients/newFromScratch', { allItems, allRecipes });
 }))
 
-app.post('/ingredients/newFromScratch', catchAsync(async (req, res) => {
+app.post('/ingredients/newFromScratch', validateIngredient, catchAsync(async (req, res) => {
     const ingredient = new Ingredient(req.body.ingredient);
     if (req.body.addItems){
         for (let id of req.body.addItems){
@@ -437,7 +447,7 @@ app.get('/ingredients/:id/edit', catchAsync(async (req, res) => {
 }))
 
 
-app.put('/ingredients/:id', catchAsync(async (req, res) => {
+app.put('/ingredients/:id', validateIngredient, catchAsync(async (req, res) => {
     const { id } = req.params;
     let ingredient = await Ingredient.findById(id);
     if(req.body.removeItems){

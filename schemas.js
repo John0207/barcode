@@ -33,3 +33,21 @@ module.exports.recipeSchema = Joi.object({
     removeIngredients: Joi.array().items(Joi.string()).allow(null, ''),        
     removeIngs: Joi.array().items(Joi.string()).allow(null, ''),        
 });
+
+module.exports.ingredientSchema = Joi.object({
+    ingredient: Joi.object({
+        name: Joi.string().required(),
+        description: Joi.string().allow(null, ''),
+        createdDate: Joi.date().allow(null, ''),
+        quantity: Joi.number().required().min(0),
+        quantityType: Joi.string().required(),
+       }).required(),
+    addIngredients: Joi.array().items(Joi.string()).allow(null, ''),        
+    addIngs: Joi.array().items(Joi.string()).allow(null, ''),        
+    addItems: Joi.array().items(Joi.string()).allow(null, ''),        
+    addRecipes: Joi.array().items(Joi.string()).allow(null, ''),        
+    removeIngredients: Joi.array().items(Joi.string()).allow(null, ''),        
+    removeItems: Joi.array().items(Joi.string()).allow(null, ''),        
+    removeRecipes: Joi.array().items(Joi.string()).allow(null, ''),        
+    removeIngs: Joi.array().items(Joi.string()).allow(null, ''),        
+});
