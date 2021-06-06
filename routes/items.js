@@ -87,8 +87,6 @@ router.post('/', validateItem, catchAsync(async (req, res) => {
     res.redirect(`/items/${item._id}`);
 }))
 
-
-
 router.get('/add-by-upc', catchAsync(async (req, res) => {
     const allIngredients = await Ingredient.find({});
     res.render('items/add-by-upc', { allIngredients });
@@ -105,8 +103,7 @@ router.post('/add-by-upc', catchAsync(async (req, res) => {
         console.log(item.title + " Successfully incremented using multiplier: " + multi);
         res.redirect("/items/add-by-upc");
     } else {
-        res.render('items/new-upc', { upc1, allIngredients });      
-
+        res.render('items/new-upc', { upc1, allIngredients });     
     }
 }))
 
@@ -131,7 +128,6 @@ router.post('/delete-by-upc', catchAsync(async(req, res) => {
 router.get('/:id', catchAsync(async (req, res) => { 
     const item = await Item.findById(req.params.id).populate('ingredients');
     res.render('items/show', { item });
-
 }))
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
@@ -144,7 +140,6 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
             existingIngredientsArray.push(ing);
         }
     }
-
     res.render('items/edit', { item, existingIngredientsArray });
 }))
 
@@ -161,7 +156,6 @@ router.put('/:id', validateItem, catchAsync(async (req, res) => {
     } else {
         let item = await Item.findByIdAndUpdate(id, { ...req.body.item });
     }
-        
     res.redirect(`/items/${item._id}`)
 }))
 
@@ -202,7 +196,6 @@ router.post('/:id/ingredients/newItem', catchAsync(async (req, res) => {
             await ing_id.save();
         }
     }
-    
     res.redirect(`/items/${item._id}`)
 }))
 
@@ -211,6 +204,5 @@ router.delete('/:id', catchAsync(async (req, res) => {
     await Item.findByIdAndDelete(id);
     res.redirect('/items');
 }))
-
 
 module.exports = router;
