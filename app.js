@@ -15,7 +15,8 @@ const catchAsync = require('./utils/catchAsync');
 mongoose.connect('mongodb://localhost:27017/barcode', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
@@ -36,6 +37,7 @@ app.use(methodOverride('_method'));
 app.use('/items', items);
 app.use('/recipes', recipes);
 app.use('/ingredients', ingredients);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.formatDate = (date) => {    
     let d = new Date(date),
