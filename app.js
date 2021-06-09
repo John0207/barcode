@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const session = require('express-session');
 
 const Item = require('./models/item');
 
@@ -38,6 +39,19 @@ app.use('/items', items);
 app.use('/recipes', recipes);
 app.use('/ingredients', ingredients);
 app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionConfig = {
+    secret: 'thishsouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        // 1 week
+        HttpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig));
 
 app.locals.formatDate = (date) => {    
     let d = new Date(date),
