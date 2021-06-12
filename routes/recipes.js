@@ -50,8 +50,8 @@ router.post('/new', validateRecipe, catchAsync( async (req, res) => {
         }
     }
     await recipe.save();
+    req.flash('success', 'Successfully created new recipe')
     res.redirect(`/recipes/${recipe._id}`);
-    // console.log("it worked - " + recipe.name);
 }))
 
 router.get('/:id', catchAsync(async (req, res) => { 
@@ -76,13 +76,16 @@ router.get('/:id', catchAsync(async (req, res) => {
             }
         }                      
     }
-    
-    // find matching ingredients if they exist to display them   
     res.render('recipes/show', { recipe, itemsArray, ingredientsNeededArray });
 
 }))
+
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const recipe = await Recipe.findById(req.params.id)
+    if(!recipe){
+        req.flash('error', 'cannot find that recipe :(');
+        return res.redirect('/recipes');
+    }
     const existingIngredients = recipe.ingredients;
     const existingIngredientsArray = [];    
     for (let id of existingIngredients) {
@@ -93,10 +96,15 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     }    
     res.render('recipes/edit', { recipe, existingIngredientsArray });
 }))
+
 router.put('/:id', validateRecipe, catchAsync(async (req, res) => {
     if(!req.body.recipe) throw new ExpressError('Invalid Recipe', 400);
     const { id } = req.params;
     let recipe = await Recipe.findById(id);
+    if(!recipe){
+        req.flash('error', 'cannot find that recipe :(');
+        return res.redirect('/recipes');
+    }
     if(req.body.removeIngs){
         for (let iD of req.body.removeIngs) {
             let ing = await Ingredient.findById(iD);
@@ -106,13 +114,17 @@ router.put('/:id', validateRecipe, catchAsync(async (req, res) => {
     } else {
         let recipe = await Recipe.findByIdAndUpdate(id, { ...req.body.recipe });
     }
-    
+    req.flash('success', 'Successfully updated recipe')    
     res.redirect(`/recipes/${recipe._id}`)
 }))
 
 router.get('/:id/ingredients/new', catchAsync(async (req, res) => {
     const { id } = req.params;
-    const recipe = await Recipe.findById(id);    
+    const recipe = await Recipe.findById(id);
+    if(!recipe){
+        req.flash('error', 'cannot find that recipe :(');
+        return res.redirect('/recipes');
+    }    
     const existingIngredients = recipe.ingredients;
     const allIngredients = await Ingredient.find({_id:{$nin: existingIngredients}});
     // const allIngredients = await Ingredient.find({});
@@ -132,8 +144,18 @@ router.get('/:id/ingredients/new', catchAsync(async (req, res) => {
 
 router.delete('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
+    if(!id){
+        req.flash('error', 'cannot find that recipe :(');
+        return res.redirect('/recipes');
+    }
+    const recipe = await Recipe.findById(id);
+    if(!recipe){
+        req.flash('error', 'cannot find that recipe :(');
+        return res.redirect('/recipes');
+    }
     await Recipe.findByIdAndDelete(id);
     res.redirect('/recipes');
+    req.flash('success', 'Successfully deleted recipe')
 }))
 
 module.exports = router;
