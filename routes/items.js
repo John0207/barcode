@@ -82,6 +82,7 @@ router.post('/', validateItem, catchAsync(async (req, res) => {
         }
     }
     await item.save();    
+    req.flash('success', 'Successfully made a new item');
     res.redirect(`/items/${item._id}`);
 }))
 
