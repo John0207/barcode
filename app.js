@@ -31,8 +31,14 @@ const app = express();
 
 app.engine('ejs', ejsMate);
 
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 const sessionConfig = {
     secret: 'thishsouldbeabettersecret',
@@ -56,18 +62,9 @@ app.use((req, res, next) => {
     next();
 })
 
-
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-
-
-
 app.use('/items', items);
 app.use('/recipes', recipes);
 app.use('/ingredients', ingredients);
-
-app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.locals.formatDate = (date) => {    
     let d = new Date(date),
@@ -106,7 +103,7 @@ app.get('/', catchAsync(async (req, res) => {
 }))
 
 app.use((err, req, res, next) => {
-    const {statusCode = 500, message = "something went wrong"} = err;
+    const {statusCode = 500 } = err;
     if(!err.message) err.message = 'Oh No! something went wrong!';
     res.status(statusCode).render('error', { err });
 })
