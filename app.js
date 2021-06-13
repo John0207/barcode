@@ -6,12 +6,15 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 const Item = require('./models/item');
+const User = require('./models/user');
 
-const items = require('./routes/items');
-const recipes = require('./routes/recipes');
-const ingredients = require('./routes/ingredients');
+const itemRoutes = require('./routes/items');
+const recipeRoutes = require('./routes/recipes');
+const ingredientRoutes = require('./routes/ingredients');
+const userRoutes = require('./routes/users');
 
 const catchAsync = require('./utils/catchAsync');
 
@@ -63,12 +66,19 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/items', items);
-app.use('/recipes', recipes);
-app.use('/ingredients', ingredients);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use('/items', itemRoutes);
+app.use('/recipes', recipeRoutes);
+app.use('/ingredients', ingredientRoutes);
+app.use('/', userRoutes);
 
 app.locals.formatDate = (date) => {    
-    let d = new Date(date),
+    let d = new Date(date),xxxx
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
@@ -83,6 +93,13 @@ app.locals.todaysDate = () => {
     const d = app.locals.formatDate(new Date());
     return d; 
 }
+
+app.get('/fakeUser', async(req, res) => {
+    const user = new User({email: 'john123@gmail.com', username:'cooldude95'});
+    const newUser = await User.register(user, 'chicken');
+    res.send(newUser);
+})
+
 
 app.get('/', catchAsync(async (req, res) => {
     const today = new Date();
