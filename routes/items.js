@@ -17,12 +17,12 @@ const validateItem = (req, res, next) => {
     }
 }
 
-router.get('/', catchAsync(async (req, res) => {    
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {    
     const items = await Item.find({});    
     res.render('items/index', { items });
 }))
 
-router.post('/itemSearch', catchAsync(async (req, res) => {
+router.post('/itemSearch', isLoggedIn, catchAsync(async (req, res) => {
     if(!req.body.txtAutoComplete) throw new ExpressError('Invalid Search', 400);
     const txtAutoComplete = req.body.txtAutoComplete;
     const item = await Item.findOne({title: txtAutoComplete});
@@ -39,16 +39,16 @@ router.get('/new',  isLoggedIn, catchAsync(async (req, res) => {
     res.render('items/new', { allIngredients });
 }))
 
-router.get('/new-upc', (req, res) => {
+router.get('/new-upc', isLoggedIn, (req, res) => {
     res.render('items/new');
 })
 
 
-router.get('/decrement-by-upc', (req, res) => {
+router.get('/decrement-by-upc', isLoggedIn, (req, res) => {
     res.render('items/decrement-by-upc');
 })
 
-router.post('/decrement-by-upc', catchAsync(async(req, res) => {
+router.post('/decrement-by-upc', isLoggedIn, catchAsync(async(req, res) => {
     if(!req.body.upc || !req.body.multi) throw new ExpressError('Invalid UPC', 400);
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
@@ -63,11 +63,14 @@ router.post('/decrement-by-upc', catchAsync(async(req, res) => {
     }
 })) 
 
-router.post('/', validateItem, catchAsync(async (req, res) => {    
+router.post('/', validateItem, isLoggedIn, catchAsync(async (req, res) => {    
     const item = new Item(req.body.item);    
     if (!item.expiration_date && item.date && item.shelfLife) {        
         date = item.date;
+        console.log(date);
+        console.log(item.shelfLife);
         exDate = new Date(date.setDate(date.getDate() + item.shelfLife));
+        console.log(exDate);
         await Item.findOneAndUpdate({title: item.title}, { expiration_date: exDate });
     }
     if (req.body.addIngredients) {
@@ -83,12 +86,12 @@ router.post('/', validateItem, catchAsync(async (req, res) => {
     res.redirect(`/items/${item._id}`);
 }))
 
-router.get('/add-by-upc', catchAsync(async (req, res) => {
+router.get('/add-by-upc', isLoggedIn, catchAsync(async (req, res) => {
     const allIngredients = await Ingredient.find({});
     res.render('items/add-by-upc', { allIngredients });
 }))
 
-router.post('/add-by-upc', catchAsync(async (req, res) => {
+router.post('/add-by-upc', isLoggedIn, catchAsync(async (req, res) => {
     if(!req.body.upc || !req.body.multi) throw new ExpressError('Invalid UPC', 400);
     const  upc1  = req.body.upc;
     const multi = req.body.multi;
@@ -103,11 +106,11 @@ router.post('/add-by-upc', catchAsync(async (req, res) => {
     }
 }))
 
-router.get('/delete-by-upc', (req, res) => {
+router.get('/delete-by-upc', isLoggedIn, (req, res) => {
     res.render('items/delete-by-upc');
 })
 
-router.post('/delete-by-upc', catchAsync(async(req, res) => {
+router.post('/delete-by-upc', isLoggedIn, catchAsync(async(req, res) => {
     if(!req.body.upc) throw new ExpressError('Invalid UPC', 400);
     const  upc1  = req.body.upc;
     const item = await Item.findOne({upc: upc1});
@@ -120,12 +123,12 @@ router.post('/delete-by-upc', catchAsync(async(req, res) => {
     }
 }))   
 
-router.get('/:id', catchAsync(async (req, res) => { 
+router.get('/:id', isLoggedIn, catchAsync(async (req, res) => { 
     const item = await Item.findById(req.params.id).populate('ingredients');
     res.render('items/show', { item });
 }))
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const item = await Item.findById(req.params.id)
     const existingIngredients = item.ingredients;
     const existingIngredientsArray = [];
@@ -138,7 +141,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('items/edit', { item, existingIngredientsArray });
 }))
 
-router.put('/:id', validateItem, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateItem, catchAsync(async (req, res) => {
     if(!req.body.item) throw new ExpressError('Invalid Item', 400);
     const { id } = req.params;
     let item = await Item.findById(id);    
@@ -155,7 +158,7 @@ router.put('/:id', validateItem, catchAsync(async (req, res) => {
 }))
 
 
-router.get('/:id/ingredients/newItem', catchAsync(async (req, res) => {
+router.get('/:id/ingredients/newItem', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
     const existingIngredients = item.ingredients;
@@ -170,7 +173,7 @@ router.get('/:id/ingredients/newItem', catchAsync(async (req, res) => {
     res.render('ingredients/newItem', { item, allIngredients, existingIngredientsArray });
 }))
 
-router.post('/:id/ingredients/newItem', catchAsync(async (req, res) => {
+router.post('/:id/ingredients/newItem', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     const item = await Item.findById(id);
     if (!req.body.addIngs){
@@ -192,7 +195,7 @@ router.post('/:id/ingredients/newItem', catchAsync(async (req, res) => {
     res.redirect(`/items/${item._id}`)
 }))
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Item.findByIdAndDelete(id);
     res.redirect('/items');
